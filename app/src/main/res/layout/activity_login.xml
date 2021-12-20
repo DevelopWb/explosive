@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white_only_bottom_gray_shape_1px"
+    tools:context="com.juntai.wisdom.explorsive.entrance.LoginActivity">
+
+    <ImageView
+        android:id="@+id/close_iv"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        android:src="@mipmap/close_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/close_iv">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_only_bottom_accent_shape_5dp"
+            android:paddingBottom="5dp"
+            android:text="登录"
+            android:textSize="26dp"></TextView>
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+
+            <EditText
+                android:id="@+id/regist_phone_et"
+                style="@style/login_edit_tv_style"
+                android:layout_width="match_parent"
+                android:hint="账号"
+                android:maxLength="11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/password"
+                style="@style/login_edit_tv_style"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:hint="密码"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/regist_phone_et" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/login_tv"
+            style="@style/bt_bg_style"
+            android:layout_marginTop="20dp"
+            android:text="登录" />
+
+        <TextView
+            android:id="@+id/connect_us_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="15dp"
+            android:text="联系我们"
+            android:textSize="16dp"></TextView>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

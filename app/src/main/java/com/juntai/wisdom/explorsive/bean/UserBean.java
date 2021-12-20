@@ -1,0 +1,141 @@
+package com.juntai.wisdom.explorsive.bean;
+
+
+import com.juntai.disabled.basecomponent.base.BaseResult;
+
+import java.util.List;
+
+/**
+ * 个人信息
+ * Created by Ma
+ * on 2019/4/27
+ */
+public class UserBean extends BaseResult {
+
+
+    /**
+     * data : {"userId":2,"username":"铁人王进喜","headPortrait":"/head_img/default.jpg","mobile":"18669505929","departmentId":2,"departmentName":"刚察县治安大队","post":[{"id":6,"name":"治安大队审批人"}],"token":"4J5WRE5T2-TJBWSBCLZRGFYM7TIBLX1-YSCJMCXK-2"}
+     */
+
+    private DataBean data;
+
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
+
+    public static class DataBean {
+        /**
+         * userId : 2
+         * username : 铁人王进喜
+         * headPortrait : /head_img/default.jpg
+         * mobile : 18669505929
+         * departmentId : 2
+         * departmentName : 刚察县治安大队
+         * post : [{"id":6,"name":"治安大队审批人"}]
+         * token : 4J5WRE5T2-TJBWSBCLZRGFYM7TIBLX1-YSCJMCXK-2
+         */
+
+        private int userId;
+        private String username;
+        private String headPortrait;
+        private String mobile;
+        private int departmentId;
+        private String departmentName;
+        private String token;
+        private List<PostBean> post;
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getHeadPortrait() {
+            return headPortrait;
+        }
+
+        public void setHeadPortrait(String headPortrait) {
+            this.headPortrait = headPortrait;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public int getDepartmentId() {
+            return departmentId;
+        }
+
+        public void setDepartmentId(int departmentId) {
+            this.departmentId = departmentId;
+        }
+
+        public String getDepartmentName() {
+            return departmentName;
+        }
+
+        public void setDepartmentName(String departmentName) {
+            this.departmentName = departmentName;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public List<PostBean> getPost() {
+            return post;
+        }
+
+        public void setPost(List<PostBean> post) {
+            this.post = post;
+        }
+
+        public static class PostBean {
+            /**
+             * id : 6
+             * name : 治安大队审批人
+             */
+
+            private int id;
+            private String name;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+    }
+}

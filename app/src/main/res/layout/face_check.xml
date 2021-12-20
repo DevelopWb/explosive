@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <SurfaceView
+        android:id="@+id/sv_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"></View>
+        <com.tu.tcircleprogresslibrary.TCircleProgressView
+            android:id="@+id/tcpv_dam_board"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:tcpv_animation_duration="1"
+            app:tcpv_blank_angle="45"
+            app:tcpv_border_width="5dp"
+            app:tcpv_hint_semicircle_rate="0.3"
+            app:tcpv_hint_show="false"
+            app:tcpv_hint_text_color="#ffffff"
+            app:tcpv_hint_text_padding="8dp"
+            app:tcpv_start_angle="90"
+            app:tcpv_total_progress="100"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/recheck_tv"
+                android:layout_width="wrap_content"
+                android:paddingLeft="20dp"
+                android:visibility="gone"
+                android:paddingRight="20dp"
+                android:text="重新认证"
+                android:layout_marginTop="50dp"
+                style="@style/bt_style"></TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

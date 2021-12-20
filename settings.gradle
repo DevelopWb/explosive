@@ -1,0 +1,2 @@
+include ':module_Base', ':module_Map', ':module_Video',
+        ':app', ':banner', ':zXingLiteLib', ':oscvpush', ':TCircleProgressLibrary'
