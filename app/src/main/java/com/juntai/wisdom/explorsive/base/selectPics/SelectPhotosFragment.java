@@ -25,7 +25,7 @@ import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
 import com.juntai.disabled.basecomponent.utils.GlideEngine4;
 import com.juntai.disabled.basecomponent.utils.LogUtil;
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.utils.CalendarUtil;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.tbruyelle.rxpermissions2.RxPermissions;

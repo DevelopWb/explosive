@@ -46,6 +46,16 @@ public class UserBean extends BaseResult {
         private int departmentId;
         private String departmentName;
         private String token;
+        /**
+         * 2 民爆申请人
+         * 3 矿场内爆炸物申请人
+         * 4 矿场内爆炸物仓库管理员
+         * 5 派出所审批人
+         * 6 治安大队审批人
+         * 7 县公安局审批人
+         * 8 民爆仓库管理员
+         * 9 民爆仓库配送员
+         */
         private List<PostBean> post;
 
         public int getUserId() {

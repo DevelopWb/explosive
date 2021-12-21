@@ -19,7 +19,6 @@ public interface EntranceContract {
     }
 
     interface IEntrancePresent {
-        void login(String mobile, String password, String tag);
 
 
 

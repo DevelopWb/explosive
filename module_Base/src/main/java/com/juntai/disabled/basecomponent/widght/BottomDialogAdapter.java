@@ -19,6 +19,8 @@ public class BottomDialogAdapter extends BaseQuickAdapter<String, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
+
         helper.setText(R.id.single_text_tv, item);
+        helper.setBackgroundRes(R.id.single_text_tv,R.drawable.bg_white_only_bottom_gray_shape_1px);
     }
 }

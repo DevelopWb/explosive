@@ -12,12 +12,16 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        //华为推送 必填
         maven {url 'http://developer.huawei.com/repo/'}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
         // tinkersupport插件, 其中lastest.release指拉取最新版本，也可以指定明确版本号，例如1.0.4
         classpath "com.tencent.bugly:tinker-support:1.2.0"
+        //华为推送 必填
+        classpath 'com.huawei.agconnect:agcp:1.4.1.300'
+
         //mob
         classpath "com.mob.sdk:MobSDK:2018.0319.1724"
     }
@@ -29,6 +33,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        //华为推送 必填
         maven {url 'http://developer.huawei.com/repo/'}
     }
 }

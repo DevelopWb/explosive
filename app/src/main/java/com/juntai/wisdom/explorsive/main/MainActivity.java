@@ -14,20 +14,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
-import com.juntai.disabled.basecomponent.mvp.BasePresenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
+import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.service.LocateAndUpload;
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.MyApp;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
+import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
+import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
+import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends BaseAppActivity {
+/**
+ * @aouther tobato
+ * @description 描述  首页
+ * @date 2021-12-20 9:47
+ */
+public class MainActivity extends BaseAppActivity<MainPresent> implements IView, View.OnClickListener {
     //
     CGBroadcastReceiver broadcastReceiver = new CGBroadcastReceiver();
     private ImageView mUserHeadIv;
@@ -45,6 +54,7 @@ public class MainActivity extends BaseAppActivity {
     private TextView mUserMobileTv;
     private RecyclerView mHomePageRv;
     private MainMenuAdapter menuAdapter;
+    private TextView mUserWorkTv;
 
 
     @Override
@@ -62,24 +72,65 @@ public class MainActivity extends BaseAppActivity {
         intentFilter.addAction(ActionConfig.BROAD_CASE_DETAILS);
         registerReceiver(broadcastReceiver, intentFilter);
         mUserHeadIv = (ImageView) findViewById(R.id.user_head_iv);
+        mUserHeadIv.setOnClickListener(this);
         mUnitNameTv = (TextView) findViewById(R.id.unit_name_tv);
         mUserNameTv = (TextView) findViewById(R.id.user_name_tv);
         mUserMobileTv = (TextView) findViewById(R.id.user_mobile_tv);
+        mUserWorkTv = (TextView) findViewById(R.id.user_work_tv);
+        initUserBaseInfo();
         mHomePageRv = (RecyclerView) findViewById(R.id.home_page_rv);
         menuAdapter = new MainMenuAdapter(R.layout.my_menu_item);
         GridLayoutManager manager = new GridLayoutManager(mContext, 2);
         mHomePageRv.setAdapter(menuAdapter);
         mHomePageRv.setLayoutManager(manager);
-        menuAdapter.setNewData(getMenus());
+        menuAdapter.setNewData(mPresenter.getHomePageMenu());
+        menuAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                MyMenuBean menuBean = (MyMenuBean) adapter.getData().get(position);
+                switch (menuBean.getName()) {
+                    case MainPresent.MINE_REQUEST:
+                        // : 2021-12-20  民爆领取申请
+                        startActivity(new Intent(mContext, ApplyReceiveActivirty.class));
+                        break;
+                    case MainPresent.MINE_REQUEST_INSIDE:
+                        // : 2021-12-20  矿内使用申请
+                        startActivity(new Intent(mContext, ApplyUseActivity.class));
+
+                        break;
+                    case MainPresent.MINE_MANAGER:
+                        // TODO: 2021-12-20  矿场管理发放
+                        break;
+                    case MainPresent.APPROVE_RECEIVE:
+                        // TODO: 2021-12-20  民爆领取审批
+                        break;
+                    case MainPresent.APPROVE_USE:
+                        // TODO: 2021-12-20  矿场使用审批
+                        break;
+                    case MainPresent.EXPLOSIVE_MANAGE_OFFICE:
+                        // TODO: 2021-12-20  民爆管理发放
+                        break;
+                    case MainPresent.DOSAGE:
+                        // TODO: 2021-12-20  用量
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
-    private List<MyMenuBean> getMenus() {
-        List<MyMenuBean>  arrays = new ArrayList<>();
-        arrays.add(new MyMenuBean(MyMenuBean.HOME_MENU_ITEM1,R.mipmap.app_icon));
-        arrays.add(new MyMenuBean(MyMenuBean.HOME_MENU_ITEM2,R.mipmap.app_icon));
-        arrays.add(new MyMenuBean(MyMenuBean.HOME_MENU_ITEM3,R.mipmap.app_icon));
-        return arrays;
+    /**
+     * 用户基本资料
+     */
+    private void initUserBaseInfo() {
+        mUnitNameTv.setText(UserInfoManager.getDepartmentName());
+        mUserNameTv.setText("姓名：" + UserInfoManager.getUserName());
+        mUserMobileTv.setText("电话：" + UserInfoManager.getMobile());
+        mUserWorkTv.setText("职务：" + UserInfoManager.geWorkName());
+        ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
     }
+
 
     @Override
     public void initData() {
@@ -89,11 +140,37 @@ public class MainActivity extends BaseAppActivity {
     @Override
     public void onSuccess(String tag, Object o) {
         switch (tag) {
+//            case AppHttpPath.GET_USER_INFO:
+//
+//                break;
+
+
             default:
                 break;
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.user_head_iv:
+                //头像
+                startActivityForResult(new Intent(mContext, MyCenterActivity.class), BASE_REQUEST_RESULT);
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BASE_REQUEST_RESULT) {
+            initUserBaseInfo();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     /**
      * 登录被顶
@@ -129,9 +206,10 @@ public class MainActivity extends BaseAppActivity {
         super.onResume();
     }
 
+
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected MainPresent createPresenter() {
+        return new MainPresent();
     }
 
     @Override

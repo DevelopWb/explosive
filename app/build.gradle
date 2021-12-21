@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+//华为推送 必填
+apply plugin: 'com.huawei.agconnect'
 //// 依赖插件脚本
 //apply from: 'tinker-support.gradle'
 //mob sdk

@@ -9,7 +9,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.juntai.disabled.federation.R;
+
+import com.juntai.wisdom.R;
 
 import java.util.HashSet;
 import java.util.Iterator;

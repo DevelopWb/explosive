@@ -36,7 +36,7 @@ public class HWPushRegister implements IPushManager {
     /**
      * 这个更换应用的时候需要更改
      */
-    public static final String METADATA_KEY_APPID = "104910283";
+    public static final String METADATA_KEY_APPID = "105174065";
 
     @SuppressLint("StaticFieldLeak")
     private static Context mContext;

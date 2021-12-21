@@ -20,8 +20,8 @@ import com.juntai.disabled.basecomponent.utils.LogUtil;
 import com.juntai.disabled.basecomponent.utils.MD5;
 import com.juntai.disabled.basecomponent.utils.PubUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.MyApp;
-import com.juntai.disabled.federation.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.base.sendcode.SendCodeModel;
 import com.juntai.wisdom.explorsive.bean.UserBean;
@@ -30,6 +30,7 @@ import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.main.MainActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
+import com.siyee.oscvpush.util.RomUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -131,7 +132,7 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
                     ToastUtils.error(mContext, "登录密码不能为空");
                     return;
                 }
-                mPresenter.login(account, MD5.md5(String.format("%s#%s", account, password)),
+                mPresenter.login(account, MD5.md5(String.format("%s#%s", account, password)), RomUtil.getName(),MyApp.pushRegId,
                         EntranceContract.LOGIN_TAG);
                 break;
             case R.id.close_iv:

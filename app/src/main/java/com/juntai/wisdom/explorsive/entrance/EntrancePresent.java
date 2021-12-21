@@ -31,11 +31,10 @@ public class EntrancePresent extends BasePresenter<IModel, EntranceContract.IEnt
     }
 
 
-    @Override
-    public void login(String mobile, String password, String tag) {
+    public void login(String mobile, String password, String mobileName, String regId, String tag) {
         AppNetModule
                 .createrRetrofit()
-                .login(mobile, password)
+                .login(mobile, password,mobileName,regId)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<UserBean>(getView()) {
                     @Override

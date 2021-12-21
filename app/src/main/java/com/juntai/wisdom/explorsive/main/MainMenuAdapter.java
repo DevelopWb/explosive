@@ -3,7 +3,7 @@ package com.juntai.wisdom.explorsive.main;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 
 /**

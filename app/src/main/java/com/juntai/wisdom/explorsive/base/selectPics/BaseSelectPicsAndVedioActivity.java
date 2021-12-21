@@ -16,7 +16,7 @@ import com.juntai.disabled.basecomponent.mvp.BasePresenter;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
 import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 
 import java.util.List;

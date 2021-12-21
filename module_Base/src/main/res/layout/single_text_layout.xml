@@ -11,8 +11,4 @@
         android:gravity="center"
         android:textSize="16dp"
         android:textColor="@color/text_gray"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#E0E0E0"></View>
 </LinearLayout>

@@ -3,7 +3,7 @@ package com.juntai.wisdom.explorsive.entrance;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 
 /**

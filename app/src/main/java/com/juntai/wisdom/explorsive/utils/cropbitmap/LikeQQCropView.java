@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
 
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
 
 import java.io.FileDescriptor;
 import java.io.InputStream;

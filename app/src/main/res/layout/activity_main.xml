@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/user_head_iv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginLeft="15dp"
             android:src="@mipmap/my_hint_head"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,7 @@
             android:layout_marginLeft="15dp"
             android:text="unitName"
             android:textColor="@color/black"
-            android:textSize="14dp"
+            android:textSize="16dp"
             app:layout_constraintBottom_toTopOf="@+id/user_name_tv"
             app:layout_constraintLeft_toRightOf="@+id/user_head_iv"
             app:layout_constraintRight_toRightOf="parent"
@@ -47,33 +47,32 @@
             app:layout_constraintLeft_toLeftOf="@+id/unit_name_tv"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/unit_name_tv" />
-        <TextView
-            android:id="@+id/user_work_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="姓名：userName"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            app:layout_constraintLeft_toLeftOf="@+id/user_name_tv"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_name_tv" />
+
 
         <TextView
             android:id="@+id/user_mobile_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:paddingBottom="5dp"
             android:text="电话：17568220000"
             android:textColor="@color/black"
             android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/user_work_tv"
+            app:layout_constraintLeft_toLeftOf="@+id/user_name_tv"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_work_tv" />
-
+            app:layout_constraintTop_toBottomOf="@+id/user_name_tv" />
+        <TextView
+            android:id="@+id/user_work_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="职务：userName"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="@+id/user_mobile_tv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_mobile_tv" />
 
     </android.support.constraint.ConstraintLayout>
 

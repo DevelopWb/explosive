@@ -2,10 +2,12 @@ package com.juntai.wisdom.explorsive.base;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.mvp.BasePresenter;
-import com.juntai.disabled.federation.R;
+import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -33,21 +35,25 @@ public abstract class BaseRecyclerviewActivity<P extends BasePresenter> extends 
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         mSmartrefreshlayout = (SmartRefreshLayout) findViewById(R.id.smartrefreshlayout);
         adapter = getAdapter();
-        adapter.setEmptyView(getAdapterEmptyView("一条数据也没有...",-1));
-        initRecyclerview(mRecyclerview, adapter, LinearLayoutManager.VERTICAL);
-        mSmartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
-                freshlayoutOnRefresh();
-            }
-        });
-        mSmartrefreshlayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                freshlayoutOnLoadMore();
-            }
-        });
+        if (adapter != null) {
+            initRecyclerview(mRecyclerview, adapter, LinearLayoutManager.VERTICAL);
+            mSmartrefreshlayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(RefreshLayout refreshLayout) {
+                    freshlayoutOnRefresh();
+                }
+            });
+            mSmartrefreshlayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(RefreshLayout refreshLayout) {
+                    freshlayoutOnLoadMore();
+                }
+            });
+        }
+
+
     }
+
 
     protected abstract void freshlayoutOnLoadMore();
 

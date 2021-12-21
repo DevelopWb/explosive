@@ -308,12 +308,12 @@ public class CalendarUtil {
      * @param endTime   结束时间
      * @return
      */
-    public static boolean compareTimes(String startTime, String endTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+    public static boolean compareTimes(String startTime, String endTime,String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
         try {
             Long a = sdf.parse(startTime).getTime();
             Long b = sdf.parse(endTime).getTime();
-            Long currentTime = sdf.parse(getCurrentTimeNormal("yyyy年MM月dd日")).getTime();
+            Long currentTime = sdf.parse(getCurrentTimeNormal(format)).getTime();
             if (a < currentTime) {//开始时间小于当前时间
                 return false;
             } else {

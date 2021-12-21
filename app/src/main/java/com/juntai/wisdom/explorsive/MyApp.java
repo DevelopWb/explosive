@@ -35,15 +35,10 @@ import java.io.IOException;
 public class MyApp extends BaseApplication {
     public static MyApp app;
     public boolean isFinish = false;
-    private String BUGLY_APPID = "77648a6776";//bugly appid警小宝
     public LatLng myLocation;
     public BDLocation bdLocation;
     public static long lastClickTime;//上次点击按钮时间
     public static int timeLimit = 1000;
-    private static final String DATA_BASE_NAME = "db_dgjxb";//数据库名称
-
-    public static int BASE_REQUESR = 10086;
-    public static int BASE_RESULT = 10087;
     public static String pushRegId = "";
 
 

@@ -9,11 +9,6 @@ import java.io.Serializable;
  */
 public class MyMenuBean implements Serializable {
 
-    public static final String HOME_MENU_ITEM1="民爆领取申请";
-    public static final String HOME_MENU_ITEM2="民爆领取申请2";
-    public static final String HOME_MENU_ITEM3="民爆领取申请3";
-    public static final String HOME_MENU_ITEM4="民爆领取申请4";
-    public static final String HOME_MENU_ITEM5="民爆领取申请5";
     private String name;
     private int imageId;
 

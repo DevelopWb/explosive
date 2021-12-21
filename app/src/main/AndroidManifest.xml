@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.juntai.disabled.federation">
+    package="com.juntai.wisdom">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -30,7 +30,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.juntai.wisdom.explorsive.entrance.ConnectUsActivity"></activity>
+        <activity android:name="com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity"></activity>
+        <activity android:name="com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty" />
+        <activity android:name="com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity" />
+        <activity android:name="com.juntai.wisdom.explorsive.entrance.ConnectUsActivity" />
 
         <provider
             android:name="com.juntai.wisdom.explorsive.utils.MyFileProvider"

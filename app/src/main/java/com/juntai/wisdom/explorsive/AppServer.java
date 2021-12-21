@@ -2,9 +2,12 @@ package com.juntai.wisdom.explorsive;
 
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
+import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -20,9 +23,15 @@ public interface AppServer {
      * @return
      */
     @POST(AppHttpPath.LOGIN)
-    Observable<UserBean> login(@Query("mobile") String account, @Query("password") String password);
+    Observable<UserBean> login(@Query("mobile") String account, @Query("password") String password, @Query("mobileName") String mobileName, @Query("regId") String regId);
 
-
+    /**
+     * 上传文件
+     *
+     * @return
+     */
+    @POST(AppHttpPath.UPLOAD_FILES)
+    Observable<BaseResult> uploadFiles(@Body RequestBody requestBody);
     /**
      * account  手机号
      *
@@ -30,4 +39,23 @@ public interface AppServer {
      */
     @POST(AppHttpPath.GET_SMS_CODE)
     Observable<BaseResult> getSMSCode(@Query("account") String account);
+
+
+    /*====================================================    个人中心   ==============================================================*/
+
+
+    /**
+     * account  手机号
+     *
+     * @return
+     */
+    @POST(AppHttpPath.GET_USER_INFO)
+    Observable<UserBean> getUserInfo(@Body RequestBody requestBody);
+
+
+
+    @POST(AppHttpPath.RECEIVE_ORDER_LIST)
+    Observable<OrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
+
+
 }

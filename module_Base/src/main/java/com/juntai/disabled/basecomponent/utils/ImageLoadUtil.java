@@ -163,8 +163,8 @@ public class ImageLoadUtil {
      * 加载圆形图
      *
      */
-    public static void loadCirImgWithCrash(Context context, String url, ImageView view, int placeholder, int error) {
-        Glide.with(context).load(url).apply(new RequestOptions().error(error).placeholder(placeholder).circleCrop()).into(view);
+    public static void loadCirImgWithCrash(Context context, String url, ImageView view, int error) {
+        Glide.with(context).load(url).apply(new RequestOptions().error(error).placeholder(error).circleCrop()).into(view);
     }
 
     /**
