@@ -47,4 +47,21 @@ public class SearchPresent extends BasePresenter<IModel, IView>  {
                     }
                 });
     }
+    public void getUseOrderList(RequestBody requestBody, String tag) {
+        AppNetModule
+                .createrRetrofit()
+                .getUseOrderList(requestBody)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<OrderListBean>(getView()) {
+                    @Override
+                    public void onSuccess(OrderListBean o) {
+                        getView().onSuccess(tag, o);
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        getView().onError(tag, msg);
+                    }
+                });
+    }
 }

@@ -57,5 +57,8 @@ public interface AppServer {
     @POST(AppHttpPath.RECEIVE_ORDER_LIST)
     Observable<OrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
 
+    @POST(AppHttpPath.USE_ORDER_LIST)
+    Observable<OrderListBean> getUseOrderList(@Body RequestBody requestBody);
+
 
 }

@@ -47,7 +47,10 @@ public class AppHttpPath {
 
     /*====================================================    民爆使用相关   ==============================================================*/
 
-
+    /**
+     * 民爆领取订单列表
+     */
+    public static final String USE_ORDER_LIST = BASE + "/getMineReceiveOrderList";
 
 
 

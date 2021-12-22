@@ -168,7 +168,6 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
                 });
                 break;
             case R.id.start_search_by_condition_tv:
-                ToastUtils.toast(mContext, "开始搜索");
                 mFilterIv.performClick();
                 requestData();
                 clearData();

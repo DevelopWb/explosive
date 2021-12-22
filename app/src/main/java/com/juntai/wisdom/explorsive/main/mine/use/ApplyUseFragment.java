@@ -83,9 +83,8 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
 
     @Override
     protected void requestData() {
-        // TODO: 2021-12-20 调用获取订单的接口
-        ToastUtils.toast(mContext,"搜索");
-//        mPresenter.searchAllCareTakers(getRequestBody(), GET_ORDERS);
+        // : 2021-12-20 调用获取订单的接口
+        mPresenter.getUseOrderList(getRequestBody(), GET_ORDERS);
     }
 
 

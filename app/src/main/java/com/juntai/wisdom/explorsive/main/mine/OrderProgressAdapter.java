@@ -55,9 +55,10 @@ public class OrderProgressAdapter extends BaseMultiItemQuickAdapter<MultipleItem
                 break;
             case MultipleItem.ITEM_DIVIDER:
                 TextView divTv = helper.getView(R.id.single_text_tv);
+                String divStr = (String) item.getObject();
 //                divTv.setPadding(DisplayUtil.dp2px(mContext,2), DisplayUtil.dp2px(mContext,2),DisplayUtil.dp2px(mContext,2), DisplayUtil.dp2px(mContext,2));
                 divTv.setPadding(0, DisplayUtil.dp2px(mContext,3),0, DisplayUtil.dp2px(mContext,3));
-                helper.setText(R.id.single_text_tv, "--");
+                helper.setText(R.id.single_text_tv, divStr);
 
                 break;
             default:

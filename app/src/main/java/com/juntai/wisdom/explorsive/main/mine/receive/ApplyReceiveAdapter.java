@@ -46,17 +46,17 @@ public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean
 
         List<MultipleItem> arrays = new ArrayList<>();
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(0,status, "申请")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(1,status, "派出所")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(2,status, "治安大队")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(3,status, "领导审批")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(4,status, "出库")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(5,status, "配送")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, "--"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new IdNameBean(6,status, "完成")));
         return arrays;
     }
