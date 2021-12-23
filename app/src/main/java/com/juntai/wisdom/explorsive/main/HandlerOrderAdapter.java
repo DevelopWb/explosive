@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,19 +15,30 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.juntai.disabled.basecomponent.base.BaseObserver;
 import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
+import com.juntai.disabled.basecomponent.utils.PickerManager;
+import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
+import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
+import com.juntai.wisdom.explorsive.main.mine.receive.AddReceiveApplyActivity;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
 import java.util.List;
+
+import okhttp3.FormBody;
 
 /**
  * @Author: tobato
@@ -37,6 +49,7 @@ import java.util.List;
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
     private boolean isDetail = false;//是否是详情模式
+
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -51,6 +64,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_LOCATION, R.layout.item_layout_location);
         addItemType(MultipleItem.ITEM_SIGN, R.layout.item_layout_type_sign);
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
+        addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
 
 
     }
@@ -62,6 +76,47 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
+
+            case MultipleItem.ITEM_APPLY_DOSAGE:
+                helper.addOnClickListener(R.id.add_dosage_iv);
+                List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) item.getObject();
+                DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
+                RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
+                LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                dosageRv.setLayoutManager(dosageManager);
+                dosageRv.setAdapter(dosageAdapter);
+                dosageAdapter.setNewData(explosiveUsageBeans);
+                dosageAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                    @Override
+                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean   explosiveUsageBean = (ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean) adapter.getData().get(position);
+                        AppNetModule
+                                .createrRetrofit()
+                                .getExplosiveTypes(getBaseBuilder().build())
+                                .compose(RxScheduler.ObsIoMain((AddReceiveApplyActivity)mContext))
+                                .subscribe(new BaseObserver<ExplosiveTypeBean>((AddReceiveApplyActivity)mContext) {
+                                    @Override
+                                    public void onSuccess(ExplosiveTypeBean o) {
+                                        PickerManager.getInstance().showOptionPicker(mContext, o.getData(), new PickerManager.OnOptionPickerSelectedListener() {
+                                            @Override
+                                            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                                                ExplosiveTypeBean.DataBean dataBean = o.getData().get(options1);
+                                                explosiveUsageBean.setTypeName(dataBean.getName());
+                                                explosiveUsageBean.setTypeUnit(dataBean.getUnit());
+                                                adapter.notifyItemChanged(position);
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onError(String msg) {
+                                    }
+                                });
+                    }
+                });
+                break;
+
+
             case MultipleItem.ITEM_TITILE_BIG:
                 helper.setText(R.id.item_big_title_tv, (String) item.getObject());
                 break;
@@ -191,8 +246,16 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
         }
     }
-
-
-
+    /**
+     * 获取builder
+     *
+     * @return
+     */
+    public FormBody.Builder getBaseBuilder() {
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("token", UserInfoManager.getUserToken());
+        builder.add("mobile", UserInfoManager.getMobile());
+        return builder;
+    }
 
 }

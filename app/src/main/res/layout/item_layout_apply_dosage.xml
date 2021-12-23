@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/dosage_title_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_only_bottom_gray_shape_1px"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="15dp"
+            android:background="@color/colorAccent"></View>
+
+        <TextView
+            android:id="@+id/dosage_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="申请用量"
+            android:textColor="@color/text_title"
+            android:textSize="16dp"></TextView>
+
+        <ImageView
+            android:id="@+id/add_dosage_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@mipmap/add_icon"></ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dosage_form_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dosage_title_ll">
+
+
+        <TextView
+            android:id="@+id/explosive_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:gravity="center|left"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="名称"
+            android:textColor="@color/black"
+            android:textSize="14dp"></TextView>
+
+        <TextView
+            android:id="@+id/apply_amount_tv"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="申请数量"
+            android:textColor="@color/black"
+            android:textSize="14dp"></TextView>
+
+        <TextView
+            android:id="@+id/apply_amount_cap_tv"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="数量大写"
+            android:textColor="@color/black"
+            android:textSize="14dp"></TextView>
+
+        <TextView
+            android:id="@+id/unit_tv"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="单位"
+            android:textColor="@color/black"
+            android:textSize="14dp"></TextView>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/apply_dosage_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dosage_form_ll"></android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>

@@ -426,6 +426,14 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             private int applyQuantity;
             private String quantityWords;
             private String typeUnit;
+
+            public ExplosiveUsageBean(String typeName, int applyQuantity, String quantityWords, String typeUnit) {
+                this.typeName = typeName;
+                this.applyQuantity = applyQuantity;
+                this.quantityWords = quantityWords;
+                this.typeUnit = typeUnit;
+            }
+
             private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
 
             public String getTypeName() {

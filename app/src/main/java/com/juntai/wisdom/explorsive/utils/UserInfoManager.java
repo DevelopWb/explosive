@@ -129,6 +129,9 @@ public class UserInfoManager {
     public static int getUserId() {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getUserId() : -1;
     }
+    public static int getDepartmentId() {
+        return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentId() : -1;
+    }
 
 
 }

@@ -51,6 +51,10 @@ public class AppHttpPath {
      * 民爆领取订单列表
      */
     public static final String USE_ORDER_LIST = BASE + "/getMineReceiveOrderList";
+    /**
+     * 爆炸物种类
+     */
+    public static final String GET_EXPLOSIVE_TYPES = BASE + "/getExplosiveTypeList";
 
 
 

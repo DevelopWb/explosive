@@ -133,7 +133,7 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
                             @Override
                             public void onOptionsSelect(int options1, int option2, int options3, View v) {
                                 String status = getStatusList().get(options1);
-                                selectedStatusId = options1+1;
+                                selectedStatusId = options1 + 1;
                                 mSelectStatusTv.setText(status);
                             }
                         });
@@ -151,7 +151,7 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
             case R.id.select_end_time_tv:
                 // : 2021-12-20 选择结束时间
                 if (TextUtils.isEmpty(mStartTimeTv.getText().toString().trim())) {
-                    ToastUtils.toast(mContext,"请先选择开始时间");
+                    ToastUtils.toast(mContext, "请先选择开始时间");
                     return;
                 }
                 PickerManager.getInstance().showTimePickerView(mContext, new boolean[]{true, true, true, true, true, false}, "选择结束时间", new PickerManager.OnTimePickerTimeSelectedListener() {
@@ -159,8 +159,8 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
                     public void onTimeSelect(Date date, View v) {
                         String endTime = sdf.format(date);
                         // : 2021-12-20 和开始时间比较
-                        if (!CalendarUtil.compareTimes(mStartTimeTv.getText().toString().trim(),endTime,"yyyy-MM-dd HH:mm:ss")) {
-                            ToastUtils.toast(mContext,"结束时间不能早于开始时间");
+                        if (!CalendarUtil.compareTimes(mStartTimeTv.getText().toString().trim(), endTime, "yyyy-MM-dd HH:mm:ss")) {
+                            ToastUtils.toast(mContext, "结束时间不能早于开始时间");
                             return;
                         }
                         mEndTimeTv.setText(endTime);
@@ -228,13 +228,14 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
      */
     protected RequestBody getRequestBody() {
         FormBody.Builder builder = new FormBody.Builder();
-        builder.add("mobile", UserInfoManager.getMobile());
-        builder.add("token", UserInfoManager.getUserToken());
+        builder.add("mobile", UserInfoManager.getMobile())
+                .add("departmentId", String.valueOf(UserInfoManager.getDepartmentId()))
+                .add("token", UserInfoManager.getUserToken());
         String content = mSearchContentSv.getQuery().toString();
         if (StringTools.isStringValueOk(content)) {
             builder.add("keyword", content);
         }
-        if (selectedStatusId>0) {
+        if (selectedStatusId > 0) {
             builder.add("stat", String.valueOf(selectedStatusId));
         }
         if (StringTools.isStringValueOk(mStartTimeTv.getText().toString().trim())) {

@@ -28,6 +28,11 @@ public class MultipleItem implements MultiItemEntity {
     public static final int ITEM_FRAGMENT = 16;//  fragment
     public static final int ITEM_LOCATION = 17;//  定位
     public static final int ITEM_DIVIDER = 18;//  分割线
+    public static final int ITEM_APPLY_DOSAGE = 18;//  申请用量
+
+
+
+
     public static final int  BASE_RECYCLERVIEW_TYPE_TEXT_VALUE = 100;//textvalue。类型
     int  BASE_RECYCLERVIEW_TYPE_OTHER = 101;//其他。类型
     private int itemType;

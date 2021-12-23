@@ -55,7 +55,7 @@ import okhttp3.RequestBody;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021/4/22 11:08
  */
-public abstract class BaseInspectionActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener, SelectPhotosFragment.OnPhotoItemClick {
+public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener, SelectPhotosFragment.OnPhotoItemClick {
     public static int SELECT_ADDR = 998;
 
     protected HandlerOrderAdapter adapter;
@@ -139,8 +139,6 @@ public abstract class BaseInspectionActivity extends BaseAppActivity<MainPresent
 
     private void setAdapterClick() {
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-
-
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 currentPosition = position;
@@ -160,6 +158,13 @@ public abstract class BaseInspectionActivity extends BaseAppActivity<MainPresent
                                 // : 2021-12-22  跳转到选择位置类
                                 startActivityForResult(new Intent(mContext, LocateSelectionActivity.class),
                                         SELECT_ADDR);
+                                break;
+
+                            case R.id.add_dosage_iv:
+                                //添加用量
+                                List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) multipleItem.getObject();
+                                explosiveUsageBeans.add(new ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
+                                adapter.notifyItemChanged(position);
                                 break;
                             default:
                                 break;

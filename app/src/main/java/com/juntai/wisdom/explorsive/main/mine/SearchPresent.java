@@ -18,16 +18,13 @@ import okhttp3.RequestBody;
  * @UpdateUser: 更新者
  * @UpdateDate: 2020/7/9 15:01
  */
-public class SearchPresent extends BasePresenter<IModel, IView>  {
-
+public class SearchPresent extends BasePresenter<IModel, IView> {
 
 
     @Override
     protected IModel createModel() {
         return null;
     }
-
-
 
 
     public void getReceiveOrderList(RequestBody requestBody, String tag) {
@@ -47,6 +44,7 @@ public class SearchPresent extends BasePresenter<IModel, IView>  {
                     }
                 });
     }
+
     public void getUseOrderList(RequestBody requestBody, String tag) {
         AppNetModule
                 .createrRetrofit()
@@ -64,4 +62,5 @@ public class SearchPresent extends BasePresenter<IModel, IView>  {
                     }
                 });
     }
+
 }

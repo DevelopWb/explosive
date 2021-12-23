@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive;
 
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
+import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
@@ -59,6 +60,9 @@ public interface AppServer {
 
     @POST(AppHttpPath.USE_ORDER_LIST)
     Observable<ReceiveOrderListBean> getUseOrderList(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.GET_EXPLOSIVE_TYPES)
+    Observable<ExplosiveTypeBean> getExplosiveTypes(@Body RequestBody requestBody);
 
 
 }

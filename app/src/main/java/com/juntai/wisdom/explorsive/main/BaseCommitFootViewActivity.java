@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
-import com.juntai.disabled.bdmap.act.LocateSelectionActivity;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -23,7 +22,7 @@ import okhttp3.MultipartBody;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021/5/13 10:29
  */
-public abstract class BaseCommitFootViewActivity extends BaseInspectionActivity {
+public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
 
     private TextView mCommitBusinessTv;
     public String commitName;
