@@ -379,14 +379,11 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 //                            importantorBean.setPhone(value);
 //                            workerBean.setPhone(value);
 //                            break;
-//                        case BaseInspectContract.REMARK:
-//                            //备注
-//                            formKey = "remarks";
-//                            unitDataBean.setRemarks(value);
-//                            inspectionSiteBean.setRemarks(value);
-//                            importantorBean.setRemarks(value);
-//                            workerBean.setRemarks(value);
-//                            break;
+                        case MainContactInterface.APPLICATION:
+                            //用途
+                            formKey = "remarks";
+                            receiveOrderBean.setRemarks(value);
+                            break;
                         default:
                             break;
                     }
@@ -401,6 +398,12 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     builder.addFormDataPart("longitude", locationBean.getLongitude());
                     builder.addFormDataPart("latitude", locationBean.getLatitude());
 //                    receiveOrderBean.setlo
+                    break;
+
+                case MultipleItem.ITEM_APPLY_DOSAGE:
+                    List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) array.getObject();
+                    builder.addFormDataPart("explosiveUsage", GsonTools.createGsonString(explosiveUsageBeans));
+                    receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     break;
                 default:
                     break;

@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine.receive;
+package com.juntai.wisdom.explorsive.main.mine.use;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
@@ -15,28 +15,28 @@ import okhttp3.MultipartBody;
 
 /**
  * @aouther tobato
- * @description 描述   新增民爆申请
- * @date 2021-12-22 15:10
+ * @description 描述  矿内使用申请
+ * @date 2021-12-23 17:09
  */
-public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
+public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getAddRecieveApplyData(null,false));
-        ReceiveOrderDetailBean.DataBean  savedBean = Hawk.get(HawkProperty.EXPLOSIVE_RECEIVE_APPLY);
+        adapter.setNewData(mPresenter.getAddUseApplyData(null, false));
+        ReceiveOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
-            setAlertDialogHeightWidth( DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
+            setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getAddRecieveApplyData(savedBean,false));
+                            adapter.setNewData(mPresenter.getAddUseApplyData(savedBean, false));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             startLocation();
                         }
-                    }).show(),-1,0);
+                    }).show(), -1, 0);
         }
 
     }
@@ -48,7 +48,7 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     protected String getCommitTextValue() {
-        return "提交申请";
+        return "矿场使用提交";
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
     @Override
     protected void saveDraft() {
         if (getBaseAdapterData(true) != null) {
-            Hawk.put(HawkProperty.EXPLOSIVE_RECEIVE_APPLY, getBaseAdapterData(true).getReceiveOrderBean());
+            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, getBaseAdapterData(true).getReceiveOrderBean());
             ToastUtils.toast(mContext, "草稿保存成功");
             finish();
         }
@@ -67,6 +67,6 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     protected String getTitleName() {
-        return "民爆物品领取申请表";
+        return "民爆物品使用申请表";
     }
 }

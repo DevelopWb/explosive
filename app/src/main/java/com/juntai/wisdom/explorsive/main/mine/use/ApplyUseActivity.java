@@ -1,5 +1,6 @@
 package com.juntai.wisdom.explorsive.main.mine.use;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
+import com.juntai.wisdom.explorsive.main.mine.receive.AddReceiveApplyActivity;
 
 /**
  * @aouther tobato
@@ -34,7 +36,9 @@ public class ApplyUseActivity extends BaseAppActivity<MainPresent> implements Ma
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2021-12-20 新增 矿内使用申请
+                // : 2021-12-20 新增 矿内使用申请
+                startActivityForResult(new Intent(mContext, AddUseApplyActivity.class),BASE_REQUEST_RESULT);
+
             }
         });
     }

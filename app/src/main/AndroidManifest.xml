@@ -30,7 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.mine.receive.AddReceiveApplyActivity"></activity>
+        <activity android:name=".explorsive.main.mine.use.AddUseApplyActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receive.AddReceiveApplyActivity" />
         <activity android:name=".explorsive.main.mine.use.ApplyUseActivity" />
         <activity android:name=".explorsive.main.mine.receive.ApplyReceiveActivirty" />
         <activity android:name=".explorsive.main.myCenter.MyCenterActivity" />

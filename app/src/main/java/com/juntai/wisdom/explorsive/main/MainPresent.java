@@ -106,12 +106,31 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean) {
+    public List<MultipleItem> getAddUseApplyData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                getApplyerData(bean,isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
+                bean.getUseAddress()
+                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
+        initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
+                bean.getRemarks(), false, 1);
+        arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+        return arrays;
+    }
+    /**
+     * 添加  民爆领取申请
+     *
+     * @return
+     */
+    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
+        List<MultipleItem> arrays = new ArrayList<>();
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
+                getApplyerData(bean,isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
@@ -139,14 +158,14 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @return
      */
 
-    public List<TextKeyValueBean> getApplyerData(ReceiveOrderDetailBean.DataBean dataBean) {
+    public List<TextKeyValueBean> getApplyerData(ReceiveOrderDetailBean.DataBean dataBean, boolean isDetail) {
         List<TextKeyValueBean> arrays = new ArrayList<>();
-        arrays.add(new TextKeyValueBean("申请编号:", dataBean == null ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
-        arrays.add(new TextKeyValueBean("申请人:", dataBean == null ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
-        arrays.add(new TextKeyValueBean("联系电话:", dataBean == null ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
-        arrays.add(new TextKeyValueBean("申请单位:", dataBean == null ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
-        arrays.add(new TextKeyValueBean("单位地址:", dataBean == null ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
-        arrays.add(new TextKeyValueBean("申请时间:", dataBean == null ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
+        arrays.add(new TextKeyValueBean("申请编号:", !isDetail ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
+        arrays.add(new TextKeyValueBean("申请人:", !isDetail ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
+        arrays.add(new TextKeyValueBean("联系电话:", !isDetail ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
+        arrays.add(new TextKeyValueBean("申请单位:", !isDetail ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
+        arrays.add(new TextKeyValueBean("单位地址:", !isDetail ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
+        arrays.add(new TextKeyValueBean("申请时间:", !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
         return arrays;
     }
 

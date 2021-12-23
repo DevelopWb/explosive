@@ -8,4 +8,12 @@ package com.juntai.wisdom.explorsive.utils;
  * @UpdateDate: 2021/2/27 10:59
  */
 public class HawkProperty {
+    /**
+     * 民爆领取申请
+     */
+    public static String   EXPLOSIVE_RECEIVE_APPLY = "explosive_receive_apply";
+    /**
+     * 民爆使用申请
+     */
+    public static String   EXPLOSIVE_USE_APPLY = "explosive_use_apply";
 }
