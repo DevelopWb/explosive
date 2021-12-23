@@ -63,7 +63,7 @@ public class TextKeyValueBean {
     }
 
     public String getValue() {
-        return TextUtils.isEmpty(value) ? "暂无" : value;
+        return TextUtils.isEmpty(value) ? "" : value;
     }
 
     public void setValue(String value) {

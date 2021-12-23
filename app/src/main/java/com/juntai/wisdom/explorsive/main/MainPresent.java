@@ -1,23 +1,25 @@
 package com.juntai.wisdom.explorsive.main;
 
 
-import com.juntai.disabled.basecomponent.base.BaseObserver;
 import com.juntai.disabled.basecomponent.mvp.IModel;
 import com.juntai.disabled.basecomponent.mvp.IView;
-import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.R;
-import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.base.BaseAppPresent;
+import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
+import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
+import com.juntai.wisdom.explorsive.bean.LocationBean;
+import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
-import com.juntai.wisdom.explorsive.bean.OrderListBean;
+import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
-import com.mob.wrappers.PaySDKWrapper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import okhttp3.RequestBody;
 
 /**
  * Describe:
@@ -25,7 +27,7 @@ import okhttp3.RequestBody;
  * 2020/3/7
  * email:954101549@qq.com
  */
-public class MainPresent extends BaseAppPresent<IModel, IView> {
+public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     //矿场的
     public static final String MINE_REQUEST = "民爆领取申请";
     public static final String MINE_REQUEST_INSIDE = "矿内使用申请";
@@ -92,7 +94,76 @@ public class MainPresent extends BaseAppPresent<IModel, IView> {
     }
 
 
+    /**
+     * 添加  民爆领取申请
+     *
+     * @return
+     */
+    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean) {
+        List<MultipleItem> arrays = new ArrayList<>();
 
+        arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
+                getApplyerData(bean), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION,bean == null ? null :
+                bean.getUseAddress()
+                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
+        initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
+                bean.getRemarks(), false, 1);
 
+        return arrays;
+    }
+    /**
+     * 申请人信息
+     *
+     * @param dataBean
+     * @return
+     */
+
+    public List<TextKeyValueBean> getApplyerData(ReceiveOrderDetailBean.DataBean dataBean) {
+        List<TextKeyValueBean> arrays = new ArrayList<>();
+        arrays.add(new TextKeyValueBean("申请编号:", dataBean==null?new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) :dataBean.getApplyNumber()));
+        arrays.add(new TextKeyValueBean("申请人:", dataBean==null?UserInfoManager.getUserName():dataBean.getApplyUsername()));
+        arrays.add(new TextKeyValueBean("联系电话:", dataBean==null?UserInfoManager.getMobile():dataBean.getApplyPhone()));
+        arrays.add(new TextKeyValueBean("申请单位:", dataBean==null?UserInfoManager.getDepartmentName():dataBean.getApplyDepartmentName()));
+        arrays.add(new TextKeyValueBean("单位地址:", dataBean==null?UserInfoManager.getDepartmentAddr():dataBean.getApplyDepartmentAddress()));
+        arrays.add(new TextKeyValueBean("申请时间:", dataBean==null?new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()):dataBean.getApplyTime()));
+        return arrays;
+    }
+    /**
+     * initTextType
+     *
+     * @param arrays
+     * @param typeName
+     * @param editHeightType 0代表高度固定 1代表不固定
+     */
+    private void initTextType(List<MultipleItem> arrays, int layoutType, String typeName, String value,
+                              boolean isImportant, int editHeightType) {
+        switch (layoutType) {
+            case MultipleItem.ITEM_SELECT:
+                arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_SMALL, new ImportantTagBean
+                        (typeName, isImportant)));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                        new TextKeyValueBean(typeName, value, String.format("%s%s", "请选择",
+                                typeName), 0, isImportant)));
+                break;
+            case MultipleItem.ITEM_EDIT:
+                arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_SMALL, new ImportantTagBean(typeName,
+                        isImportant)));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_EDIT,
+                        new TextKeyValueBean(typeName, value,
+                                String.format("%s%s", "请输入", typeName), editHeightType, isImportant)));
+
+                break;
+            case MultipleItem.ITEM_EDIT2:
+                arrays.add(new MultipleItem(MultipleItem.ITEM_EDIT2,
+                        new TextKeyValueBean(typeName, value,
+                                String.format("%s%s", "请输入", typeName), editHeightType, isImportant)));
+                break;
+            default:
+                break;
+        }
+
+    }
 
 }

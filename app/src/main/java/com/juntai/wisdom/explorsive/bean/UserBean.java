@@ -45,6 +45,7 @@ public class UserBean extends BaseResult {
         private String mobile;
         private int departmentId;
         private String departmentName;
+        private String departmentAddress;//部门地址
         private String token;
         /**
          * 2 民爆申请人
@@ -57,6 +58,14 @@ public class UserBean extends BaseResult {
          * 9 民爆仓库配送员
          */
         private List<PostBean> post;
+
+        public String getDepartmentAddress() {
+            return departmentAddress == null ? "" : departmentAddress;
+        }
+
+        public void setDepartmentAddress(String departmentAddress) {
+            this.departmentAddress = departmentAddress == null ? "" : departmentAddress;
+        }
 
         public int getUserId() {
             return userId;

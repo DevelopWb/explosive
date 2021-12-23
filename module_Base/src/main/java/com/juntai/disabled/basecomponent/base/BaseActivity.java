@@ -19,11 +19,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -701,5 +703,59 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
             }
         }
     }
+    /**
+     * 设置alertdialog的宽高
+     * 这个是为了类似锤子手机 对话框显示不全的问题
+     * 需要在dialog  show()方法调用之后 调用此方法
+     *
+     * @param dialog
+     * @param width  -1代表屏幕宽度  0 代表 wrap_content  其他就是自定义值了
+     * @param height
+     */
+    public void setAlertDialogHeightWidth(AlertDialog dialog, int width, int height) {
+        // 设置dialog的宽度
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        if (-1 == width) {
+            params.width = getScreenWidth();
+        } else if (0 == width) {
+            params.width = params.width;
+        } else {
+            params.width = width;
+        }
+        if (-1 == height) {
+            params.height = getScreenHeight();
+        } else if (0 == height) {
+            params.height = params.height;
+        } else {
+            params.height = height;
+        }
+        dialog.getWindow().setAttributes(params);
+    }
+    /**
+     * 获取屏幕宽度(px)
+     *
+     * @param
+     * @return
+     */
+    public int getScreenWidth() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
 
+        return width;
+    }
+
+    /**
+     * 获取屏幕高度(px)
+     *
+     * @param
+     * @return
+     */
+    public int getScreenHeight() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int height = dm.heightPixels;
+
+        return height;
+    }
 }

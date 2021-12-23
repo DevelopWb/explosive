@@ -47,7 +47,6 @@ import java.util.List;
  */
 public class LocateSelectionActivity extends BaseRequestLocationActivity implements BaiduMap.OnMapClickListener, BaiduMap.SnapshotReadyCallback,
         OnGetGeoCoderResultListener {
-
     public static String RIGHT_CONTENT = "right_content";
     public static String LAT = "lat";
     public static String LNG = "lng";

@@ -7,6 +7,7 @@ import android.view.View;
 import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 
 /**
@@ -14,7 +15,7 @@ import com.juntai.wisdom.explorsive.main.MainPresent;
  * @description 描述 矿内使用申请
  * @date 2021-12-20 17:03
  */
-public class ApplyUseActivity extends BaseAppActivity<MainPresent> implements IView {
+public class ApplyUseActivity extends BaseAppActivity<MainPresent> implements MainContactInterface {
 
     @Override
     protected MainPresent createPresenter() {

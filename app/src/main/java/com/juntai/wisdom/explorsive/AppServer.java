@@ -2,7 +2,7 @@ package com.juntai.wisdom.explorsive;
 
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
-import com.juntai.wisdom.explorsive.bean.OrderListBean;
+import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
 import io.reactivex.Observable;
@@ -55,10 +55,10 @@ public interface AppServer {
 
 
     @POST(AppHttpPath.RECEIVE_ORDER_LIST)
-    Observable<OrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
+    Observable<ReceiveOrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.USE_ORDER_LIST)
-    Observable<OrderListBean> getUseOrderList(@Body RequestBody requestBody);
+    Observable<ReceiveOrderListBean> getUseOrderList(@Body RequestBody requestBody);
 
 
 }

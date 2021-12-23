@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.juntai.wisdom.explorsive.MyApp"
+        android:name=".explorsive.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
@@ -30,13 +30,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity"></activity>
-        <activity android:name="com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty" />
-        <activity android:name="com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity" />
-        <activity android:name="com.juntai.wisdom.explorsive.entrance.ConnectUsActivity" />
+        <activity android:name=".explorsive.main.mine.receive.AddReceiveApplyActivity"></activity>
+        <activity android:name=".explorsive.main.mine.use.ApplyUseActivity" />
+        <activity android:name=".explorsive.main.mine.receive.ApplyReceiveActivirty" />
+        <activity android:name=".explorsive.main.myCenter.MyCenterActivity" />
+        <activity android:name=".explorsive.entrance.ConnectUsActivity" />
 
         <provider
-            android:name="com.juntai.wisdom.explorsive.utils.MyFileProvider"
+            android:name=".explorsive.utils.MyFileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true"
@@ -61,7 +62,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Nb7K5CgYPX5xE8UhppiKirMt0BeoyGEy" /> <!-- 百度地图 -->
         <activity
-            android:name="com.juntai.wisdom.explorsive.entrance.StartActivity"
+            android:name=".explorsive.entrance.StartActivity"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,13 +71,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.juntai.wisdom.explorsive.main.MainActivity"
+            android:name=".explorsive.main.MainActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name="com.juntai.wisdom.explorsive.entrance.LoginActivity"
+            android:name=".explorsive.entrance.LoginActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity"
+            android:name=".explorsive.faceCheck.FaceCheckActivity"
             android:launchMode="singleTop" />
     </application>
 

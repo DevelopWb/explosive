@@ -70,6 +70,15 @@ public class UserInfoManager {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentName() : "";
 
     }
+    /**
+     * getDepartmentName
+     *
+     * @return
+     */
+    public static String getDepartmentAddr() {
+        return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentAddress() : "";
+
+    }
 
     /**
      * @return

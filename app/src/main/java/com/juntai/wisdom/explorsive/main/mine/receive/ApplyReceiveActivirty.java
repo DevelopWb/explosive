@@ -1,10 +1,12 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 
 /**
@@ -12,7 +14,7 @@ import com.juntai.wisdom.explorsive.main.MainPresent;
  * @description 描述  民爆领取(向民爆局)申请
  * @date 2021-12-20 14:15
  */
-public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implements IView {
+public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implements MainContactInterface {
 
     @Override
     protected MainPresent createPresenter() {
@@ -31,7 +33,8 @@ public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implemen
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 2021-12-20 新增 民爆申请 
+                // : 2021-12-20 新增 民爆申请
+                startActivityForResult(new Intent(mContext,AddReceiveApplyActivity.class),BASE_REQUEST_RESULT);
             }
         });
     }

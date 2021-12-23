@@ -11,7 +11,7 @@ import java.util.List;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021-12-20 15:15
  */
-public class OrderListBean  extends BaseResult {
+public class ReceiveOrderListBean extends BaseResult {
 
 
     private List<DataBean> data;

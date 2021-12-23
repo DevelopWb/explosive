@@ -26,7 +26,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "爆炸物管理-" + variant.versionCode + "-" + variant.versionName + ".apk"
+            outputFileName = "智慧民爆-" + variant.versionCode + "-" + variant.versionName + ".apk"
         }
     }
     signingConfigs {

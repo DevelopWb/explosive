@@ -36,7 +36,7 @@ import com.juntai.wisdom.explorsive.utils.UserInfoManager;
  * @description 描述  首页
  * @date 2021-12-20 9:47
  */
-public class MainActivity extends BaseAppActivity<MainPresent> implements IView, View.OnClickListener {
+public class MainActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener {
     //
     CGBroadcastReceiver broadcastReceiver = new CGBroadcastReceiver();
     private ImageView mUserHeadIv;
