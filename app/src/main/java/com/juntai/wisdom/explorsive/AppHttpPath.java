@@ -40,7 +40,14 @@ public class AppHttpPath {
      * 民爆领取订单列表
      */
     public static final String RECEIVE_ORDER_LIST = BASE + "/getReceiveOrderList";
-
+    /**
+     * 爆炸物种类
+     */
+    public static final String GET_EXPLOSIVE_TYPES = BASE + "/getExplosiveTypeList";
+    /**
+     * 新增民爆领取申请
+     */
+    public static final String ADD_RECEIVE_EXPLOSIVE_APPLY = BASE + "/addOrder";
 
 
 
@@ -48,13 +55,13 @@ public class AppHttpPath {
     /*====================================================    民爆使用相关   ==============================================================*/
 
     /**
-     * 民爆领取订单列表
+     * 民爆使用订单列表
      */
     public static final String USE_ORDER_LIST = BASE + "/getMineReceiveOrderList";
-    /**
-     * 爆炸物种类
-     */
-    public static final String GET_EXPLOSIVE_TYPES = BASE + "/getExplosiveTypeList";
+
+
+    public static final String ADD_USE_EXPLOSIVE_APPLY = BASE + "/addMineOrder";
+
 
 
 

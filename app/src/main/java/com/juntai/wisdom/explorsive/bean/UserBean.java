@@ -46,6 +46,7 @@ public class UserBean extends BaseResult {
         private int departmentId;
         private String departmentName;
         private String departmentAddress;//部门地址
+        private String sealUrl;//部门印章地址
         private String token;
         /**
          * 2 民爆申请人
@@ -58,6 +59,14 @@ public class UserBean extends BaseResult {
          * 9 民爆仓库配送员
          */
         private List<PostBean> post;
+
+        public String getSealUrl() {
+            return sealUrl == null ? "" : sealUrl;
+        }
+
+        public void setSealUrl(String sealUrl) {
+            this.sealUrl = sealUrl == null ? "" : sealUrl;
+        }
 
         public String getDepartmentAddress() {
             return departmentAddress == null ? "" : departmentAddress;

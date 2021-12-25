@@ -2,22 +2,23 @@ package com.juntai.wisdom.explorsive.main;
 
 
 import com.juntai.disabled.basecomponent.base.BaseObserver;
+import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.disabled.basecomponent.mvp.IModel;
-import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.base.BaseAppPresent;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
-import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
+import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -106,37 +107,43 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getAddUseApplyData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
+    public List<MultipleItem> getAddUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean,isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                getApplyerDataInUse(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN,new ItemSignBean("申请单位盖章签字",bean == null ?0:bean.getSignStatus(),bean==null?null:bean.getApplySign(),bean==null?UserInfoManager.getDepartmentSign():bean.getApplyDepartmentSeal())));
+
         return arrays;
     }
+
     /**
      * 添加  民爆领取申请
      *
      * @return
      */
-    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
+    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean,isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                getApplyerData(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN,new ItemSignBean("申请单位盖章签字",bean == null ?0:bean.getSignStatus(),bean==null?null:bean.getApplySign(),bean==null?UserInfoManager.getDepartmentSign():bean.getApplyDepartmentSeal())));
+
+
         return arrays;
     }
 
@@ -145,9 +152,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    private List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> getExplosiveDosage() {
-        List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> arrays = new ArrayList<>();
-        arrays.add(new ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
+    private List<ExplosiveUsageBean> getExplosiveDosage() {
+        List<ExplosiveUsageBean> arrays = new ArrayList<>();
+        arrays.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
         return arrays;
     }
 
@@ -160,12 +167,29 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
     public List<TextKeyValueBean> getApplyerData(ReceiveOrderDetailBean.DataBean dataBean, boolean isDetail) {
         List<TextKeyValueBean> arrays = new ArrayList<>();
-        arrays.add(new TextKeyValueBean("申请编号:", !isDetail ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
-        arrays.add(new TextKeyValueBean("申请人:", !isDetail ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
-        arrays.add(new TextKeyValueBean("联系电话:", !isDetail ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
-        arrays.add(new TextKeyValueBean("申请单位:", !isDetail ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
-        arrays.add(new TextKeyValueBean("单位地址:", !isDetail ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
-        arrays.add(new TextKeyValueBean("申请时间:", !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_NO, !isDetail ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER, !isDetail ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_MOBILE, !isDetail ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT, !isDetail ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT_ADDR, !isDetail ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_TIME, !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
+        return arrays;
+    }
+    /**
+     * 申请人信息
+     *
+     * @param dataBean
+     * @return
+     */
+
+    public List<TextKeyValueBean> getApplyerDataInUse(UseOrderDetailBean.DataBean dataBean, boolean isDetail) {
+        List<TextKeyValueBean> arrays = new ArrayList<>();
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_NO, !isDetail ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER, !isDetail ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_MOBILE, !isDetail ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT, !isDetail ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT_ADDR, !isDetail ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_TIME, !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
         return arrays;
     }
 
@@ -205,5 +229,47 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
     }
 
+
+
+    public void addExplosiveApply(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .addExplosiveReceiveApply(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void addExplosiveUseApply(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .addExplosiveUseApply(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
 
 }

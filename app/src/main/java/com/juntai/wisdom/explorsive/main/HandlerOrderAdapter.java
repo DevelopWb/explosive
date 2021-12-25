@@ -1,6 +1,7 @@
 package com.juntai.wisdom.explorsive.main;
 
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -24,12 +25,14 @@ import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
 import com.juntai.wisdom.explorsive.main.mine.receive.AddReceiveApplyActivity;
 import com.juntai.wisdom.explorsive.utils.StringTools;
@@ -62,6 +65,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_TITILE_SMALL, R.layout.item_layout_type_title_small);
         addItemType(MultipleItem.ITEM_EDIT, R.layout.item_layout_type_edit);
         addItemType(MultipleItem.ITEM_LOCATION, R.layout.item_layout_location);
+        addItemType(MultipleItem.ITEM_SELECT_TIME, R.layout.item_layout_location);
         addItemType(MultipleItem.ITEM_SIGN, R.layout.item_layout_type_sign);
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
@@ -79,7 +83,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
 
             case MultipleItem.ITEM_APPLY_DOSAGE:
                 helper.addOnClickListener(R.id.add_dosage_iv);
-                List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) item.getObject();
+                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                 DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
                 RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
                 LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -89,12 +93,12 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 dosageAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                     @Override
                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                        ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean   explosiveUsageBean = (ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean) adapter.getData().get(position);
+                        ExplosiveUsageBean explosiveUsageBean = (ExplosiveUsageBean) adapter.getData().get(position);
                         AppNetModule
                                 .createrRetrofit()
                                 .getExplosiveTypes(getBaseBuilder().build())
-                                .compose(RxScheduler.ObsIoMain((AddReceiveApplyActivity)mContext))
-                                .subscribe(new BaseObserver<ExplosiveTypeBean>((AddReceiveApplyActivity)mContext) {
+                                .compose(RxScheduler.ObsIoMain((AddReceiveApplyActivity) mContext))
+                                .subscribe(new BaseObserver<ExplosiveTypeBean>((AddReceiveApplyActivity) mContext) {
                                     @Override
                                     public void onSuccess(ExplosiveTypeBean o) {
                                         PickerManager.getInstance().showOptionPicker(mContext, o.getData(), new PickerManager.OnOptionPickerSelectedListener() {
@@ -205,6 +209,20 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                         break;
                 }
                 break;
+            case MultipleItem.ITEM_SELECT_TIME:
+                TimeBean timeBean = (TimeBean) item.getObject();
+                if (!isDetail) {
+                    helper.addOnClickListener(R.id.location_ll);
+                    helper.setGone(R.id.location_iv, true);
+                } else {
+                    helper.setGone(R.id.location_iv, false);
+                }
+                if (!TextUtils.isEmpty(timeBean.getTimeValue())) {
+                    helper.setText(R.id.location_tv, timeBean.getTimeValue());
+                }
+                helper.setText(R.id.locate_key_tv, timeBean.getTimeKey());
+
+                break;
             case MultipleItem.ITEM_LOCATION:
                 LocationBean locationBean = (LocationBean) item.getObject();
                 if (!isDetail) {
@@ -222,23 +240,77 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
 
             case MultipleItem.ITEM_SIGN:
                 ItemSignBean signBean = (ItemSignBean) item.getObject();
-                if (signBean.isCanSign()) {
-                    helper.addOnClickListener(R.id.sign_ll);
-                }
-                int gravity = signBean.getLayoutGravity();
-                LinearLayout signLl = helper.getView(R.id.item_sign_ll);
-                ImageView signIv = helper.getView(R.id.sign_name_iv);
-                if (0 == gravity) {
-                    helper.setGone(R.id.sign_tag, true);
-                    signLl.setGravity(Gravity.LEFT);
+                int signStatus = signBean.getSignStatus();
+                helper.addOnClickListener(R.id.start_sign_tv);
+                helper.addOnClickListener(R.id.reject_apply_tv);
+                helper.addOnClickListener(R.id.agree_apply_tv);
+                if (0 == signStatus) {
+                    //新建的申请
+                    helper.setGone(R.id.start_sign_tv, true);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setGone(R.id.status_detail_g, false);
+                } else if (1 == signStatus) {
+                    //审核
+                    helper.setGone(R.id.start_sign_tv, true);
+                    helper.setGone(R.id.status_check_g, true);
+                    helper.setGone(R.id.status_detail_g, false);
                 } else {
-                    helper.setGone(R.id.sign_tag, false);
-                    signLl.setGravity(Gravity.RIGHT);
+                    //详情
+                    helper.setGone(R.id.start_sign_tv, false);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setGone(R.id.status_detail_g, true);
+                    helper.setText(R.id.sign_time_tv, signBean.getSignTime());
                 }
-                helper.setText(R.id.sign_name_tv, signBean.getSignName());
+                helper.setText(R.id.sign_title_tv, signBean.getSignTitle());
+                //原因
+                EditText reasonEt = helper.getView(R.id.reason_et);
+                reasonEt.setText(signBean.getReason());
+                reasonEt.setTag(signBean);
+                reasonEt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        ItemSignBean bean = (ItemSignBean) reasonEt.getTag();
+                        String str = s.toString().trim();
+                        bean.setReason(str);
+                    }
+                });
+                //签名图片
                 if (StringTools.isStringValueOk(signBean.getSignPicPath())) {
                     ImageLoadUtil.loadImage(mContext, UrlFormatUtil.getImageOriginalUrl(signBean.getSignPicPath()),
-                            signIv);
+                            helper.getView(R.id.user_sign_iv));
+                }
+                if (StringTools.isStringValueOk(signBean.getDepartmentSignPath())) {
+                    ImageLoadUtil.loadImage(mContext, UrlFormatUtil.getImageOriginalUrl(signBean.getDepartmentSignPath()),
+                            helper.getView(R.id.department_sign_iv));
+                }
+                //同意和拒绝相关的逻辑
+                helper.setTextColor(R.id.reject_apply_tv, ContextCompat.getColor(mContext, R.color.black));
+                helper.setTextColor(R.id.agree_apply_tv, ContextCompat.getColor(mContext, R.color.black));
+                if (0 == signBean.getIsAgree()) {
+                    //还未选择
+                    helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.stroke_red_square_bg);
+                    helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.stroke_accent_square_bg);
+                } else if (1 == signBean.getIsAgree()) {
+                    //同意
+                    helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.stroke_red_square_bg);
+                    helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.sp_filled_accent);
+                    helper.setTextColor(R.id.agree_apply_tv, ContextCompat.getColor(mContext, R.color.white));
+
+                } else {
+                    //不同意
+                    helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.sp_filled_red);
+                    helper.setTextColor(R.id.reject_apply_tv, ContextCompat.getColor(mContext, R.color.white));
+                    helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.stroke_accent_square_bg);
                 }
                 break;
 
@@ -246,6 +318,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
         }
     }
+
     /**
      * 获取builder
      *

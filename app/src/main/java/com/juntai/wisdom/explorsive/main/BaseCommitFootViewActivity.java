@@ -109,8 +109,7 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
                 if (baseAdapterDataBean == null) {
                     return;
                 }
-                MultipartBody.Builder builder = getBaseAdapterData(false).getBuilder();
-                commitRequest(builder);
+                commitRequest(baseAdapterDataBean);
 
 
                 break;
@@ -128,9 +127,8 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
     /**
      * 提交请求
      *
-     * @param builder
      */
-    protected abstract void commitRequest(MultipartBody.Builder builder);
+    protected abstract void commitRequest(BaseAdapterDataBean baseAdapterDataBean);
 
     protected abstract void saveDraft();
 

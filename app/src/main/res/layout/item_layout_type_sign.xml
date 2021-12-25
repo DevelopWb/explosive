@@ -1,41 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_sign_ll"
+    android:id="@+id/item_sign_cl"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp">
 
-    <LinearLayout
-        android:id="@+id/sign_ll"
+    <View
+        android:id="@+id/sign_tag"
+        android:layout_width="3dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></View>
+
+    <TextView
+        android:id="@+id/sign_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="签字盖章"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_tag"
+        android:textColor="@color/text_title"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/sign_tag"
+        app:layout_constraintTop_toTopOf="@+id/sign_tag"></TextView>
+
+    <TextView
+        android:id="@+id/sign_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="2021-12-25"
+        android:textColor="@color/text_title"
+        android:textSize="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/sign_tag"
+        app:layout_constraintTop_toTopOf="@+id/sign_tag"></TextView>
+
+    <ImageView
+        android:id="@+id/user_sign_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/app_icon"
+        app:layout_constraintEnd_toStartOf="@+id/department_sign_iv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_tag"></ImageView>
+
+    <ImageView
+        android:id="@+id/department_sign_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/user_sign_iv"
+        app:layout_constraintTop_toTopOf="@+id/user_sign_iv"></ImageView>
+
+    <TextView
+        android:id="@+id/reject_apply_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/stroke_red_square_bg"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="10dp"
+        android:text="拒绝申请"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/agree_apply_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_tag"></TextView>
+
+    <TextView
+        android:id="@+id/agree_apply_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stroke_accent_square_bg"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="10dp"
+        android:text="同意申请"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/reject_apply_tv"
+        app:layout_constraintTop_toTopOf="@+id/reject_apply_tv"></TextView>
+
+    <EditText
+        android:id="@+id/reason_et"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="left"
+        android:hint="请输入拒绝或同意申请的原因"
+        android:padding="10dp"
+        android:textSize="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/reject_apply_tv"></EditText>
 
-        <View
-            android:id="@+id/sign_tag"
-            android:layout_width="3dp"
-            android:layout_height="15dp"
-            android:background="@color/colorAccent"></View>
+    <TextView
+        android:id="@+id/start_sign_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="5dp"
+        android:text="点击开始签字"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reason_et"></TextView>
 
-        <TextView
-            android:id="@+id/sign_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/text_title"
-            android:textSize="16dp"></TextView>
+    <android.support.constraint.Group
+        android:id="@+id/status_check_g"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="reject_apply_tv,agree_apply_tv,reason_et"></android.support.constraint.Group>
 
-        <ImageView
-            android:id="@+id/sign_name_iv"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="15dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/bg_white_only_bottom_gray_shape_1dp"
-            android:textSize="16dp"></ImageView>
-    </LinearLayout>
+    <android.support.constraint.Group
+        android:id="@+id/status_detail_g"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="sign_time_tv,user_sign_iv,department_sign_iv"></android.support.constraint.Group>
 
-</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

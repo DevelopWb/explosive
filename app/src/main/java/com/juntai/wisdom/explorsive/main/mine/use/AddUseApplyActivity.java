@@ -5,13 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.juntai.disabled.basecomponent.utils.DialogUtil;
+import com.juntai.disabled.basecomponent.utils.GsonTools;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.AppHttpPath;
+import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseCommitFootViewActivity;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * @aouther tobato
@@ -23,7 +28,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     @Override
     public void initData() {
         adapter.setNewData(mPresenter.getAddUseApplyData(null, false));
-        ReceiveOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
+        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -52,7 +57,16 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     }
 
     @Override
-    protected void commitRequest(MultipartBody.Builder builder) {
+    protected void commitRequest(BaseAdapterDataBean baseAdapterDataBean) {
+
+        UseOrderDetailBean.DataBean  receiveBean = baseAdapterDataBean.getUseOrderBean();
+        receiveBean.setApplyUserId(UserInfoManager.getUserId());
+        receiveBean.setApplyDepartmentId(UserInfoManager.getDepartmentId());
+        receiveBean.setMobile(UserInfoManager.getMobile());
+        receiveBean.setToken(UserInfoManager.getUserToken());
+        String route= GsonTools.createGsonString(receiveBean);//通过Gson将Bean转化为Json字符串形式
+        RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),route);
+        mPresenter.addExplosiveUseApply(body, AppHttpPath.ADD_USE_EXPLOSIVE_APPLY);
 
     }
 
@@ -68,5 +82,18 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     @Override
     protected String getTitleName() {
         return "民爆物品使用申请表";
+    }
+    @Override
+    public void onSuccess(String tag, Object o) {
+        super.onSuccess(tag, o);
+        switch (tag) {
+            case AppHttpPath.ADD_USE_EXPLOSIVE_APPLY:
+                ToastUtils.toast(mContext,"申请成功");
+                setResult(BASE_REQUEST_RESULT);
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 }

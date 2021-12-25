@@ -7,7 +7,7 @@ import com.juntai.disabled.basecomponent.mvp.IModel;
 import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.explorsive.AppNetModule;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
+import com.juntai.wisdom.explorsive.bean.OrderListBean;
 
 import okhttp3.RequestBody;
 
@@ -32,9 +32,9 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 .createrRetrofit()
                 .getReceiveOrderList(requestBody)
                 .compose(RxScheduler.ObsIoMain(getView()))
-                .subscribe(new BaseObserver<ReceiveOrderListBean>(getView()) {
+                .subscribe(new BaseObserver<OrderListBean>(getView()) {
                     @Override
-                    public void onSuccess(ReceiveOrderListBean o) {
+                    public void onSuccess(OrderListBean o) {
                         getView().onSuccess(tag, o);
                     }
 
@@ -50,9 +50,9 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 .createrRetrofit()
                 .getUseOrderList(requestBody)
                 .compose(RxScheduler.ObsIoMain(getView()))
-                .subscribe(new BaseObserver<ReceiveOrderListBean>(getView()) {
+                .subscribe(new BaseObserver<OrderListBean>(getView()) {
                     @Override
-                    public void onSuccess(ReceiveOrderListBean o) {
+                    public void onSuccess(OrderListBean o) {
                         getView().onSuccess(tag, o);
                     }
 

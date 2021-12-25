@@ -5,13 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.juntai.disabled.basecomponent.utils.DialogUtil;
+import com.juntai.disabled.basecomponent.utils.GsonTools;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
+import com.juntai.wisdom.explorsive.AppHttpPath;
+import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseCommitFootViewActivity;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.mob.wrappers.UMSSDKWrapper;
 import com.orhanobut.hawk.Hawk;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * @aouther tobato
@@ -22,21 +28,21 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getAddRecieveApplyData(null,false));
-        ReceiveOrderDetailBean.DataBean  savedBean = Hawk.get(HawkProperty.EXPLOSIVE_RECEIVE_APPLY);
+        adapter.setNewData(mPresenter.getAddRecieveApplyData(null, false));
+        ReceiveOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_RECEIVE_APPLY);
         if (savedBean != null) {
-            setAlertDialogHeightWidth( DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
+            setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getAddRecieveApplyData(savedBean,false));
+                            adapter.setNewData(mPresenter.getAddRecieveApplyData(savedBean, false));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             startLocation();
                         }
-                    }).show(),-1,0);
+                    }).show(), -1, 0);
         }
 
     }
@@ -52,7 +58,15 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
     }
 
     @Override
-    protected void commitRequest(MultipartBody.Builder builder) {
+    protected void commitRequest(BaseAdapterDataBean baseAdapterDataBean) {
+        ReceiveOrderDetailBean.DataBean  receiveBean = baseAdapterDataBean.getReceiveOrderBean();
+        receiveBean.setApplyUserId(UserInfoManager.getUserId());
+        receiveBean.setApplyDepartmentId(UserInfoManager.getDepartmentId());
+        receiveBean.setMobile(UserInfoManager.getMobile());
+        receiveBean.setToken(UserInfoManager.getUserToken());
+        String route= GsonTools.createGsonString(receiveBean);//通过Gson将Bean转化为Json字符串形式
+        RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),route);
+        mPresenter.addExplosiveApply(body, AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY);
 
     }
 
@@ -68,5 +82,20 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
     @Override
     protected String getTitleName() {
         return "民爆物品领取申请表";
+    }
+
+
+    @Override
+    public void onSuccess(String tag, Object o) {
+        super.onSuccess(tag, o);
+        switch (tag) {
+            case AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY:
+                ToastUtils.toast(mContext,"申请成功");
+                setResult(BASE_REQUEST_RESULT);
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 }

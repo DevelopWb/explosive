@@ -16,6 +16,8 @@ import com.juntai.wisdom.explorsive.main.MainPresent;
  */
 public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implements MainContactInterface {
 
+    private ApplyReceiveFragment applyReceiveFragment;
+
     @Override
     protected MainPresent createPresenter() {
         return new MainPresent();
@@ -41,11 +43,21 @@ public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implemen
 
     @Override
     public void initData() {
-
+        applyReceiveFragment = (ApplyReceiveFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_serach_top);
     }
 
     @Override
     public void onSuccess(String tag, Object o) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (BASE_REQUEST_RESULT==resultCode) {
+            // : 2021-12-25 刷新数据
+            applyReceiveFragment.requestData();
+        }
 
     }
 }

@@ -2,7 +2,6 @@ package com.juntai.wisdom.explorsive.main;
 
 import android.content.Intent;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,41 +11,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.juntai.disabled.basecomponent.mvp.IView;
-import com.juntai.disabled.basecomponent.utils.DialogUtil;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
-import com.juntai.disabled.basecomponent.utils.GsonTools;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
-import com.juntai.disabled.basecomponent.utils.PickerManager;
-import com.juntai.disabled.basecomponent.utils.RuleTools;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.act.LocateSelectionActivity;
-import com.juntai.disabled.video.img.ImageZoomActivity;
 import com.juntai.wisdom.R;
-import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.base.customview.GestureSignatureView;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
-import com.juntai.wisdom.explorsive.bean.IdNameBean;
+import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.utils.StringTools;
-import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * @Author: tobato
@@ -146,10 +136,10 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 switch (multipleItem.getItemType()) {
                     default:
                         switch (view.getId()) {
-                            case R.id.sign_ll:
+                            case R.id.start_sign_tv:
                                 itemSignBean = (ItemSignBean) multipleItem.getObject();
                                 //签名
-                                mSignIv = (ImageView) view.findViewById(R.id.sign_name_iv);
+                                mSignIv = (ImageView) view.findViewById(R.id.user_sign_iv);
                                 showSignatureView();
                                 break;
 
@@ -162,8 +152,8 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
                             case R.id.add_dosage_iv:
                                 //添加用量
-                                List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) multipleItem.getObject();
-                                explosiveUsageBeans.add(new ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
+                                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) multipleItem.getObject();
+                                explosiveUsageBeans.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
                                 adapter.notifyItemChanged(position);
                                 break;
                             default:
@@ -240,18 +230,14 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                         if (onSignedCallBack != null) {
                             onSignedCallBack.signed(signPath);
                         }
-                        if (itemSignBean != null) {
-                            itemSignBean.setSignPicPath(signPath);
-                        }
+                        mPresenter.uploadFile(MainContactInterface.UPLOAD_SIGN, signPath);
+
+
                         //                        SINGE_STATE = true;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //                    mSignNameTagIv.setVisibility(View.GONE);
-                    //                    mSignNameNoticeTv.setVisibility(View.GONE);
-                    //                    mSignRedactImg.setVisibility(View.VISIBLE);
                     bottomSheetDialog.dismiss();
-                    //                    mSignResign.getRightTextView().setVisibility(View.VISIBLE);
                 } else {
                     ToastUtils.toast(mContext, "请签名！");
                 }
@@ -337,23 +323,32 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
         BaseAdapterDataBean bean = new BaseAdapterDataBean();
         ReceiveOrderDetailBean.DataBean receiveOrderBean = new ReceiveOrderDetailBean.DataBean();
+        UseOrderDetailBean.DataBean  useOrderBean = new UseOrderDetailBean.DataBean();
         MultipartBody.Builder builder = mPresenter.getPublishMultipartBody();
         List<MultipleItem> arrays = adapter.getData();
-        for (MultipleItem array : arrays) {
-            switch (array.getItemType()) {
+        for (MultipleItem item : arrays) {
+            switch (item.getItemType()) {
                 case MultipleItem.ITEM_SIGN:
                     //签名
-                    ItemSignBean signBean = (ItemSignBean) array.getObject();
-                    if (!StringTools.isStringValueOk(signBean.getSignPicPath())) {
-                        ToastUtils.toast(mContext, "请签名");
-                        return null;
+                    ItemSignBean signBean = (ItemSignBean) item.getObject();
+                    if (!skipFilter) {
+                        if (!StringTools.isStringValueOk(signBean.getSignPicPath())) {
+                            ToastUtils.toast(mContext, "请签名");
+                            return null;
+                        }
                     }
-                    builder.addFormDataPart("pictureSign", "pictureSign",
-                            RequestBody.create(MediaType.parse(
-                                    "file"), new File(getSignPath(FileCacheUtils.SIGN_PIC_NAME))));
+                    //民爆领取申请
+                    receiveOrderBean.setApplySign(signBean.getSignPicPath());
+                    receiveOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+                    receiveOrderBean.setSignStatus(signBean.getSignStatus());
+//                    useOrderBean.setApplySign(signBean.getSignPicPath());
+//                    useOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+//                    useOrderBean.setSignStatus(signBean.getSignStatus());
+
+
                     break;
                 case MultipleItem.ITEM_EDIT:
-                    TextKeyValueBean textValueEditBean = (TextKeyValueBean) array
+                    TextKeyValueBean textValueEditBean = (TextKeyValueBean) item
                             .getObject();
                     String value = textValueEditBean.getValue();
                     if (!skipFilter) {
@@ -381,8 +376,8 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 //                            break;
                         case MainContactInterface.APPLICATION:
                             //用途
-                            formKey = "remarks";
                             receiveOrderBean.setRemarks(value);
+                            useOrderBean.setRemarks(value);
                             break;
                         default:
                             break;
@@ -393,17 +388,56 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
                     break;
                 case MultipleItem.ITEM_LOCATION:
-                    LocationBean locationBean = (LocationBean) array.getObject();
-                    builder.addFormDataPart("gpsAddress", locationBean.getAddress());
-                    builder.addFormDataPart("longitude", locationBean.getLongitude());
-                    builder.addFormDataPart("latitude", locationBean.getLatitude());
-//                    receiveOrderBean.setlo
+                    LocationBean locationBean = (LocationBean) item.getObject();
+                    receiveOrderBean.setUseAddress(locationBean.getAddress());
+                    receiveOrderBean.setUseLatitude(locationBean.getLatitude());
+                    receiveOrderBean.setUseLongitude(locationBean.getLongitude());
+                    useOrderBean.setEstimateUseAddress(locationBean.getAddress());
+                    useOrderBean.setEstimateUseLatitude(locationBean.getLatitude());
+                    useOrderBean.setEstimateUseLongitude(locationBean.getLongitude());
                     break;
+                case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
+                    BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
 
+                    switch (baseNormalRecyclerviewBean.getType()) {
+                        case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
+                            List<TextKeyValueBean> textKeyValueBeans = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
+                            for (TextKeyValueBean textKeyValueBean : textKeyValueBeans) {
+                                String applyValue = textKeyValueBean.getValue();
+                                switch (textKeyValueBean.getKey()) {
+                                    case MainContactInterface.APPLY_NO:
+                                        receiveOrderBean.setApplyNumber(applyValue);
+                                        useOrderBean.setApplyNumber(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER:
+                                        receiveOrderBean.setApplyUsername(applyValue);
+                                        useOrderBean.setApplyUsername(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_MOBILE:
+                                        receiveOrderBean.setApplyPhone(applyValue);
+                                        useOrderBean.setApplyPhone(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_UNIT:
+                                        receiveOrderBean.setApplyDepartmentName(applyValue);
+                                        useOrderBean.setApplyDepartmentName(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_UNIT_ADDR:
+                                        receiveOrderBean.setApplyDepartmentAddress(applyValue);
+                                        useOrderBean.setApplyDepartmentAddress(applyValue);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 case MultipleItem.ITEM_APPLY_DOSAGE:
-                    List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean> explosiveUsageBeans = (List<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean>) array.getObject();
-                    builder.addFormDataPart("explosiveUsage", GsonTools.createGsonString(explosiveUsageBeans));
+                    List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                     receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
+                    useOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     break;
                 default:
                     break;
@@ -411,11 +445,26 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         }
         bean.setBuilder(builder);
         bean.setReceiveOrderBean(receiveOrderBean);
+        bean.setUseOrderBean(useOrderBean);
         return bean;
     }
 
     @Override
     public void onSuccess(String tag, Object o) {
+        switch (tag) {
+            case MainContactInterface.UPLOAD_SIGN:
+                List<String> pics = (List<String>) o;
+                String path = pics == null ? "" : pics.get(0);
+                if (itemSignBean != null) {
+                    itemSignBean.setSignPicPath(path);
+                    itemSignBean.setSignStatus(2);
+                    itemSignBean.setSignTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    adapter.notifyItemChanged(currentPosition);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 

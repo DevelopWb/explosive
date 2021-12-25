@@ -3,7 +3,7 @@ package com.juntai.wisdom.explorsive;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
+import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
 import io.reactivex.Observable;
@@ -33,6 +33,7 @@ public interface AppServer {
      */
     @POST(AppHttpPath.UPLOAD_FILES)
     Observable<BaseResult> uploadFiles(@Body RequestBody requestBody);
+
     /**
      * account  手机号
      *
@@ -54,15 +55,21 @@ public interface AppServer {
     Observable<UserBean> getUserInfo(@Body RequestBody requestBody);
 
 
-
     @POST(AppHttpPath.RECEIVE_ORDER_LIST)
-    Observable<ReceiveOrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
+    Observable<OrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.USE_ORDER_LIST)
-    Observable<ReceiveOrderListBean> getUseOrderList(@Body RequestBody requestBody);
+    Observable<OrderListBean> getUseOrderList(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.GET_EXPLOSIVE_TYPES)
     Observable<ExplosiveTypeBean> getExplosiveTypes(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY)
+    Observable<BaseResult> addExplosiveReceiveApply(@Body RequestBody requestBody);
+
+
+    @POST(AppHttpPath.ADD_USE_EXPLOSIVE_APPLY)
+    Observable<BaseResult> addExplosiveUseApply(@Body RequestBody requestBody);
 
 
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.utils.MoneyUtils;
 
@@ -19,13 +20,13 @@ import com.juntai.wisdom.explorsive.utils.MoneyUtils;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021-12-23 11:06
  */
-public class DosageAdapter extends BaseQuickAdapter<ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean, BaseViewHolder> {
+public class DosageAdapter extends BaseQuickAdapter<ExplosiveUsageBean, BaseViewHolder> {
     public DosageAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean item) {
+    protected void convert(BaseViewHolder helper, ExplosiveUsageBean item) {
         helper.addOnClickListener(R.id.explosive_name_tv);
         helper.setText(R.id.explosive_name_tv, item.getTypeName());
         helper.setText(R.id.unit_tv, item.getTypeUnit());
@@ -50,7 +51,7 @@ public class DosageAdapter extends BaseQuickAdapter<ReceiveOrderDetailBean.DataB
                 if (TextUtils.isEmpty( s.toString().trim())) {
                     return;
                 }
-                ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean bean = (ReceiveOrderDetailBean.DataBean.ExplosiveUsageBean) amountEt.getTag();
+                ExplosiveUsageBean bean = (ExplosiveUsageBean) amountEt.getTag();
                 bean.setApplyQuantity(Integer.parseInt(s.toString().trim()));
                 bean.setQuantityWords(MoneyUtils.change(Double.parseDouble(s.toString().trim())));
                 amountCapTv.setText(MoneyUtils.change(Double.parseDouble(s.toString().trim())));

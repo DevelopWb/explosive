@@ -11,7 +11,7 @@ import java.util.List;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021-12-20 15:15
  */
-public class ReceiveOrderListBean extends BaseResult {
+public class OrderListBean extends BaseResult {
 
 
     private List<DataBean> data;
@@ -40,6 +40,15 @@ public class ReceiveOrderListBean extends BaseResult {
         private String applyUsername;
         private int stat;
         private int isVoid;
+        private Integer isReturn;//是否退回（1否；2是）
+
+        public Integer getIsReturn() {
+            return isReturn;
+        }
+
+        public void setIsReturn(Integer isReturn) {
+            this.isReturn = isReturn;
+        }
 
         public int getId() {
             return id;

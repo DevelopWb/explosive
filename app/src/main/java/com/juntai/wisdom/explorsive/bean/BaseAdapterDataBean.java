@@ -14,6 +14,15 @@ public class BaseAdapterDataBean {
 
     private  MultipartBody.Builder  builder;
     private ReceiveOrderDetailBean.DataBean  receiveOrderBean;
+    private UseOrderDetailBean.DataBean  useOrderBean;
+
+    public UseOrderDetailBean.DataBean getUseOrderBean() {
+        return useOrderBean;
+    }
+
+    public void setUseOrderBean(UseOrderDetailBean.DataBean useOrderBean) {
+        this.useOrderBean = useOrderBean;
+    }
 
     public ReceiveOrderDetailBean.DataBean getReceiveOrderBean() {
         return receiveOrderBean;

@@ -8,7 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
+import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.main.mine.OrderProgressAdapter;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import java.util.List;
  * @UpdateUser: 更新者
  * @UpdateDate: 2020/7/7 9:53
  */
-public class ApplyReceiveAdapter extends BaseQuickAdapter<ReceiveOrderListBean.DataBean, BaseViewHolder> {
+public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean, BaseViewHolder> {
     public ApplyReceiveAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ReceiveOrderListBean.DataBean item) {
+    protected void convert(BaseViewHolder helper, OrderListBean.DataBean item) {
         helper.setText(R.id.order_no_tv, item.getApplyNumber());
         helper.setText(R.id.order_time_tv, item.getApplyTime());
         helper.setText(R.id.apply_user_tv, item.getApplyUsername());

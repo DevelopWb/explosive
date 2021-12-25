@@ -79,6 +79,10 @@ public class UserInfoManager {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentAddress() : "";
 
     }
+    public static String getDepartmentSign() {
+        return getUser() != null && getUser().getData() != null ? getUser().getData().getSealUrl() : "";
+
+    }
 
     /**
      * @return

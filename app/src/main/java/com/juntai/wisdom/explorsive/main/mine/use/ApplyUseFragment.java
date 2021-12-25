@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseSearchFragment;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderListBean;
+import com.juntai.wisdom.explorsive.bean.OrderListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //  订单详情  1派出所；2仓库领取；3使用；4完成
-                ReceiveOrderListBean.DataBean dataBean = (ReceiveOrderListBean.DataBean) adapter.getData().get(position);
+                OrderListBean.DataBean dataBean = (OrderListBean.DataBean) adapter.getData().get(position);
                 switch (dataBean.getStat()) {
                     case 1:
                         // TODO: 2021-12-21 订单详情 矿内使用派出所审核
@@ -91,9 +91,9 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
     public void onSuccess(String tag, Object o) {
         switch (tag) {
             case GET_ORDERS:
-                ReceiveOrderListBean orderListBean = (ReceiveOrderListBean) o;
+                OrderListBean orderListBean = (OrderListBean) o;
                 if (orderListBean != null) {
-                    List<ReceiveOrderListBean.DataBean> arrays = orderListBean.getData();
+                    List<OrderListBean.DataBean> arrays = orderListBean.getData();
                     mApplyUseAdapter.setNewData(arrays);
                 }
 

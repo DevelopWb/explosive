@@ -9,32 +9,35 @@ package com.juntai.wisdom.explorsive.bean;
  */
 public class ItemSignBean {
 
-    private String  signName;
-    private String  signPicPath;
-    private int  layoutGravity;//0点居左  1代表居右
-    private boolean canSign;//是否可以签名
+    private String signTitle;
+    private int signStatus;//0代表新增  1代表审批 2代表详情
+    private String signPicPath;
+    private String departmentSignPath;
+    private String signTime;
+    private  int isAgree;//是否同意  0是没有选择  1是同意 2是不同意
+    private  String reason;//原因
 
-   public ItemSignBean(String signName, String signPicPath, int layoutGravity, boolean canSign) {
-        this.signName = signName;
+    public ItemSignBean(String signTitle, int signStatus, String signPicPath, String departmentSignPath) {
+        this.signTitle = signTitle;
+        this.signStatus = signStatus;
         this.signPicPath = signPicPath;
-        this.layoutGravity = layoutGravity;
-        this.canSign = canSign;
+        this.departmentSignPath = departmentSignPath;
     }
 
-    public boolean isCanSign() {
-        return canSign;
+    public String getSignTitle() {
+        return signTitle == null ? "" : signTitle;
     }
 
-    public void setCanSign(boolean canSign) {
-        this.canSign = canSign;
+    public void setSignTitle(String signTitle) {
+        this.signTitle = signTitle == null ? "" : signTitle;
     }
 
-    public String getSignName() {
-        return signName == null ? "" : signName;
+    public int getIsAgree() {
+        return isAgree;
     }
 
-    public void setSignName(String signName) {
-        this.signName = signName == null ? "" : signName;
+    public void setIsAgree(int isAgree) {
+        this.isAgree = isAgree;
     }
 
     public String getSignPicPath() {
@@ -45,11 +48,38 @@ public class ItemSignBean {
         this.signPicPath = signPicPath == null ? "" : signPicPath;
     }
 
-    public int getLayoutGravity() {
-        return layoutGravity;
+    public int getSignStatus() {
+        return signStatus;
     }
 
-    public void setLayoutGravity(int layoutGravity) {
-        this.layoutGravity = layoutGravity;
+    public void setSignStatus(int signStatus) {
+        this.signStatus = signStatus;
+    }
+
+
+    public String getDepartmentSignPath() {
+        return departmentSignPath == null ? "" : departmentSignPath;
+    }
+
+    public void setDepartmentSignPath(String departmentSignPath) {
+        this.departmentSignPath = departmentSignPath == null ? "" : departmentSignPath;
+    }
+
+
+    public String getSignTime() {
+        return signTime == null ? "" : signTime;
+    }
+
+    public void setSignTime(String signTime) {
+        this.signTime = signTime == null ? "" : signTime;
+    }
+
+
+    public String getReason() {
+        return reason == null ? "" : reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason == null ? "" : reason;
     }
 }
