@@ -14,10 +14,12 @@ import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
+import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -107,18 +109,35 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getAddUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
+    public List<MultipleItem> getAddUseApplyData(UseOrderDetailBean.DataBean bean) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerDataInUse(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                getApplyerDataInUse(bean, false), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME,new TimeBean(MainContactInterface.PLAN_USE_START_TIME,bean==null?null:bean.getEstimateStartUseTime(),"请选择预计使用开始时间")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME,new TimeBean(MainContactInterface.PLAN_USE_END_TIME,bean==null?null:bean.getEstimateEndUseTime(),"请选择预计使用结束时间")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
+                        String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
+                        MainContactInterface.SAFER), 0, true)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
+                        String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
+                        MainContactInterface.BLASTER), 0, true)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
+                        String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
+                        MainContactInterface.MANAGER), 0, true)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN,new ItemSignBean("申请单位盖章签字",bean == null ?0:bean.getSignStatus(),bean==null?null:bean.getApplySign(),bean==null?UserInfoManager.getDepartmentSign():bean.getApplyDepartmentSeal())));
 
         return arrays;
@@ -258,6 +277,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override
                     public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void getReceiverOfMine(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getReceiverOfMine(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<MineReceiverBean>(getView()) {
+                    @Override
+                    public void onSuccess(MineReceiverBean o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
+import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.act.LocateSelectionActivity;
 import com.juntai.wisdom.R;
@@ -24,15 +25,18 @@ import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
+import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
+import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +51,7 @@ import okhttp3.MultipartBody;
  */
 public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener, SelectPhotosFragment.OnPhotoItemClick {
     public static int SELECT_ADDR = 998;
-
+    public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     protected HandlerOrderAdapter adapter;
     private RecyclerView mRecyclerview;
     private SmartRefreshLayout mSmartrefreshlayout;
@@ -134,6 +138,53 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 currentPosition = position;
                 MultipleItem multipleItem = (MultipleItem) adapter.getData().get(position);
                 switch (multipleItem.getItemType()) {
+                    case MultipleItem.ITEM_SELECT_TIME:
+                        TimeBean timeBean = (TimeBean) multipleItem.getObject();
+                        switch (timeBean.getTimeKey()) {
+                            case MainContactInterface.PLAN_USE_START_TIME:
+                                PickerManager.getInstance().showTimePickerView(mContext, null, "预计使用开始时间", new PickerManager.OnTimePickerTimeSelectedListener() {
+                                    @Override
+                                    public void onTimeSelect(Date date, View v) {
+                                        timeBean.setTimeValue(sdf.format(date));
+                                        adapter.notifyItemChanged(position);
+                                    }
+                                });
+                                break;
+                            case MainContactInterface.PLAN_USE_END_TIME:
+                                PickerManager.getInstance().showTimePickerView(mContext, null, "预计使用结束时间", new PickerManager.OnTimePickerTimeSelectedListener() {
+                                    @Override
+                                    public void onTimeSelect(Date date, View v) {
+                                        timeBean.setTimeValue(sdf.format(date));
+                                        adapter.notifyItemChanged(position);
+                                    }
+                                });
+                                break;
+                            default:
+                                break;
+                        }
+
+                        break;
+                    case MultipleItem.ITEM_LOCATION:
+                        // : 2021-12-22  跳转到选择位置类
+                        startActivityForResult(new Intent(mContext, LocateSelectionActivity.class),
+                                SELECT_ADDR);
+                        break;
+                    case MultipleItem.ITEM_SELECT:
+                        selectBean = (TextKeyValueBean) multipleItem.getObject();
+                        switch (selectBean.getKey()) {
+                            case MainContactInterface.SAFER:
+                                mPresenter.getReceiverOfMine(getBaseBuilder().build(), MainContactInterface.SAFER);
+                                break;
+                            case MainContactInterface.BLASTER:
+                                mPresenter.getReceiverOfMine(getBaseBuilder().build(), MainContactInterface.BLASTER);
+                                break;
+                            case MainContactInterface.MANAGER:
+                                mPresenter.getReceiverOfMine(getBaseBuilder().build(), MainContactInterface.MANAGER);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         switch (view.getId()) {
                             case R.id.start_sign_tv:
@@ -143,12 +194,6 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 showSignatureView();
                                 break;
 
-
-                            case R.id.location_ll:
-                                // : 2021-12-22  跳转到选择位置类
-                                startActivityForResult(new Intent(mContext, LocateSelectionActivity.class),
-                                        SELECT_ADDR);
-                                break;
 
                             case R.id.add_dosage_iv:
                                 //添加用量
@@ -165,7 +210,15 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
             }
         });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                currentPosition = position;
+                MultipleItem multipleItem = (MultipleItem) adapter.getData().get(position);
+
+            }
+        });
 
     }
 
@@ -323,11 +376,65 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
         BaseAdapterDataBean bean = new BaseAdapterDataBean();
         ReceiveOrderDetailBean.DataBean receiveOrderBean = new ReceiveOrderDetailBean.DataBean();
-        UseOrderDetailBean.DataBean  useOrderBean = new UseOrderDetailBean.DataBean();
+        UseOrderDetailBean.DataBean useOrderBean = new UseOrderDetailBean.DataBean();
         MultipartBody.Builder builder = mPresenter.getPublishMultipartBody();
         List<MultipleItem> arrays = adapter.getData();
         for (MultipleItem item : arrays) {
             switch (item.getItemType()) {
+                case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
+                    BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
+
+                    switch (baseNormalRecyclerviewBean.getType()) {
+                        case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
+                            List<TextKeyValueBean> textKeyValueBeans = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
+                            for (TextKeyValueBean textKeyValueBean : textKeyValueBeans) {
+                                String applyValue = textKeyValueBean.getValue();
+                                switch (textKeyValueBean.getKey()) {
+                                    case MainContactInterface.APPLY_NO:
+                                        receiveOrderBean.setApplyNumber(applyValue);
+                                        useOrderBean.setApplyNumber(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER:
+                                        receiveOrderBean.setApplyUsername(applyValue);
+                                        useOrderBean.setApplyUsername(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_MOBILE:
+                                        receiveOrderBean.setApplyPhone(applyValue);
+                                        useOrderBean.setApplyPhone(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_UNIT:
+                                        receiveOrderBean.setApplyDepartmentName(applyValue);
+                                        useOrderBean.setApplyDepartmentName(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLY_USER_UNIT_ADDR:
+                                        receiveOrderBean.setApplyDepartmentAddress(applyValue);
+                                        useOrderBean.setApplyDepartmentAddress(applyValue);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case MultipleItem.ITEM_SELECT_TIME:
+                    TimeBean timeBean = (TimeBean) item.getObject();
+                    String timeValue = timeBean.getTimeValue();
+                    switch (timeBean.getTimeKey()) {
+                        case MainContactInterface.PLAN_USE_START_TIME:
+                            useOrderBean.setEstimateStartUseTime(timeValue);
+                            break;
+                        case MainContactInterface.PLAN_USE_END_TIME:
+                            useOrderBean.setEstimateEndUseTime(timeValue);
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                    break;
                 case MultipleItem.ITEM_SIGN:
                     //签名
                     ItemSignBean signBean = (ItemSignBean) item.getObject();
@@ -341,10 +448,31 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     receiveOrderBean.setApplySign(signBean.getSignPicPath());
                     receiveOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
                     receiveOrderBean.setSignStatus(signBean.getSignStatus());
-//                    useOrderBean.setApplySign(signBean.getSignPicPath());
-//                    useOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
-//                    useOrderBean.setSignStatus(signBean.getSignStatus());
-
+                    useOrderBean.setApplySign(signBean.getSignPicPath());
+                    useOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+                    useOrderBean.setSignStatus(signBean.getSignStatus());
+                    break;
+                case MultipleItem.ITEM_SELECT:
+                    TextKeyValueBean selectBean = (TextKeyValueBean) item.getObject();
+                    String selectValue = selectBean.getValue();
+                    String selectKey = selectBean.getKey();
+                    int id = selectBean.getId();
+                    switch (selectKey) {
+                        case MainContactInterface.SAFER:
+                            useOrderBean.setSafetyId(id);
+                            useOrderBean.setSafetyName(selectValue);
+                            break;
+                        case MainContactInterface.BLASTER:
+                            useOrderBean.setBlasterId(id);
+                            useOrderBean.setBlasterName(selectValue);
+                            break;
+                        case MainContactInterface.MANAGER:
+                            useOrderBean.setSafekeepingId(id);
+                            useOrderBean.setSafekeepingName(selectValue);
+                            break;
+                        default:
+                            break;
+                    }
 
                     break;
                 case MultipleItem.ITEM_EDIT:
@@ -396,44 +524,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     useOrderBean.setEstimateUseLatitude(locationBean.getLatitude());
                     useOrderBean.setEstimateUseLongitude(locationBean.getLongitude());
                     break;
-                case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
-                    BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
 
-                    switch (baseNormalRecyclerviewBean.getType()) {
-                        case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
-                            List<TextKeyValueBean> textKeyValueBeans = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
-                            for (TextKeyValueBean textKeyValueBean : textKeyValueBeans) {
-                                String applyValue = textKeyValueBean.getValue();
-                                switch (textKeyValueBean.getKey()) {
-                                    case MainContactInterface.APPLY_NO:
-                                        receiveOrderBean.setApplyNumber(applyValue);
-                                        useOrderBean.setApplyNumber(applyValue);
-                                        break;
-                                    case MainContactInterface.APPLY_USER:
-                                        receiveOrderBean.setApplyUsername(applyValue);
-                                        useOrderBean.setApplyUsername(applyValue);
-                                        break;
-                                    case MainContactInterface.APPLY_USER_MOBILE:
-                                        receiveOrderBean.setApplyPhone(applyValue);
-                                        useOrderBean.setApplyPhone(applyValue);
-                                        break;
-                                    case MainContactInterface.APPLY_USER_UNIT:
-                                        receiveOrderBean.setApplyDepartmentName(applyValue);
-                                        useOrderBean.setApplyDepartmentName(applyValue);
-                                        break;
-                                    case MainContactInterface.APPLY_USER_UNIT_ADDR:
-                                        receiveOrderBean.setApplyDepartmentAddress(applyValue);
-                                        useOrderBean.setApplyDepartmentAddress(applyValue);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
                 case MultipleItem.ITEM_APPLY_DOSAGE:
                     List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                     receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
@@ -462,9 +553,50 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     adapter.notifyItemChanged(currentPosition);
                 }
                 break;
+
+            case MainContactInterface.SAFER:
+                //获取场内领取人信息
+                initMineOfReceiver(o, 1);
+                break;
+            case MainContactInterface.BLASTER:
+                //获取场内领取人信息
+                initMineOfReceiver(o, 2);
+                break;
+            case MainContactInterface.MANAGER:
+                //获取场内领取人信息
+                initMineOfReceiver(o, 3);
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * @param o
+     * @param type 人员类型（1安全员；2爆破员；3保管员）
+     */
+    private void initMineOfReceiver(Object o, int type) {
+        List<MineReceiverBean.DataBean> list = new ArrayList<>();
+        MineReceiverBean mineReceiverBean = (MineReceiverBean) o;
+        if (mineReceiverBean != null) {
+            List<MineReceiverBean.DataBean> arrays = mineReceiverBean.getData();
+            if (arrays != null) {
+                for (MineReceiverBean.DataBean array : arrays) {
+                    if (type == array.getType()) {
+                        list.add(array);
+                    }
+                }
+            }
+        }
+        PickerManager.getInstance().showOptionPicker(mContext, list, new PickerManager.OnOptionPickerSelectedListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                MineReceiverBean.DataBean dataBean = list.get(options1);
+                selectBean.setId(dataBean.getId());
+                selectBean.setValue(dataBean.getName());
+                adapter.notifyItemChanged(currentPosition);
+            }
+        });
     }
 
 

@@ -22,6 +22,11 @@ public interface MainContactInterface extends IView {
     String APPLY_USER_UNIT = "申请单位:";
     String APPLY_USER_UNIT_ADDR= "单位地址:";
     String APPLY_TIME = "申请时间:";
+    String PLAN_USE_START_TIME = "预计使用开始时间";
+    String PLAN_USE_END_TIME = "预计使用结束时间";
+    String SAFER = "安全员:";
+    String BLASTER = "爆破员:";
+    String MANAGER = "保管员:";
 
 
 

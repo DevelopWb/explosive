@@ -27,14 +27,14 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getAddUseApplyData(null, false));
+        adapter.setNewData(mPresenter.getAddUseApplyData(null));
         UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getAddUseApplyData(savedBean, false));
+                            adapter.setNewData(mPresenter.getAddUseApplyData(savedBean));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
@@ -59,12 +59,12 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     @Override
     protected void commitRequest(BaseAdapterDataBean baseAdapterDataBean) {
 
-        UseOrderDetailBean.DataBean  receiveBean = baseAdapterDataBean.getUseOrderBean();
-        receiveBean.setApplyUserId(UserInfoManager.getUserId());
-        receiveBean.setApplyDepartmentId(UserInfoManager.getDepartmentId());
-        receiveBean.setMobile(UserInfoManager.getMobile());
-        receiveBean.setToken(UserInfoManager.getUserToken());
-        String route= GsonTools.createGsonString(receiveBean);//通过Gson将Bean转化为Json字符串形式
+        UseOrderDetailBean.DataBean  useBean = baseAdapterDataBean.getUseOrderBean();
+        useBean.setApplyUserId(UserInfoManager.getUserId());
+        useBean.setApplyDepartmentId(UserInfoManager.getDepartmentId());
+        useBean.setMobile(UserInfoManager.getMobile());
+        useBean.setToken(UserInfoManager.getUserToken());
+        String route= GsonTools.createGsonString(useBean);//通过Gson将Bean转化为Json字符串形式
         RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),route);
         mPresenter.addExplosiveUseApply(body, AppHttpPath.ADD_USE_EXPLOSIVE_APPLY);
 
@@ -73,7 +73,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     @Override
     protected void saveDraft() {
         if (getBaseAdapterData(true) != null) {
-            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, getBaseAdapterData(true).getReceiveOrderBean());
+            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, getBaseAdapterData(true).getUseOrderBean());
             ToastUtils.toast(mContext, "草稿保存成功");
             finish();
         }

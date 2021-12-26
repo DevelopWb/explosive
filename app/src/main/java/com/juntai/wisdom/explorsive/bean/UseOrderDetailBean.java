@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive.bean;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -153,38 +154,6 @@ public class UseOrderDetailBean extends BaseResult {
         private List<ExplosiveUsageBean> explosiveUsage;
         private List<ExplosiveUsageReturnBean> explosiveUsageReturn;
 
-        public int getSignStatus() {
-            return signStatus;
-        }
-
-        public void setSignStatus(int signStatus) {
-            this.signStatus = signStatus;
-        }
-
-        public String getMobile() {
-            return mobile == null ? "" : mobile;
-        }
-
-        public String getApplyDepartmentSeal() {
-            return applyDepartmentSeal == null ? "" : applyDepartmentSeal;
-        }
-
-        public void setApplyDepartmentSeal(String applyDepartmentSeal) {
-            this.applyDepartmentSeal = applyDepartmentSeal == null ? "" : applyDepartmentSeal;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile == null ? "" : mobile;
-        }
-
-        public String getToken() {
-            return token == null ? "" : token;
-        }
-
-        public void setToken(String token) {
-            this.token = token == null ? "" : token;
-        }
-
         public int getId() {
             return id;
         }
@@ -194,11 +163,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getApplyNumber() {
-            return applyNumber;
+            return applyNumber == null ? "" : applyNumber;
         }
 
         public void setApplyNumber(String applyNumber) {
-            this.applyNumber = applyNumber;
+            this.applyNumber = applyNumber == null ? "" : applyNumber;
         }
 
         public int getApplyUserId() {
@@ -210,19 +179,19 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getApplyUsername() {
-            return applyUsername;
+            return applyUsername == null ? "" : applyUsername;
         }
 
         public void setApplyUsername(String applyUsername) {
-            this.applyUsername = applyUsername;
+            this.applyUsername = applyUsername == null ? "" : applyUsername;
         }
 
         public String getApplyPhone() {
-            return applyPhone;
+            return applyPhone == null ? "" : applyPhone;
         }
 
         public void setApplyPhone(String applyPhone) {
-            this.applyPhone = applyPhone;
+            this.applyPhone = applyPhone == null ? "" : applyPhone;
         }
 
         public int getApplyDepartmentId() {
@@ -234,75 +203,83 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getApplyDepartmentName() {
-            return applyDepartmentName;
+            return applyDepartmentName == null ? "" : applyDepartmentName;
         }
 
         public void setApplyDepartmentName(String applyDepartmentName) {
-            this.applyDepartmentName = applyDepartmentName;
+            this.applyDepartmentName = applyDepartmentName == null ? "" : applyDepartmentName;
         }
 
         public String getApplyDepartmentAddress() {
-            return applyDepartmentAddress;
+            return applyDepartmentAddress == null ? "" : applyDepartmentAddress;
         }
 
         public void setApplyDepartmentAddress(String applyDepartmentAddress) {
-            this.applyDepartmentAddress = applyDepartmentAddress;
+            this.applyDepartmentAddress = applyDepartmentAddress == null ? "" : applyDepartmentAddress;
+        }
+
+        public String getApplyDepartmentSeal() {
+            return applyDepartmentSeal == null ? "" : applyDepartmentSeal;
+        }
+
+        public void setApplyDepartmentSeal(String applyDepartmentSeal) {
+            this.applyDepartmentSeal = applyDepartmentSeal == null ? "" : applyDepartmentSeal;
         }
 
         public String getApplyTime() {
-            return applyTime;
+            return applyTime == null ? "" : applyTime;
         }
 
         public void setApplyTime(String applyTime) {
-            this.applyTime = applyTime;
+            this.applyTime = applyTime == null ? "" : applyTime;
         }
 
         public String getEstimateStartUseTime() {
-            return estimateStartUseTime;
+            return estimateStartUseTime == null ? "" : estimateStartUseTime;
         }
 
         public void setEstimateStartUseTime(String estimateStartUseTime) {
-            this.estimateStartUseTime = estimateStartUseTime;
+            this.estimateStartUseTime = estimateStartUseTime == null ? "" : estimateStartUseTime;
         }
 
         public String getEstimateEndUseTime() {
-            return estimateEndUseTime;
+            return estimateEndUseTime == null ? "" : estimateEndUseTime;
         }
 
         public void setEstimateEndUseTime(String estimateEndUseTime) {
-            this.estimateEndUseTime = estimateEndUseTime;
+            this.estimateEndUseTime = estimateEndUseTime == null ? "" : estimateEndUseTime;
         }
 
         public String getEstimateUseAddress() {
-            return estimateUseAddress;
+            return estimateUseAddress == null ? "" : estimateUseAddress;
         }
 
         public void setEstimateUseAddress(String estimateUseAddress) {
-            this.estimateUseAddress = estimateUseAddress;
+            this.estimateUseAddress = estimateUseAddress == null ? "" : estimateUseAddress;
         }
 
         public String getEstimateUseLongitude() {
-            return estimateUseLongitude;
+            return estimateUseLongitude == null ? "" : estimateUseLongitude;
         }
 
         public void setEstimateUseLongitude(String estimateUseLongitude) {
-            this.estimateUseLongitude = estimateUseLongitude;
+            this.estimateUseLongitude = estimateUseLongitude == null ? "" : estimateUseLongitude;
         }
 
         public String getEstimateUseLatitude() {
-            return estimateUseLatitude;
+            return estimateUseLatitude == null ? "" : estimateUseLatitude;
         }
 
         public void setEstimateUseLatitude(String estimateUseLatitude) {
-            this.estimateUseLatitude = estimateUseLatitude;
+            this.estimateUseLatitude = estimateUseLatitude == null ? "" : estimateUseLatitude;
         }
 
         public String getRemarks() {
-            return remarks;
+            return remarks == null ? "" : remarks;
         }
 
         public void setRemarks(String remarks) {
-            this.remarks = remarks;
+            this.remarks = remarks == null ? "" : remarks;
         }
 
         public int getSafetyId() {
@@ -314,11 +291,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getSafetyName() {
-            return safetyName;
+            return safetyName == null ? "" : safetyName;
         }
 
         public void setSafetyName(String safetyName) {
-            this.safetyName = safetyName;
+            this.safetyName = safetyName == null ? "" : safetyName;
         }
 
         public int getBlasterId() {
@@ -329,12 +306,20 @@ public class UseOrderDetailBean extends BaseResult {
             this.blasterId = blasterId;
         }
 
+        public int getSignStatus() {
+            return signStatus;
+        }
+
+        public void setSignStatus(int signStatus) {
+            this.signStatus = signStatus;
+        }
+
         public String getBlasterName() {
-            return blasterName;
+            return blasterName == null ? "" : blasterName;
         }
 
         public void setBlasterName(String blasterName) {
-            this.blasterName = blasterName;
+            this.blasterName = blasterName == null ? "" : blasterName;
         }
 
         public int getSafekeepingId() {
@@ -346,19 +331,19 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getSafekeepingName() {
-            return safekeepingName;
+            return safekeepingName == null ? "" : safekeepingName;
         }
 
         public void setSafekeepingName(String safekeepingName) {
-            this.safekeepingName = safekeepingName;
+            this.safekeepingName = safekeepingName == null ? "" : safekeepingName;
         }
 
         public String getApplySign() {
-            return applySign;
+            return applySign == null ? "" : applySign;
         }
 
         public void setApplySign(String applySign) {
-            this.applySign = applySign;
+            this.applySign = applySign == null ? "" : applySign;
         }
 
         public int getPoliceDepartmentId() {
@@ -370,139 +355,139 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getPoliceSign() {
-            return policeSign;
+            return policeSign == null ? "" : policeSign;
         }
 
         public void setPoliceSign(String policeSign) {
-            this.policeSign = policeSign;
+            this.policeSign = policeSign == null ? "" : policeSign;
         }
 
         public String getPoliceUsername() {
-            return policeUsername;
+            return policeUsername == null ? "" : policeUsername;
         }
 
         public void setPoliceUsername(String policeUsername) {
-            this.policeUsername = policeUsername;
+            this.policeUsername = policeUsername == null ? "" : policeUsername;
         }
 
         public String getPoliceSignTime() {
-            return policeSignTime;
+            return policeSignTime == null ? "" : policeSignTime;
         }
 
         public void setPoliceSignTime(String policeSignTime) {
-            this.policeSignTime = policeSignTime;
+            this.policeSignTime = policeSignTime == null ? "" : policeSignTime;
         }
 
         public String getPoliceDepartmentSeal() {
-            return policeDepartmentSeal;
+            return policeDepartmentSeal == null ? "" : policeDepartmentSeal;
         }
 
         public void setPoliceDepartmentSeal(String policeDepartmentSeal) {
-            this.policeDepartmentSeal = policeDepartmentSeal;
+            this.policeDepartmentSeal = policeDepartmentSeal == null ? "" : policeDepartmentSeal;
         }
 
         public String getPoliceRemarks() {
-            return policeRemarks;
+            return policeRemarks == null ? "" : policeRemarks;
         }
 
         public void setPoliceRemarks(String policeRemarks) {
-            this.policeRemarks = policeRemarks;
+            this.policeRemarks = policeRemarks == null ? "" : policeRemarks;
         }
 
         public String getGrantTime() {
-            return grantTime;
+            return grantTime == null ? "" : grantTime;
         }
 
         public void setGrantTime(String grantTime) {
-            this.grantTime = grantTime;
+            this.grantTime = grantTime == null ? "" : grantTime;
         }
 
         public String getGrantUseAddress() {
-            return grantUseAddress;
+            return grantUseAddress == null ? "" : grantUseAddress;
         }
 
         public void setGrantUseAddress(String grantUseAddress) {
-            this.grantUseAddress = grantUseAddress;
+            this.grantUseAddress = grantUseAddress == null ? "" : grantUseAddress;
         }
 
         public String getGrantUseLongitude() {
-            return grantUseLongitude;
+            return grantUseLongitude == null ? "" : grantUseLongitude;
         }
 
         public void setGrantUseLongitude(String grantUseLongitude) {
-            this.grantUseLongitude = grantUseLongitude;
+            this.grantUseLongitude = grantUseLongitude == null ? "" : grantUseLongitude;
         }
 
         public String getGrantUseLatitude() {
-            return grantUseLatitude;
+            return grantUseLatitude == null ? "" : grantUseLatitude;
         }
 
         public void setGrantUseLatitude(String grantUseLatitude) {
-            this.grantUseLatitude = grantUseLatitude;
+            this.grantUseLatitude = grantUseLatitude == null ? "" : grantUseLatitude;
         }
 
         public String getReceiveSign() {
-            return receiveSign;
+            return receiveSign == null ? "" : receiveSign;
         }
 
         public void setReceiveSign(String receiveSign) {
-            this.receiveSign = receiveSign;
+            this.receiveSign = receiveSign == null ? "" : receiveSign;
         }
 
         public String getSafetySign() {
-            return safetySign;
+            return safetySign == null ? "" : safetySign;
         }
 
         public void setSafetySign(String safetySign) {
-            this.safetySign = safetySign;
+            this.safetySign = safetySign == null ? "" : safetySign;
         }
 
         public String getBlasterSign() {
-            return blasterSign;
+            return blasterSign == null ? "" : blasterSign;
         }
 
         public void setBlasterSign(String blasterSign) {
-            this.blasterSign = blasterSign;
+            this.blasterSign = blasterSign == null ? "" : blasterSign;
         }
 
         public String getSafekeepingSign() {
-            return safekeepingSign;
+            return safekeepingSign == null ? "" : safekeepingSign;
         }
 
         public void setSafekeepingSign(String safekeepingSign) {
-            this.safekeepingSign = safekeepingSign;
+            this.safekeepingSign = safekeepingSign == null ? "" : safekeepingSign;
         }
 
         public String getUseTime() {
-            return useTime;
+            return useTime == null ? "" : useTime;
         }
 
         public void setUseTime(String useTime) {
-            this.useTime = useTime;
+            this.useTime = useTime == null ? "" : useTime;
         }
 
         public String getUseAddress() {
-            return useAddress;
+            return useAddress == null ? "" : useAddress;
         }
 
         public void setUseAddress(String useAddress) {
-            this.useAddress = useAddress;
+            this.useAddress = useAddress == null ? "" : useAddress;
         }
 
         public String getUseLongitude() {
-            return useLongitude;
+            return useLongitude == null ? "" : useLongitude;
         }
 
         public void setUseLongitude(String useLongitude) {
-            this.useLongitude = useLongitude;
+            this.useLongitude = useLongitude == null ? "" : useLongitude;
         }
 
         public String getUseLatitude() {
-            return useLatitude;
+            return useLatitude == null ? "" : useLatitude;
         }
 
         public void setUseLatitude(String useLatitude) {
-            this.useLatitude = useLatitude;
+            this.useLatitude = useLatitude == null ? "" : useLatitude;
         }
 
         public int getUseUserId() {
@@ -514,11 +499,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getUseUsername() {
-            return useUsername;
+            return useUsername == null ? "" : useUsername;
         }
 
         public void setUseUsername(String useUsername) {
-            this.useUsername = useUsername;
+            this.useUsername = useUsername == null ? "" : useUsername;
         }
 
         public int getUseSafetyId() {
@@ -530,11 +515,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getUseSafetyName() {
-            return useSafetyName;
+            return useSafetyName == null ? "" : useSafetyName;
         }
 
         public void setUseSafetyName(String useSafetyName) {
-            this.useSafetyName = useSafetyName;
+            this.useSafetyName = useSafetyName == null ? "" : useSafetyName;
         }
 
         public int getUseBlasterId() {
@@ -546,11 +531,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getUseBlasterName() {
-            return useBlasterName;
+            return useBlasterName == null ? "" : useBlasterName;
         }
 
         public void setUseBlasterName(String useBlasterName) {
-            this.useBlasterName = useBlasterName;
+            this.useBlasterName = useBlasterName == null ? "" : useBlasterName;
         }
 
         public int getUseSafekeepingId() {
@@ -562,27 +547,27 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getUseSafekeepingName() {
-            return useSafekeepingName;
+            return useSafekeepingName == null ? "" : useSafekeepingName;
         }
 
         public void setUseSafekeepingName(String useSafekeepingName) {
-            this.useSafekeepingName = useSafekeepingName;
+            this.useSafekeepingName = useSafekeepingName == null ? "" : useSafekeepingName;
         }
 
         public String getUseBillUrl() {
-            return useBillUrl;
+            return useBillUrl == null ? "" : useBillUrl;
         }
 
         public void setUseBillUrl(String useBillUrl) {
-            this.useBillUrl = useBillUrl;
+            this.useBillUrl = useBillUrl == null ? "" : useBillUrl;
         }
 
         public String getUseRemarks() {
-            return useRemarks;
+            return useRemarks == null ? "" : useRemarks;
         }
 
         public void setUseRemarks(String useRemarks) {
-            this.useRemarks = useRemarks;
+            this.useRemarks = useRemarks == null ? "" : useRemarks;
         }
 
         public int getIsReturn() {
@@ -594,11 +579,11 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public String getReturnTime() {
-            return returnTime;
+            return returnTime == null ? "" : returnTime;
         }
 
         public void setReturnTime(String returnTime) {
-            this.returnTime = returnTime;
+            this.returnTime = returnTime == null ? "" : returnTime;
         }
 
         public int getStat() {
@@ -617,6 +602,22 @@ public class UseOrderDetailBean extends BaseResult {
             this.isVoid = isVoid;
         }
 
+        public String getMobile() {
+            return mobile == null ? "" : mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile == null ? "" : mobile;
+        }
+
+        public String getToken() {
+            return token == null ? "" : token;
+        }
+
+        public void setToken(String token) {
+            this.token = token == null ? "" : token;
+        }
+
         public String getRefuseRemarks() {
             return refuseRemarks == null ? "" : refuseRemarks;
         }
@@ -626,6 +627,9 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public List<ExplosiveUsageBean> getExplosiveUsage() {
+            if (explosiveUsage == null) {
+                return new ArrayList<>();
+            }
             return explosiveUsage;
         }
 
@@ -634,13 +638,15 @@ public class UseOrderDetailBean extends BaseResult {
         }
 
         public List<ExplosiveUsageReturnBean> getExplosiveUsageReturn() {
+            if (explosiveUsageReturn == null) {
+                return new ArrayList<>();
+            }
             return explosiveUsageReturn;
         }
 
         public void setExplosiveUsageReturn(List<ExplosiveUsageReturnBean> explosiveUsageReturn) {
             this.explosiveUsageReturn = explosiveUsageReturn;
         }
-
 
         public static class ExplosiveUsageReturnBean {
             /**
@@ -668,11 +674,11 @@ public class UseOrderDetailBean extends BaseResult {
             }
 
             public String getTypeName() {
-                return typeName;
+                return typeName == null ? "" : typeName;
             }
 
             public void setTypeName(String typeName) {
-                this.typeName = typeName;
+                this.typeName = typeName == null ? "" : typeName;
             }
 
             public int getApplyQuantity() {
@@ -684,22 +690,25 @@ public class UseOrderDetailBean extends BaseResult {
             }
 
             public String getQuantityWords() {
-                return quantityWords;
+                return quantityWords == null ? "" : quantityWords;
             }
 
             public void setQuantityWords(String quantityWords) {
-                this.quantityWords = quantityWords;
+                this.quantityWords = quantityWords == null ? "" : quantityWords;
             }
 
             public String getTypeUnit() {
-                return typeUnit;
+                return typeUnit == null ? "" : typeUnit;
             }
 
             public void setTypeUnit(String typeUnit) {
-                this.typeUnit = typeUnit;
+                this.typeUnit = typeUnit == null ? "" : typeUnit;
             }
 
             public List<UsageNumberReturnBean> getUsageNumberReturn() {
+                if (usageNumberReturn == null) {
+                    return new ArrayList<>();
+                }
                 return usageNumberReturn;
             }
 
@@ -727,19 +736,19 @@ public class UseOrderDetailBean extends BaseResult {
                 }
 
                 public String getStartNumber() {
-                    return startNumber;
+                    return startNumber == null ? "" : startNumber;
                 }
 
                 public void setStartNumber(String startNumber) {
-                    this.startNumber = startNumber;
+                    this.startNumber = startNumber == null ? "" : startNumber;
                 }
 
                 public String getEndNumber() {
-                    return endNumber;
+                    return endNumber == null ? "" : endNumber;
                 }
 
                 public void setEndNumber(String endNumber) {
-                    this.endNumber = endNumber;
+                    this.endNumber = endNumber == null ? "" : endNumber;
                 }
             }
         }

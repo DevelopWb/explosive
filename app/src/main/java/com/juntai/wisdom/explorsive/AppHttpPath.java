@@ -61,6 +61,10 @@ public class AppHttpPath {
 
 
     public static final String ADD_USE_EXPLOSIVE_APPLY = BASE + "/addMineOrder";
+    /**
+     * 矿内领取人员
+     */
+    public static final String GET_RECEIVER_OF_MINE = BASE + "/getMineUserTypeList";
 
 
 

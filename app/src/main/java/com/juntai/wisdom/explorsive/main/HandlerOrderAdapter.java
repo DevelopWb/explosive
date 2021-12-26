@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -66,6 +67,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_EDIT, R.layout.item_layout_type_edit);
         addItemType(MultipleItem.ITEM_LOCATION, R.layout.item_layout_location);
         addItemType(MultipleItem.ITEM_SELECT_TIME, R.layout.item_layout_location);
+        addItemType(MultipleItem.ITEM_SELECT, R.layout.item_text_select);
         addItemType(MultipleItem.ITEM_SIGN, R.layout.item_layout_type_sign);
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
@@ -97,8 +99,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                         AppNetModule
                                 .createrRetrofit()
                                 .getExplosiveTypes(getBaseBuilder().build())
-                                .compose(RxScheduler.ObsIoMain((AddReceiveApplyActivity) mContext))
-                                .subscribe(new BaseObserver<ExplosiveTypeBean>((AddReceiveApplyActivity) mContext) {
+                                .compose(RxScheduler.ObsIoMain((BaseExplosiveActivity) mContext))
+                                .subscribe(new BaseObserver<ExplosiveTypeBean>((BaseExplosiveActivity) mContext) {
                                     @Override
                                     public void onSuccess(ExplosiveTypeBean o) {
                                         PickerManager.getInstance().showOptionPicker(mContext, o.getData(), new PickerManager.OnOptionPickerSelectedListener() {
@@ -191,6 +193,29 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 editText.setHint(textValueEditBean.getHint());
                 editText.setText(textValueEditBean.getValue());
                 break;
+
+            case MultipleItem.ITEM_SELECT:
+                TextKeyValueBean textValueSelectBean = (TextKeyValueBean) item.getObject();
+                helper.setText(R.id.item_small_title_tv,textValueSelectBean.getKey());
+                TextView textViewTv = helper.getView(R.id.select_value_tv);
+                String selectTextValue = textValueSelectBean.getValue();
+                if (!isDetail) {
+                    helper.addOnClickListener(R.id.select_value_tv);
+                    helper.addOnClickListener(R.id.tool_pic_iv);
+                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
+                    helper.setGone(R.id.select_arrow_right_iv, true);
+                } else {
+                    helper.setGone(R.id.select_arrow_right_iv, false);
+                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.sp_filled_gray_lighter);
+                }
+                textViewTv.setTag(textValueSelectBean);
+                textViewTv.setHint(textValueSelectBean.getHint());
+                if (selectTextValue.contains("\\n")) {
+                    selectTextValue = selectTextValue.replace("\\n","\n");
+                }
+                textViewTv.setText(selectTextValue);
+
+                break;
             case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
                 //recycleview
                 BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
@@ -217,9 +242,9 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 } else {
                     helper.setGone(R.id.location_iv, false);
                 }
-                if (!TextUtils.isEmpty(timeBean.getTimeValue())) {
-                    helper.setText(R.id.location_tv, timeBean.getTimeValue());
-                }
+                TextView  timeValueTv = helper.getView(R.id.location_tv);
+                timeValueTv.setText(timeBean.getTimeValue());
+                timeValueTv.setHint(timeBean.getHint());
                 helper.setText(R.id.locate_key_tv, timeBean.getTimeKey());
 
                 break;

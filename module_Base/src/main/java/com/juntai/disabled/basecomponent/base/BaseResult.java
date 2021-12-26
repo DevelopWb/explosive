@@ -11,7 +11,6 @@ public class BaseResult  {
     public String error;
     public String msg;
     public int code;
-    public String type;
     public boolean success;
     public List<String> url;
 
@@ -55,13 +54,6 @@ public class BaseResult  {
         this.code = code;
     }
 
-    public String getType() {
-        return type == null ? "" : type;
-    }
-
-    public void setType(String type) {
-        this.type = type == null ? "" : type;
-    }
 
     public boolean isSuccess() {
         return success;
@@ -90,7 +82,6 @@ public class BaseResult  {
                 ", error='" + error + '\'' +
                 ", msg='" + msg + '\'' +
                 ", code=" + code +
-                ", type='" + type + '\'' +
                 ", success=" + success +
                 '}';
     }

@@ -14,6 +14,7 @@ public class TextKeyValueBean {
     private  String key;
     private  String value;
     private String hint;
+    private  int id;
     private int type;//0代表高度固定的edittext  1代表高度不固定的edittext
     private boolean isImportant;//是否必填
     private boolean valueGravityToRight;//value靠右
@@ -30,6 +31,15 @@ public class TextKeyValueBean {
         this.type = type;
         this.isImportant = isImportant;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public boolean isValueGravityToRight() {
         return valueGravityToRight;
     }

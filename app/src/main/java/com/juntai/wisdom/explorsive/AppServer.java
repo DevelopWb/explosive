@@ -3,6 +3,7 @@ package com.juntai.wisdom.explorsive;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
+import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
@@ -70,6 +71,9 @@ public interface AppServer {
 
     @POST(AppHttpPath.ADD_USE_EXPLOSIVE_APPLY)
     Observable<BaseResult> addExplosiveUseApply(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.GET_RECEIVER_OF_MINE)
+    Observable<MineReceiverBean> getReceiverOfMine(@Body RequestBody requestBody);
 
 
 }
