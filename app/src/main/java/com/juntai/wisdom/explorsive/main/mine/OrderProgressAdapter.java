@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.bean.BaseOrderBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 
@@ -40,7 +41,8 @@ public class OrderProgressAdapter extends BaseMultiItemQuickAdapter<MultipleItem
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
             case MultipleItem.ITEM_CONTENT:
-                IdNameBean idNameBean = (IdNameBean) item.getObject();
+                BaseOrderBean baseOrderBean = (BaseOrderBean) item.getObject();
+                IdNameBean idNameBean = baseOrderBean.getIdNameBean();
                 int id = idNameBean.getId();
                 int currentStatus = idNameBean.getCurrentStatus();
                 helper.setText(R.id.single_text_tv, idNameBean.getName());
@@ -54,8 +56,9 @@ public class OrderProgressAdapter extends BaseMultiItemQuickAdapter<MultipleItem
 
                 break;
             case MultipleItem.ITEM_DIVIDER:
+                BaseOrderBean baseOrderBean2 = (BaseOrderBean) item.getObject();
                 TextView divTv = helper.getView(R.id.single_text_tv);
-                String divStr = (String) item.getObject();
+                String divStr = baseOrderBean2.getDivStr();
 //                divTv.setPadding(DisplayUtil.dp2px(mContext,2), DisplayUtil.dp2px(mContext,2),DisplayUtil.dp2px(mContext,2), DisplayUtil.dp2px(mContext,2));
                 divTv.setPadding(0, DisplayUtil.dp2px(mContext,3),0, DisplayUtil.dp2px(mContext,3));
                 helper.setText(R.id.single_text_tv, divStr);

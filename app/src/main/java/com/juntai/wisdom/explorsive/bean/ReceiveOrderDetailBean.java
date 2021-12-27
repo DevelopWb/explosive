@@ -89,13 +89,16 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private String applySign;
         private int policeDepartmentId;
         private String policeSign;
+        private String policeDepartmentSeal;
         private String policeUsername;
         private int brigadeDepartmentId;
         private String brigadeSign;
         private String brigadeUsername;
+        private String brigadeDepartmentSeal;
         private int leaderDepartmentId;
         private String leaderSign;
         private String leaderUsername;
+        private String leaderDepartmentSeal;
         private String deliveryTime;
         private String deliveryAddress;
         private String deliveryLongitude;
@@ -112,6 +115,30 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
         private List<DeliveryUserBean> deliveryUser;
+
+        public String getPoliceDepartmentSeal() {
+            return policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        }
+
+        public void setPoliceDepartmentSeal(String policeDepartmentSeal) {
+            this.policeDepartmentSeal = policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        }
+
+        public String getBrigadeDepartmentSeal() {
+            return brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
+        }
+
+        public void setBrigadeDepartmentSeal(String brigadeDepartmentSeal) {
+            this.brigadeDepartmentSeal = brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
+        }
+
+        public String getLeaderDepartmentSeal() {
+            return leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
+        }
+
+        public void setLeaderDepartmentSeal(String leaderDepartmentSeal) {
+            this.leaderDepartmentSeal = leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
+        }
 
         public String getApplyDepartmentSeal() {
             return applyDepartmentSeal == null ? "" : applyDepartmentSeal;

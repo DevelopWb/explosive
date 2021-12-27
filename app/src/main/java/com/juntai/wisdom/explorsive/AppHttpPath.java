@@ -48,6 +48,10 @@ public class AppHttpPath {
      * 新增民爆领取申请
      */
     public static final String ADD_RECEIVE_EXPLOSIVE_APPLY = BASE + "/addOrder";
+    /**
+     * 民爆领取订单详情
+     */
+    public static final String RECEIVE_EXPLOSIVE_DETAIL = BASE + "/getReceiveOrderInfo";
 
 
 

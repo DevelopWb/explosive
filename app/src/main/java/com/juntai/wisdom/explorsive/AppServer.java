@@ -5,6 +5,7 @@ import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
+import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
 import io.reactivex.Observable;
@@ -67,6 +68,8 @@ public interface AppServer {
 
     @POST(AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY)
     Observable<BaseResult> addExplosiveReceiveApply(@Body RequestBody requestBody);
+    @POST(AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL)
+    Observable<ReceiveOrderDetailBean> getExplosiveReceiveDetail(@Body RequestBody requestBody);
 
 
     @POST(AppHttpPath.ADD_USE_EXPLOSIVE_APPLY)

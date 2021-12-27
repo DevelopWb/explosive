@@ -313,15 +313,10 @@ public class CalendarUtil {
         try {
             Long a = sdf.parse(startTime).getTime();
             Long b = sdf.parse(endTime).getTime();
-            Long currentTime = sdf.parse(getCurrentTimeNormal(format)).getTime();
-            if (a < currentTime) {//开始时间小于当前时间
+            if (a > b) {//开始时间大于结束时间
                 return false;
-            } else {
-                if (a > b) {//开始时间大于结束时间
-                    return false;
-                } else {//开始时间小于结束时间
-                    return true;
-                }
+            } else {//开始时间小于结束时间
+                return true;
             }
 
         } catch (ParseException e) {

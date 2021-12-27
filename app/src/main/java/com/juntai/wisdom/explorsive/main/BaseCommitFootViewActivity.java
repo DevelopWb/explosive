@@ -47,6 +47,12 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
 
     }
 
+    @Override
+    public void initView() {
+        super.initView();
+        adapter.setFooterView(getFootView());
+    }
+
     /**
      * 更新定位item
      */
@@ -118,11 +124,6 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
         }
     }
 
-    /**
-     * 下一步
-     */
-    public void next() {
-    }
 
     /**
      * 提交请求

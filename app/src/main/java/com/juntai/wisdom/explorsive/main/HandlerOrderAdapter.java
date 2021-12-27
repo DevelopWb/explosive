@@ -84,9 +84,15 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         switch (item.getItemType()) {
 
             case MultipleItem.ITEM_APPLY_DOSAGE:
+                if (isDetail) {
+                    helper.setGone(R.id.add_dosage_iv,false);
+                }else {
+                    helper.setGone(R.id.add_dosage_iv,true);
+                }
                 helper.addOnClickListener(R.id.add_dosage_iv);
                 List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                 DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
+                dosageAdapter.setDetail(isDetail);
                 RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
                 LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 dosageRv.setLayoutManager(dosageManager);
@@ -279,12 +285,17 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                     helper.setGone(R.id.start_sign_tv, true);
                     helper.setGone(R.id.status_check_g, true);
                     helper.setGone(R.id.status_detail_g, false);
-                } else {
+                } else if(2==signStatus){
                     //详情
                     helper.setGone(R.id.start_sign_tv, false);
                     helper.setGone(R.id.status_check_g, false);
                     helper.setGone(R.id.status_detail_g, true);
                     helper.setText(R.id.sign_time_tv, signBean.getSignTime());
+                }else {
+                    //还未审批
+                    helper.setGone(R.id.start_sign_tv, false);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setVisible(R.id.status_detail_g, false);
                 }
                 helper.setText(R.id.sign_title_tv, signBean.getSignTitle());
                 //原因

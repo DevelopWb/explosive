@@ -36,18 +36,12 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
             requestData();
         });
 
-        mApplyUseAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mApplyUseAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 //  订单详情  1派出所；2仓库领取；3使用；4完成
                 OrderListBean.DataBean dataBean = (OrderListBean.DataBean) adapter.getData().get(position);
-                switch (dataBean.getStat()) {
-                    case 1:
-                        // TODO: 2021-12-21 订单详情 矿内使用派出所审核
-                        break;
-                    default:
-                        break;
-                }
+                mPresenter.useApplyAdapterItemLogic(mContext, dataBean);
             }
         });
         requestData();
@@ -60,18 +54,21 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
         mApplyUseAdapter.addHeaderView(getHeadView());
         return mApplyUseAdapter;
     }
+
     private View getHeadView() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.order_head_layout, null);
         applyUser = view.findViewById(R.id.apply_user_tv);
         return view;
     }
+
     /**
-     *      订单的状态  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
+     * 订单的状态  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
+     *
      * @return
      */
     @Override
     protected List<String> getStatusList() {
-        List<String>  arrays = new ArrayList<>();
+        List<String> arrays = new ArrayList<>();
         arrays.add("派出所审核");
         arrays.add("出库");
         arrays.add("配送");

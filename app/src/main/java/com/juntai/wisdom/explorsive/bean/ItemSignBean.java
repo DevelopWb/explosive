@@ -10,7 +10,7 @@ package com.juntai.wisdom.explorsive.bean;
 public class ItemSignBean {
 
     private String signTitle;
-    private int signStatus;//0代表新增  1代表审批 2代表详情
+    private int signStatus;//0代表新增  1代表审批界面  2代表详情 3代表还未审批
     private String signPicPath;
     private String departmentSignPath;
     private String signTime;

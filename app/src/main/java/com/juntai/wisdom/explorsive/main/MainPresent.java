@@ -1,6 +1,8 @@
 package com.juntai.wisdom.explorsive.main;
 
 
+import android.text.TextUtils;
+
 import com.juntai.disabled.basecomponent.base.BaseObserver;
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.disabled.basecomponent.mvp.IModel;
@@ -115,8 +117,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
                 getApplyerDataInUse(bean, false), new TextKeyValueAdapter(R.layout.text_key_value_item))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME,new TimeBean(MainContactInterface.PLAN_USE_START_TIME,bean==null?null:bean.getEstimateStartUseTime(),"请选择预计使用开始时间")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME,new TimeBean(MainContactInterface.PLAN_USE_END_TIME,bean==null?null:bean.getEstimateEndUseTime(),"请选择预计使用结束时间")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_START_TIME, bean == null ? null : bean.getEstimateStartUseTime(), "请选择预计使用开始时间")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_END_TIME, bean == null ? null : bean.getEstimateEndUseTime(), "请选择预计使用结束时间")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
@@ -138,7 +140,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
                         String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
                         MainContactInterface.MANAGER), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN,new ItemSignBean("申请单位盖章签字",bean == null ?0:bean.getSignStatus(),bean==null?null:bean.getApplySign(),bean==null?UserInfoManager.getDepartmentSign():bean.getApplyDepartmentSeal())));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
 
         return arrays;
     }
@@ -160,7 +162,28 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN,new ItemSignBean("申请单位盖章签字",bean == null ?0:bean.getSignStatus(),bean==null?null:bean.getApplySign(),bean==null?UserInfoManager.getDepartmentSign():bean.getApplyDepartmentSeal())));
+        if (isDetail) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", 2,  bean.getApplySign(),bean.getApplyDepartmentSeal())));
+            if (TextUtils.isEmpty(bean.getPoliceSign())) {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("派出所盖章签字", 3,  null,null)));
+            }else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("派出所盖章签字", 2,  bean.getPoliceSign(),bean.getPoliceDepartmentSeal())));
+            }
+            if (TextUtils.isEmpty(bean.getBrigadeSign())) {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("治安大队盖章签字", 3,  null,null)));
+            }else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("治安大队盖章签字", 2,  bean.getBrigadeSign(),bean.getBrigadeDepartmentSeal())));
+            }
+            if (TextUtils.isEmpty(bean.getLeaderSign())) {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("局领导盖章签字", 3,  null,null)));
+            }else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("局领导盖章签字", 2,  bean.getLeaderSign(),bean.getLeaderDepartmentSeal())));
+            }
+
+        }else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
+
+        }
 
 
         return arrays;
@@ -194,6 +217,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_TIME, !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
         return arrays;
     }
+
     /**
      * 申请人信息
      *
@@ -249,7 +273,6 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     }
 
 
-
     public void addExplosiveApply(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .addExplosiveReceiveApply(body)
@@ -270,6 +293,28 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
+    public void getExplosiveReceiveDetail(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getExplosiveReceiveDetail(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<ReceiveOrderDetailBean>(getView()) {
+                    @Override
+                    public void onSuccess(ReceiveOrderDetailBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
     public void addExplosiveUseApply(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .addExplosiveUseApply(body)
@@ -290,6 +335,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
     public void getReceiverOfMine(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .getReceiverOfMine(body)

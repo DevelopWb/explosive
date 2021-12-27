@@ -34,6 +34,7 @@ public class UserBean extends BaseResult {
          * headPortrait : /head_img/default.jpg
          * mobile : 18669505929
          * departmentId : 2
+         * departmentType : 2
          * departmentName : 刚察县治安大队
          * post : [{"id":6,"name":"治安大队审批人"}]
          * token : 4J5WRE5T2-TJBWSBCLZRGFYM7TIBLX1-YSCJMCXK-2
@@ -44,10 +45,20 @@ public class UserBean extends BaseResult {
         private String headPortrait;
         private String mobile;
         private int departmentId;
+        private int departmentType;
         private String departmentName;
         private String departmentAddress;//部门地址
         private String sealUrl;//部门印章地址
         private String token;
+
+        public int getDepartmentType() {
+            return departmentType;
+        }
+
+        public void setDepartmentType(int departmentType) {
+            this.departmentType = departmentType;
+        }
+
         /**
          * 2 民爆申请人
          * 3 矿场内爆炸物申请人
@@ -58,6 +69,8 @@ public class UserBean extends BaseResult {
          * 8 民爆仓库管理员
          * 9 民爆仓库配送员
          */
+
+
         private List<PostBean> post;
 
         public String getSealUrl() {

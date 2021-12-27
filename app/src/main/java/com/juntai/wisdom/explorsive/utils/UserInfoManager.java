@@ -137,5 +137,13 @@ public class UserInfoManager {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentId() : -1;
     }
 
+    /**
+     * private Integer departmentType;//部门类型（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
+     * @return
+     */
+    public static int getDepartmentType() {
+        return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentType() : -1;
+    }
+
 
 }

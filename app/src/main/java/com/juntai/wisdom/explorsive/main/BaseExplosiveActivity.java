@@ -70,6 +70,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ImageView mSignIv;
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
+    protected  int baseId;
 
     protected abstract String getTitleName();
 
@@ -97,6 +98,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
     @Override
     public void initView() {
+        if (getIntent() != null) {
+            baseId = getIntent().getIntExtra(BASE_ID,0);
+        }
         setTitleName(getTitleName());
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         mSmartrefreshlayout = (SmartRefreshLayout) findViewById(R.id.smartrefreshlayout);
@@ -104,9 +108,6 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         mSmartrefreshlayout.setEnableRefresh(false);
         adapter = new HandlerOrderAdapter(null);
         initRecyclerview(mRecyclerview, adapter, LinearLayoutManager.VERTICAL);
-        if (getFootView() != null) {
-            adapter.setFooterView(getFootView());
-        }
         setAdapterClick();
 
 
