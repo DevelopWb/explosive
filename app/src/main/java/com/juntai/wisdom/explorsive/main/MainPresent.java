@@ -13,6 +13,7 @@ import com.juntai.wisdom.explorsive.base.BaseAppPresent;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
+import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -107,16 +108,16 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
 
     /**
-     * 添加  民爆领取申请
+     * 民爆使用申请
      *
      * @return
      */
-    public List<MultipleItem> getAddUseApplyData(UseOrderDetailBean.DataBean bean) {
+    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean,boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerDataInUse(bean, false), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                getApplyerDataInUse(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_START_TIME, bean == null ? null : bean.getEstimateStartUseTime(), "请选择预计使用开始时间")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_END_TIME, bean == null ? null : bean.getEstimateEndUseTime(), "请选择预计使用结束时间")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
@@ -146,11 +147,11 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     }
 
     /**
-     * 添加  民爆领取申请
+     *   民爆领取申请
      *
      * @return
      */
-    public List<MultipleItem> getAddRecieveApplyData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
+    public List<MultipleItem> getRecieveApplyData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -314,6 +315,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+    public void getExplosiveUseDetail(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getExplosiveUseDetail(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<UseOrderDetailBean>(getView()) {
+                    @Override
+                    public void onSuccess(UseOrderDetailBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
 
     public void addExplosiveUseApply(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
@@ -343,6 +364,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<MineReceiverBean>(getView()) {
                     @Override
                     public void onSuccess(MineReceiverBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void startFaceCheck(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .startFaceCheck(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<FaceCheckResponseBean>(getView()) {
+                    @Override
+                    public void onSuccess(FaceCheckResponseBean o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }

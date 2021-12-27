@@ -14,6 +14,7 @@ import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveDetailActivity;
+import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseDetailActivity;
 
 import okhttp3.RequestBody;
 
@@ -94,7 +95,9 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
         switch (dataBean.getStat()) {
             case 1:
-                // TODO: 2021-12-21 订单详情 矿内使用派出所审核
+                // : 2021-12-21 订单详情 矿内使用派出所审核
+                context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
                 break;
             default:
                 break;

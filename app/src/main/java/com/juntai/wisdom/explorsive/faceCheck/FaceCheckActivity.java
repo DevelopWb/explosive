@@ -22,8 +22,11 @@ import com.juntai.disabled.basecomponent.utils.GsonTools;
 import com.juntai.disabled.basecomponent.utils.LogUtil;
 import com.juntai.disabled.basecomponent.utils.ScreenUtils;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
+import com.juntai.wisdom.explorsive.main.MainPresent;
 import com.juntai.wisdom.explorsive.utils.NV21ToBitmap;
 import com.tu.tcircleprogresslibrary.TCircleProgressView;
 
@@ -37,7 +40,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2018/8/7  9:57
  */
-public class FaceCheckActivity extends BaseAppActivity implements SurfaceHolder.Callback {
+public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements SurfaceHolder.Callback, MainContactInterface {
     private float currentProgress;
     // ===========================================================
     // Constants
@@ -82,7 +85,7 @@ public class FaceCheckActivity extends BaseAppActivity implements SurfaceHolder.
                     break;
                 case 5:
                     mTcpv.setText("验证失败");
-                    mTcpv.setProgressByAnimation(currentProgress,0);
+                    mTcpv.setProgressByAnimation(currentProgress, 0);
                     mReCheckTv.setVisibility(View.VISIBLE);
 
                     break;
@@ -91,12 +94,11 @@ public class FaceCheckActivity extends BaseAppActivity implements SurfaceHolder.
             }
         }
     };
-    private Runnable mRunnable;
     private TextView mReCheckTv;
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected MainPresent createPresenter() {
+        return new MainPresent();
     }
 
     @Override
@@ -285,28 +287,7 @@ public class FaceCheckActivity extends BaseAppActivity implements SurfaceHolder.
                     public void onPreviewFrame(byte[] bytes, Camera camera) {
                         NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(mContext);
                         String imageStr = FileCacheUtils.saveBitmapToBase64(nv21ToBitmap.nv21ToBitmap(bytes, mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height), "888888.jpg");
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mHandler.sendEmptyMessage(6);
-                                //腾讯云验证
-                                Map<String, Object> params = new HashMap<>();
-                                params.put("Image", imageStr);
-                                params.put("NeedRotateDetection", 1);
-                                // TODO: 2021-12-19  PersonId 这个参数现在写死了
-                                params.put("PersonId", "gangcha_face_01");
-                                String param = GsonTools.createGsonString(params);
-                                String response = TengXunYunUtil.getAuthTC3("VerifyFace", param, TengXunYunUtil.Version);
-                                Log.d(TAG, "response------" + response);
-                                FaceCheckResponseBean responseBean = GsonTools.changeGsonToBean(response, FaceCheckResponseBean.class);
-                                if (responseBean.getResponse().isIsMatch()) {
-                                    mHandler.sendEmptyMessage(4);
-                                } else {
-                                    mHandler.sendEmptyMessage(5);
-                                }
-                            }
-                        }).start();
-
+                        mPresenter.startFaceCheck(getBaseBuilder().add("id", String.valueOf("14")).add("image", imageStr).build(), AppHttpPath.FACE_CHECK);
                     }
                 });
             }
@@ -323,13 +304,25 @@ public class FaceCheckActivity extends BaseAppActivity implements SurfaceHolder.
             mCamera.release();
             mCamera = null;
         }
-
-        mHandler.removeCallbacks(mRunnable);
     }
 
 
     @Override
     public void onSuccess(String tag, Object o) {
+        FaceCheckResponseBean responseBean = (FaceCheckResponseBean) o;
+        if (responseBean != null) {
+            FaceCheckResponseBean.DataBean dataBean = responseBean.getData();
+            if (dataBean != null) {
+                if (dataBean.getResponse().isIsMatch()) {
+                    mHandler.sendEmptyMessage(4);
+                } else {
+                    mHandler.sendEmptyMessage(5);
+                }
+            }
+        }
+
 
     }
+
+
 }

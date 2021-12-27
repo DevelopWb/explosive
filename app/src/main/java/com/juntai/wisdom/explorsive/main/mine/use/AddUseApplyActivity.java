@@ -1,8 +1,6 @@
 package com.juntai.wisdom.explorsive.main.mine.use;
 
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.juntai.disabled.basecomponent.utils.DialogUtil;
 import com.juntai.disabled.basecomponent.utils.GsonTools;
@@ -15,7 +13,6 @@ import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -27,14 +24,14 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getAddUseApplyData(null));
+        adapter.setNewData(mPresenter.getUseApplyData(null,false));
         UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getAddUseApplyData(savedBean));
+                            adapter.setNewData(mPresenter.getUseApplyData(savedBean,false));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override

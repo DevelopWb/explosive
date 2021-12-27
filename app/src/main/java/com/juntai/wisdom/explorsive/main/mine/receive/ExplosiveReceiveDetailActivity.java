@@ -1,8 +1,5 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
@@ -34,7 +31,7 @@ public class ExplosiveReceiveDetailActivity extends BaseExplosiveActivity {
         if (orderDetailBean != null) {
             ReceiveOrderDetailBean.DataBean dataBean = orderDetailBean.getData();
             if (dataBean != null) {
-                adapter.setNewData(mPresenter.getAddRecieveApplyData(dataBean, true));
+                adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
             }
         }
 

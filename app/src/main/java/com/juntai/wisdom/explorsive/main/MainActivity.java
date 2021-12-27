@@ -25,6 +25,7 @@ import com.juntai.wisdom.explorsive.MyApp;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
+import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
@@ -100,6 +101,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         break;
                     case MainPresent.MINE_MANAGER:
                         // TODO: 2021-12-20  矿场管理发放
+                        startActivity(new Intent(mContext, FaceCheckActivity.class));
                         break;
                     case MainPresent.APPROVE_RECEIVE:
                         // TODO: 2021-12-20  民爆领取审批

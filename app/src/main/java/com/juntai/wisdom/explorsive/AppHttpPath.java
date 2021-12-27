@@ -71,7 +71,10 @@ public class AppHttpPath {
     public static final String GET_RECEIVER_OF_MINE = BASE + "/getMineUserTypeList";
 
 
-
+    /**
+     * 民爆使用订单详情
+     */
+    public static final String USE_EXPLOSIVE_DETAIL = BASE + "/getMineReceiveOrderInfo";
 
     /*====================================================    个人中心   ==============================================================*/
 
@@ -80,4 +83,10 @@ public class AppHttpPath {
      * 个人详情
      */
     public static final String GET_USER_INFO = BASE + "/getUserInfo";
+
+
+    /**
+     * 人脸验证
+     */
+    public static final String FACE_CHECK = BASE + "/faceVerification";
 }

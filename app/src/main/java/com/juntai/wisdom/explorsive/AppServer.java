@@ -3,9 +3,11 @@ package com.juntai.wisdom.explorsive;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
+import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 
 import io.reactivex.Observable;
@@ -56,6 +58,9 @@ public interface AppServer {
     @POST(AppHttpPath.GET_USER_INFO)
     Observable<UserBean> getUserInfo(@Body RequestBody requestBody);
 
+    @POST(AppHttpPath.FACE_CHECK)
+    Observable<FaceCheckResponseBean> startFaceCheck(@Body RequestBody requestBody);
+
 
     @POST(AppHttpPath.RECEIVE_ORDER_LIST)
     Observable<OrderListBean> getReceiveOrderList(@Body RequestBody requestBody);
@@ -68,8 +73,12 @@ public interface AppServer {
 
     @POST(AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY)
     Observable<BaseResult> addExplosiveReceiveApply(@Body RequestBody requestBody);
+
     @POST(AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL)
     Observable<ReceiveOrderDetailBean> getExplosiveReceiveDetail(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.USE_EXPLOSIVE_DETAIL)
+    Observable<UseOrderDetailBean> getExplosiveUseDetail(@Body RequestBody requestBody);
 
 
     @POST(AppHttpPath.ADD_USE_EXPLOSIVE_APPLY)

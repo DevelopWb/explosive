@@ -26,7 +26,6 @@ import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.base.sendcode.SendCodeModel;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.disabled.basecomponent.utils.AppUtils;
-import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.main.MainActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;

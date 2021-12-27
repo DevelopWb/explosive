@@ -1,10 +1,7 @@
 package com.juntai.wisdom.explorsive.main.mine.use;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.juntai.wisdom.explorsive.AppHttpPath;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 /**
  * @aouther tobato
@@ -22,18 +19,18 @@ public class ExplosiveUseDetailActivity extends BaseExplosiveActivity {
     @Override
     public void initView() {
         super.initView();
-        mPresenter.getExplosiveReceiveDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL);
+        mPresenter.getExplosiveUseDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.USE_EXPLOSIVE_DETAIL);
         adapter.setDetail(true);
     }
 
     @Override
     public void onSuccess(String tag, Object o) {
         super.onSuccess(tag, o);
-        ReceiveOrderDetailBean orderDetailBean = (ReceiveOrderDetailBean) o;
+        UseOrderDetailBean orderDetailBean = (UseOrderDetailBean) o;
         if (orderDetailBean != null) {
-            ReceiveOrderDetailBean.DataBean dataBean = orderDetailBean.getData();
+            UseOrderDetailBean.DataBean dataBean = orderDetailBean.getData();
             if (dataBean != null) {
-                adapter.setNewData(mPresenter.getAddRecieveApplyData(dataBean, true));
+                adapter.setNewData(mPresenter.getUseApplyData(dataBean, true));
             }
         }
 

@@ -1,5 +1,7 @@
 package com.juntai.wisdom.explorsive.bean;
 
+import com.juntai.disabled.basecomponent.base.BaseResult;
+
 /**
  * @Author: tobato
  * @Description: 作用描述
@@ -7,64 +9,81 @@ package com.juntai.wisdom.explorsive.bean;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021-12-19 15:00
  */
-public class FaceCheckResponseBean {
+public class FaceCheckResponseBean  extends BaseResult {
+
     /**
-     * Response : {"Score":100,"IsMatch":true,"FaceModelVersion":"3.0","RequestId":"05bad4a8-389a-4b69-bf24-908292666991"}
+     * data : {"Response":{"Score":100,"IsMatch":true,"RequestId":"dd9c1c70-bdd6-475f-b047-baa918a4cd49","FaceModelVersion":"3.0"}}
      */
 
-    private ResponseBean Response;
+    private DataBean data;
 
-    public ResponseBean getResponse() {
-        return Response;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setResponse(ResponseBean Response) {
-        this.Response = Response;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public static class ResponseBean {
+    public static class DataBean {
         /**
-         * Score : 100
-         * IsMatch : true
-         * FaceModelVersion : 3.0
-         * RequestId : 05bad4a8-389a-4b69-bf24-908292666991
+         * Response : {"Score":100,"IsMatch":true,"RequestId":"dd9c1c70-bdd6-475f-b047-baa918a4cd49","FaceModelVersion":"3.0"}
          */
 
-        private float Score;
-        private boolean IsMatch;
-        private String FaceModelVersion;
-        private String RequestId;
+        private ResponseBean Response;
 
-        public float getScore() {
-            return Score;
+        public ResponseBean getResponse() {
+            return Response;
         }
 
-        public void setScore(int Score) {
-            this.Score = Score;
+        public void setResponse(ResponseBean Response) {
+            this.Response = Response;
         }
 
-        public boolean isIsMatch() {
-            return IsMatch;
-        }
+        public static class ResponseBean {
+            /**
+             * Score : 100
+             * IsMatch : true
+             * RequestId : dd9c1c70-bdd6-475f-b047-baa918a4cd49
+             * FaceModelVersion : 3.0
+             */
 
-        public void setIsMatch(boolean IsMatch) {
-            this.IsMatch = IsMatch;
-        }
+            private int Score;
+            private boolean IsMatch;
+            private String RequestId;
+            private String FaceModelVersion;
 
-        public String getFaceModelVersion() {
-            return FaceModelVersion;
-        }
+            public int getScore() {
+                return Score;
+            }
 
-        public void setFaceModelVersion(String FaceModelVersion) {
-            this.FaceModelVersion = FaceModelVersion;
-        }
+            public void setScore(int Score) {
+                this.Score = Score;
+            }
 
-        public String getRequestId() {
-            return RequestId;
-        }
+            public boolean isIsMatch() {
+                return IsMatch;
+            }
 
-        public void setRequestId(String RequestId) {
-            this.RequestId = RequestId;
+            public void setIsMatch(boolean IsMatch) {
+                this.IsMatch = IsMatch;
+            }
+
+            public String getRequestId() {
+                return RequestId;
+            }
+
+            public void setRequestId(String RequestId) {
+                this.RequestId = RequestId;
+            }
+
+            public String getFaceModelVersion() {
+                return FaceModelVersion;
+            }
+
+            public void setFaceModelVersion(String FaceModelVersion) {
+                this.FaceModelVersion = FaceModelVersion;
+            }
         }
     }
 }
