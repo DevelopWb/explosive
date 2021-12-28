@@ -104,6 +104,7 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
                 Hawk.put(AppUtils.SP_KEY_USER, loginBean);
                 Hawk.put(AppUtils.SP_KEY_TOKEN, loginBean.getData().getToken());
                 startActivity(new Intent(mContext, MainActivity.class));
+                finish();
                 break;
             default:
                 break;

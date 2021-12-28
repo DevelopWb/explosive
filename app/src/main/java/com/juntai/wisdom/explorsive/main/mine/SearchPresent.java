@@ -77,14 +77,20 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      */
     public void receiveApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
-        switch (dataBean.getStat()) {
-            case 1:
-                // : 2021-12-21 订单详情 派出所审核
-                context.startActivity(new Intent(context, ExplosiveReceiveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
-                break;
-            default:
-                break;
-        }
+        context.startActivity(new Intent(context, ExplosiveReceiveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+//        switch (dataBean.getStat()) {
+//            case 1:
+//                // : 2021-12-21 订单详情 派出所审核
+//                context.startActivity(new Intent(context, ExplosiveReceiveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+//                break;
+//            case 2:
+//                // : 2021-12-21 订单详情 派出所审核
+//                context.startActivity(new Intent(context, ExplosiveReceiveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+//                break;
+//            default:
+//                break;
+//        }
     }
     /**
      *民爆使用订单列表的点击事件

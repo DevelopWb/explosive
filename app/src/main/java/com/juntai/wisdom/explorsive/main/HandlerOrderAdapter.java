@@ -53,6 +53,7 @@ import okhttp3.FormBody;
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
     private boolean isDetail = false;//是否是详情模式
+    private boolean isCheck = false;//是否检查模式
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -79,20 +80,25 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         isDetail = detail;
     }
 
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
 
             case MultipleItem.ITEM_APPLY_DOSAGE:
-                if (isDetail) {
-                    helper.setGone(R.id.add_dosage_iv,false);
-                }else {
-                    helper.setGone(R.id.add_dosage_iv,true);
+                if (isDetail||isCheck) {
+                    helper.setGone(R.id.add_dosage_iv, false);
+                } else {
+                    helper.setGone(R.id.add_dosage_iv, true);
                 }
                 helper.addOnClickListener(R.id.add_dosage_iv);
                 List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                 DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
-                dosageAdapter.setDetail(isDetail);
+                dosageAdapter.setDetail(isDetail||isCheck);
                 RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
                 LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 dosageRv.setLayoutManager(dosageManager);
@@ -140,7 +146,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_EDIT:
                 TextKeyValueBean textValueEditBean = (TextKeyValueBean) item.getObject();
                 EditText editText = helper.getView(R.id.edit_value_et);
-                if (isDetail) {
+                if (isDetail||isCheck) {
                     if (TextUtils.isEmpty(textValueEditBean.getValue())) {
                         textValueEditBean.setValue("暂无");
                     }
@@ -202,10 +208,10 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
 
             case MultipleItem.ITEM_SELECT:
                 TextKeyValueBean textValueSelectBean = (TextKeyValueBean) item.getObject();
-                helper.setText(R.id.item_small_title_tv,textValueSelectBean.getKey());
+                helper.setText(R.id.item_small_title_tv, textValueSelectBean.getKey());
                 TextView textViewTv = helper.getView(R.id.select_value_tv);
                 String selectTextValue = textValueSelectBean.getValue();
-                if (!isDetail) {
+                if (!isDetail||isCheck) {
                     helper.addOnClickListener(R.id.select_value_tv);
                     helper.addOnClickListener(R.id.tool_pic_iv);
                     helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
@@ -217,7 +223,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 textViewTv.setTag(textValueSelectBean);
                 textViewTv.setHint(textValueSelectBean.getHint());
                 if (selectTextValue.contains("\\n")) {
-                    selectTextValue = selectTextValue.replace("\\n","\n");
+                    selectTextValue = selectTextValue.replace("\\n", "\n");
                 }
                 textViewTv.setText(selectTextValue);
 
@@ -242,13 +248,13 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_SELECT_TIME:
                 TimeBean timeBean = (TimeBean) item.getObject();
-                if (!isDetail) {
+                if (isDetail||isCheck) {
+                    helper.setGone(R.id.location_iv, false);
+                } else {
                     helper.addOnClickListener(R.id.location_ll);
                     helper.setGone(R.id.location_iv, true);
-                } else {
-                    helper.setGone(R.id.location_iv, false);
                 }
-                TextView  timeValueTv = helper.getView(R.id.location_tv);
+                TextView timeValueTv = helper.getView(R.id.location_tv);
                 timeValueTv.setText(timeBean.getTimeValue());
                 timeValueTv.setHint(timeBean.getHint());
                 helper.setText(R.id.locate_key_tv, timeBean.getTimeKey());
@@ -256,11 +262,11 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_LOCATION:
                 LocationBean locationBean = (LocationBean) item.getObject();
-                if (!isDetail) {
+                if (isDetail||isCheck) {
+                    helper.setGone(R.id.location_iv, false);
+                } else {
                     helper.addOnClickListener(R.id.location_ll);
                     helper.setGone(R.id.location_iv, true);
-                } else {
-                    helper.setGone(R.id.location_iv, false);
                 }
                 if (!TextUtils.isEmpty(locationBean.getAddress())) {
                     helper.setText(R.id.location_tv, locationBean.getAddress());
@@ -272,31 +278,12 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_SIGN:
                 ItemSignBean signBean = (ItemSignBean) item.getObject();
                 int signStatus = signBean.getSignStatus();
+
+                helper.setGone(R.id.reason_detail_tv, false);
                 helper.addOnClickListener(R.id.start_sign_tv);
                 helper.addOnClickListener(R.id.reject_apply_tv);
                 helper.addOnClickListener(R.id.agree_apply_tv);
-                if (0 == signStatus) {
-                    //新建的申请
-                    helper.setGone(R.id.start_sign_tv, true);
-                    helper.setGone(R.id.status_check_g, false);
-                    helper.setGone(R.id.status_detail_g, false);
-                } else if (1 == signStatus) {
-                    //审核
-                    helper.setGone(R.id.start_sign_tv, true);
-                    helper.setGone(R.id.status_check_g, true);
-                    helper.setGone(R.id.status_detail_g, false);
-                } else if(2==signStatus){
-                    //详情
-                    helper.setGone(R.id.start_sign_tv, false);
-                    helper.setGone(R.id.status_check_g, false);
-                    helper.setGone(R.id.status_detail_g, true);
-                    helper.setText(R.id.sign_time_tv, signBean.getSignTime());
-                }else {
-                    //还未审批
-                    helper.setGone(R.id.start_sign_tv, false);
-                    helper.setGone(R.id.status_check_g, false);
-                    helper.setVisible(R.id.status_detail_g, false);
-                }
+
                 helper.setText(R.id.sign_title_tv, signBean.getSignTitle());
                 //原因
                 EditText reasonEt = helper.getView(R.id.reason_et);
@@ -332,21 +319,54 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 //同意和拒绝相关的逻辑
                 helper.setTextColor(R.id.reject_apply_tv, ContextCompat.getColor(mContext, R.color.black));
                 helper.setTextColor(R.id.agree_apply_tv, ContextCompat.getColor(mContext, R.color.black));
+
                 if (0 == signBean.getIsAgree()) {
                     //还未选择
                     helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.stroke_red_square_bg);
                     helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.stroke_accent_square_bg);
+                    helper.setTextColor(R.id.agree_apply_tv, ContextCompat.getColor(mContext, R.color.colorAccent));
+                    helper.setTextColor(R.id.reject_apply_tv, ContextCompat.getColor(mContext, R.color.red));
+                    helper.setGone(R.id.reason_et, false);
                 } else if (1 == signBean.getIsAgree()) {
                     //同意
                     helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.stroke_red_square_bg);
                     helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.sp_filled_accent);
                     helper.setTextColor(R.id.agree_apply_tv, ContextCompat.getColor(mContext, R.color.white));
-
+                    helper.setGone(R.id.reason_et, false);
                 } else {
                     //不同意
                     helper.setBackgroundRes(R.id.reject_apply_tv, R.drawable.sp_filled_red);
                     helper.setTextColor(R.id.reject_apply_tv, ContextCompat.getColor(mContext, R.color.white));
                     helper.setBackgroundRes(R.id.agree_apply_tv, R.drawable.stroke_accent_square_bg);
+                    helper.setGone(R.id.reason_et, true);
+                }
+                if (0 == signStatus) {
+                    //新建的申请
+                    helper.setGone(R.id.start_sign_tv, true);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setGone(R.id.status_detail_g, false);
+                } else if (1 == signStatus) {
+                    //审核
+                    helper.setGone(R.id.start_sign_tv, true);
+                    helper.setGone(R.id.status_check_g, true);
+                    helper.setGone(R.id.status_detail_g, false);
+                } else if (2 == signStatus) {
+                    //详情
+                    helper.setGone(R.id.start_sign_tv, false);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setGone(R.id.status_detail_g, true);
+                    helper.setGone(R.id.reason_et, false);
+                    helper.setText(R.id.sign_time_tv, signBean.getSignTime());
+                    if (!TextUtils.isEmpty(signBean.getReason())) {
+                        helper.setGone(R.id.reason_detail_tv, true);
+                        helper.setText(R.id.reason_detail_tv,signBean.getReason());
+                    }
+
+                } else {
+                    //还未审批
+                    helper.setGone(R.id.start_sign_tv, false);
+                    helper.setGone(R.id.status_check_g, false);
+                    helper.setVisible(R.id.status_detail_g, false);
                 }
                 break;
 

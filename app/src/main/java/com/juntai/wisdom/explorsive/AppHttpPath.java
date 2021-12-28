@@ -54,6 +54,14 @@ public class AppHttpPath {
     public static final String RECEIVE_EXPLOSIVE_DETAIL = BASE + "/getReceiveOrderInfo";
 
 
+    /**
+     * 派出所审批
+     */
+    public static final String POLICE_APPROVE = BASE + "/policeApprove";
+    public static final String BRIGADE_APPROVE = BASE + "/brigadeApprove";
+    public static final String LEADER_APPROVE = BASE + "/leaderApprove";
+
+
 
 
     /*====================================================    民爆使用相关   ==============================================================*/

@@ -30,7 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receiveApprove.ReceiveApproveActivity"></activity>
+        <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity" />
         <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveDetailActivity" />
         <activity android:name=".explorsive.main.mine.use.AddUseApplyActivity" />
         <activity android:name=".explorsive.main.mine.receive.AddReceiveApplyActivity" />
@@ -63,7 +64,7 @@
         <!-- Ma - debug-Release-key : A2hxzsrCO3VOXGXBzVjP3zKKYBsNhi1A -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Nb7K5CgYPX5xE8UhppiKirMt0BeoyGEy" /> <!-- 百度地图 -->
+            android:value="Dp0ITs4op2ZvGIEn2FYzgovmIRhA2XBv" /> <!-- 百度地图 -->
         <activity
             android:name=".explorsive.entrance.StartActivity"
             android:theme="@style/AppTheme.Splash">

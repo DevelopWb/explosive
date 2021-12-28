@@ -77,6 +77,15 @@ public interface AppServer {
     @POST(AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL)
     Observable<ReceiveOrderDetailBean> getExplosiveReceiveDetail(@Body RequestBody requestBody);
 
+    @POST(AppHttpPath.POLICE_APPROVE)
+    Observable<BaseResult> policeApprove(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.BRIGADE_APPROVE)
+    Observable<BaseResult> brigadeApprove(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.LEADER_APPROVE)
+    Observable<BaseResult> leaderApprove(@Body RequestBody requestBody);
+
     @POST(AppHttpPath.USE_EXPLOSIVE_DETAIL)
     Observable<UseOrderDetailBean> getExplosiveUseDetail(@Body RequestBody requestBody);
 

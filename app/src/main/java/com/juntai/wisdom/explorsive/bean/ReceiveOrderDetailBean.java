@@ -87,6 +87,12 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private String useLatitude;
         private String remarks;
         private String applySign;
+        private int policeVoid;
+        private int brigadeVoid;
+        private int leaderVoid;
+        private String policeRemarks;
+        private String brigadeRemarks;
+        private String leaderRemarks;
         private int policeDepartmentId;
         private String policeSign;
         private String policeDepartmentSeal;
@@ -126,6 +132,54 @@ public class ReceiveOrderDetailBean  extends BaseResult {
 
         public String getBrigadeDepartmentSeal() {
             return brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
+        }
+
+        public int getPoliceVoid() {
+            return policeVoid;
+        }
+
+        public void setPoliceVoid(int policeVoid) {
+            this.policeVoid = policeVoid;
+        }
+
+        public int getBrigadeVoid() {
+            return brigadeVoid;
+        }
+
+        public void setBrigadeVoid(int brigadeVoid) {
+            this.brigadeVoid = brigadeVoid;
+        }
+
+        public int getLeaderVoid() {
+            return leaderVoid;
+        }
+
+        public void setLeaderVoid(int leaderVoid) {
+            this.leaderVoid = leaderVoid;
+        }
+
+        public String getPoliceRemarks() {
+            return policeRemarks == null ? "" : policeRemarks;
+        }
+
+        public void setPoliceRemarks(String policeRemarks) {
+            this.policeRemarks = policeRemarks == null ? "" : policeRemarks;
+        }
+
+        public String getBrigadeRemarks() {
+            return brigadeRemarks == null ? "" : brigadeRemarks;
+        }
+
+        public void setBrigadeRemarks(String brigadeRemarks) {
+            this.brigadeRemarks = brigadeRemarks == null ? "" : brigadeRemarks;
+        }
+
+        public String getLeaderRemarks() {
+            return leaderRemarks == null ? "" : leaderRemarks;
+        }
+
+        public void setLeaderRemarks(String leaderRemarks) {
+            this.leaderRemarks = leaderRemarks == null ? "" : leaderRemarks;
         }
 
         public void setBrigadeDepartmentSeal(String brigadeDepartmentSeal) {

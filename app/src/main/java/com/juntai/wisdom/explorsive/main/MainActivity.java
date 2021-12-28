@@ -27,6 +27,7 @@ import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
+import com.juntai.wisdom.explorsive.main.mine.receiveApprove.ReceiveApproveActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
@@ -105,6 +106,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         break;
                     case MainPresent.APPROVE_RECEIVE:
                         // TODO: 2021-12-20  民爆领取审批
+                        startActivity(new Intent(mContext, ReceiveApproveActivity.class));
                         break;
                     case MainPresent.APPROVE_USE:
                         // TODO: 2021-12-20  矿场使用审批

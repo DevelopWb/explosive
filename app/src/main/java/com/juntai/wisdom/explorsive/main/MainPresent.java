@@ -112,17 +112,19 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean,boolean isDetail) {
+    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
                 MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
                 getApplyerDataInUse(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_START_TIME, bean == null ? null : bean.getEstimateStartUseTime(), "请选择预计使用开始时间")));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_END_TIME, bean == null ? null : bean.getEstimateEndUseTime(), "请选择预计使用结束时间")));
+        if (!isDetail) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_START_TIME, bean == null ? null : bean.getEstimateStartUseTime(), "请选择预计使用开始时间")));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_END_TIME, bean == null ? null : bean.getEstimateEndUseTime(), "请选择预计使用结束时间")));
+        }
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
-                bean.getUseAddress()
-                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
+                bean.getEstimateUseAddress()
+                , bean == null ? null : bean.getEstimateUseLatitude(), bean == null ? null : bean.getEstimateUseLongitude())));
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
@@ -141,13 +143,22 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
                         String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
                         MainContactInterface.MANAGER), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
+        if (isDetail) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
+            if (TextUtils.isEmpty(bean.getPoliceSign())) {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 3, null, null)));
+            } else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal())));
+            }
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
 
+        }
         return arrays;
     }
 
     /**
-     *   民爆领取申请
+     * 民爆领取申请
      *
      * @return
      */
@@ -164,28 +175,65 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
         if (isDetail) {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", 2,  bean.getApplySign(),bean.getApplyDepartmentSeal())));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("派出所盖章签字", 3,  null,null)));
-            }else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("派出所盖章签字", 2,  bean.getPoliceSign(),bean.getPoliceDepartmentSeal())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
+            } else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
             }
             if (TextUtils.isEmpty(bean.getBrigadeSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("治安大队盖章签字", 3,  null,null)));
-            }else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("治安大队盖章签字", 2,  bean.getBrigadeSign(),bean.getBrigadeDepartmentSeal())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 3 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
+            } else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 2, bean.getBrigadeSign(), bean.getBrigadeDepartmentSeal(), bean.getBrigadeRemarks())));
             }
             if (TextUtils.isEmpty(bean.getLeaderSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("局领导盖章签字", 3,  null,null)));
-            }else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("局领导盖章签字", 2,  bean.getLeaderSign(),bean.getLeaderDepartmentSeal())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 4 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
+            } else {
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 2, bean.getLeaderSign(), bean.getLeaderDepartmentSeal(), bean.getLeaderRemarks())));
             }
 
-        }else {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean("申请单位盖章签字", bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
 
         }
 
+
+        return arrays;
+    }
+
+    /**
+     * 民爆领取申请审查
+     *
+     * @return
+     */
+    public List<MultipleItem> getRecieveApplyCheckData(ReceiveOrderDetailBean.DataBean bean) {
+        List<MultipleItem> arrays = new ArrayList<>();
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
+                getApplyerData(bean, true), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
+                bean.getUseAddress()
+                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
+        initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
+                bean.getRemarks(), false, 1);
+        arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
+        if (TextUtils.isEmpty(bean.getPoliceSign())) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
+        }
+        if (TextUtils.isEmpty(bean.getBrigadeSign())) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 3 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 2, bean.getBrigadeSign(), bean.getBrigadeDepartmentSeal(), bean.getBrigadeRemarks())));
+        }
+        if (TextUtils.isEmpty(bean.getLeaderSign())) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 4 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 2, bean.getLeaderSign(), bean.getLeaderDepartmentSeal(), bean.getLeaderRemarks())));
+        }
 
         return arrays;
     }
@@ -229,11 +277,15 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public List<TextKeyValueBean> getApplyerDataInUse(UseOrderDetailBean.DataBean dataBean, boolean isDetail) {
         List<TextKeyValueBean> arrays = new ArrayList<>();
         arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_NO, !isDetail ? new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) : dataBean.getApplyNumber()));
-        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER, !isDetail ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
-        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_MOBILE, !isDetail ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
-        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT, !isDetail ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
-        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT_ADDR, !isDetail ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER, dataBean == null ? UserInfoManager.getUserName() : dataBean.getApplyUsername()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_MOBILE, dataBean == null ? UserInfoManager.getMobile() : dataBean.getApplyPhone()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT, dataBean == null ? UserInfoManager.getDepartmentName() : dataBean.getApplyDepartmentName()));
+        arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT_ADDR, dataBean == null ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
         arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_TIME, !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
+        if (isDetail) {
+            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_START_TIME + ":", dataBean.getEstimateStartUseTime()));
+            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_END_TIME + ":", dataBean.getEstimateEndUseTime()));
+        }
         return arrays;
     }
 
@@ -315,6 +367,70 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
+    public void policeApprove(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .policeApprove(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void brigadeApprove(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .brigadeApprove(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void leaderApprove(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .leaderApprove(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
     public void getExplosiveUseDetail(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .getExplosiveUseDetail(body)
@@ -377,6 +493,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
     public void startFaceCheck(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .startFaceCheck(body)

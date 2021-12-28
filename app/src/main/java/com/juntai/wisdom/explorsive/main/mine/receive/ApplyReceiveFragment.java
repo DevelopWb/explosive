@@ -83,6 +83,12 @@ public class ApplyReceiveFragment extends BaseSearchFragment implements View.OnC
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        requestData();
+    }
+
+    @Override
     protected void requestData() {
         // : 2021-12-20 调用获取订单的接口
         mPresenter.getReceiveOrderList(getRequestBody(), GET_ORDERS);

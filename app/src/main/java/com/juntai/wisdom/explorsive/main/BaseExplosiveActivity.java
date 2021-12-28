@@ -32,6 +32,7 @@ import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.utils.StringTools;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.io.IOException;
@@ -70,7 +71,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ImageView mSignIv;
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
-    protected  int baseId;
+    protected int baseId;
 
     protected abstract String getTitleName();
 
@@ -99,7 +100,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     @Override
     public void initView() {
         if (getIntent() != null) {
-            baseId = getIntent().getIntExtra(BASE_ID,0);
+            baseId = getIntent().getIntExtra(BASE_ID, 0);
         }
         setTitleName(getTitleName());
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
@@ -129,7 +130,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     /**
      * 提交的逻辑
      */
-    protected void commitLogic(MultipartBody.Builder builder) {
+    protected void commitLogic(BaseAdapterDataBean baseAdapterDataBean) {
     }
 
     private void setAdapterClick() {
@@ -186,22 +187,52 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 break;
                         }
                         break;
-                    default:
+                    case MultipleItem.ITEM_SIGN:
+                        ItemSignBean signBean = (ItemSignBean) multipleItem.getObject();
                         switch (view.getId()) {
                             case R.id.start_sign_tv:
                                 itemSignBean = (ItemSignBean) multipleItem.getObject();
                                 //签名
                                 mSignIv = (ImageView) view.findViewById(R.id.user_sign_iv);
-                                showSignatureView();
+                                if (MainContactInterface.SIGN_TITLE_UNIT.equals(itemSignBean.getSignTitle())) {
+                                    showSignatureView();
+                                }else {
+                                    if (0==itemSignBean.getIsAgree()) {
+                                        ToastUtils.toast(mContext,"请选择是否同意申请");
+                                        return;
+                                    }
+                                    if (2==itemSignBean.getIsAgree()&&TextUtils.isEmpty(itemSignBean.getReason())) {
+                                        ToastUtils.toast(mContext,"请输入拒绝申请的原因");
+                                        return;
+                                    }
+                                    showSignatureView();
+                                }
+
+
+
                                 break;
 
-
+                            case R.id.agree_apply_tv:
+                                signBean.setIsAgree(1);
+                                break;
+                            case R.id.reject_apply_tv:
+                                signBean.setIsAgree(2);
+                                break;
+                            default:
+                                break;
+                        }
+                        adapter.notifyItemChanged(position);
+                        break;
+                    default:
+                        switch (view.getId()) {
                             case R.id.add_dosage_iv:
                                 //添加用量
                                 List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) multipleItem.getObject();
                                 explosiveUsageBeans.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
                                 adapter.notifyItemChanged(position);
                                 break;
+
+
                             default:
                                 break;
                         }
@@ -308,20 +339,12 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
             case R.id.commit_form_tv:
                 //提交
                 BaseAdapterDataBean baseAdapterDataBean = null;
-                if (mCommitTv != null) {
-                    if ("申请修改".equals(getTextViewValue(mCommitTv))) {
-                        baseAdapterDataBean = getBaseAdapterData(true);
-                    } else {
-                        baseAdapterDataBean = getBaseAdapterData(false);
-                    }
-                } else {
-                    baseAdapterDataBean = getBaseAdapterData(false);
-                }
+                baseAdapterDataBean = getBaseAdapterData(false);
 
                 if (baseAdapterDataBean == null) {
                     return;
                 }
-                commitLogic(baseAdapterDataBean.getBuilder());
+                commitLogic(baseAdapterDataBean);
                 break;
             default:
                 break;
@@ -441,17 +464,71 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     ItemSignBean signBean = (ItemSignBean) item.getObject();
                     if (!skipFilter) {
                         if (!StringTools.isStringValueOk(signBean.getSignPicPath())) {
-                            ToastUtils.toast(mContext, "请签名");
-                            return null;
+                            switch (UserInfoManager.getDepartmentType()) {
+                                //（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
+                                case 1:
+                                    if (MainContactInterface.SIGN_TITLE_UNIT.equals(signBean.getSignTitle())) {
+                                        ToastUtils.toast(mContext, "请签名");
+                                        return null;
+                                    }
+                                    break;
+                                case 2:
+                                    if (MainContactInterface.SIGN_TITLE_POLICE.equals(signBean.getSignTitle())) {
+                                        ToastUtils.toast(mContext, "请签名");
+                                        return null;
+                                    }
+                                    break;
+                                case 3:
+                                    if (MainContactInterface.SIGN_TITLE_BRIGADE.equals(signBean.getSignTitle())) {
+                                        ToastUtils.toast(mContext, "请签名");
+                                        return null;
+                                    }
+                                    break;
+                                case 4:
+                                    if (MainContactInterface.SIGN_TITLE_LEADER.equals(signBean.getSignTitle())) {
+                                        ToastUtils.toast(mContext, "请签名");
+                                        return null;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+
+
                         }
                     }
                     //民爆领取申请
-                    receiveOrderBean.setApplySign(signBean.getSignPicPath());
-                    receiveOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+
                     receiveOrderBean.setSignStatus(signBean.getSignStatus());
-                    useOrderBean.setApplySign(signBean.getSignPicPath());
-                    useOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
                     useOrderBean.setSignStatus(signBean.getSignStatus());
+                    switch (signBean.getSignTitle()) {
+                        case MainContactInterface.SIGN_TITLE_UNIT:
+                            receiveOrderBean.setApplySign(signBean.getSignPicPath());
+                            receiveOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+                            useOrderBean.setApplySign(signBean.getSignPicPath());
+                            useOrderBean.setApplyDepartmentSeal(signBean.getDepartmentSignPath());
+                            break;
+                        case MainContactInterface.SIGN_TITLE_POLICE:
+                            receiveOrderBean.setPoliceVoid(signBean.getIsAgree());
+                            receiveOrderBean.setPoliceRemarks(signBean.getReason());
+                            receiveOrderBean.setPoliceSign(signBean.getSignPicPath());
+                            receiveOrderBean.setPoliceDepartmentSeal(signBean.getDepartmentSignPath());
+                            break;
+                        case MainContactInterface.SIGN_TITLE_BRIGADE:
+                            receiveOrderBean.setBrigadeVoid(signBean.getIsAgree());
+                            receiveOrderBean.setBrigadeRemarks(signBean.getReason());
+                            receiveOrderBean.setBrigadeSign(signBean.getSignPicPath());
+                            receiveOrderBean.setBrigadeDepartmentSeal(signBean.getDepartmentSignPath());
+                            break;
+                        case MainContactInterface.SIGN_TITLE_LEADER:
+                            receiveOrderBean.setLeaderVoid(signBean.getIsAgree());
+                            receiveOrderBean.setLeaderRemarks(signBean.getReason());
+                            receiveOrderBean.setLeaderSign(signBean.getSignPicPath());
+                            receiveOrderBean.setLeaderDepartmentSeal(signBean.getDepartmentSignPath());
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case MultipleItem.ITEM_SELECT:
                     TextKeyValueBean selectBean = (TextKeyValueBean) item.getObject();
@@ -551,6 +628,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     itemSignBean.setSignPicPath(path);
                     itemSignBean.setSignStatus(2);
                     itemSignBean.setSignTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    if (!MainContactInterface.SIGN_TITLE_UNIT.equals(itemSignBean.getSignTitle())) {
+                        itemSignBean.setReason(1==itemSignBean.getIsAgree()?"同意申请":itemSignBean.getReason());
+                    }
                     adapter.notifyItemChanged(currentPosition);
                 }
                 break;

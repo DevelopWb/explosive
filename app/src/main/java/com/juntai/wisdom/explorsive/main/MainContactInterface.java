@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive.main;
 
 import com.juntai.disabled.basecomponent.mvp.IView;
 
+
 /**
  * @Author: tobato
  * @Description: 作用描述
@@ -15,6 +16,10 @@ public interface MainContactInterface extends IView {
     String APPLICATION = "用途";
     String USE_LOCATION = "使用地点";
     String UPLOAD_SIGN = "上传签名";
+    String SIGN_TITLE_UNIT= "申请单位盖章签字";
+    String SIGN_TITLE_POLICE= "派出所盖章签字";
+    String SIGN_TITLE_BRIGADE = "治安大队盖章签字";
+    String SIGN_TITLE_LEADER = "局领导盖章签字";
 
     String APPLY_NO = "申请编号:";
     String APPLY_USER = "申请人:";

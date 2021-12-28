@@ -97,8 +97,8 @@ public class MyApp extends BaseApplication {
             } else if (RomUtil.isOppo()) {
                 OppoPushRegister.getInstance(this).register("a8aaa44a557b420f921aa4079ec1774b", "34eecd930b2849edbc5162305fee687e");
             } else {
-                //小米
-                MiPushRegister.getInstance(this).register("2882303761520089591", "5432008920591");
+                //小米推送 只需要改这个地地方就可以  平台创建完应用后需要等一段时间才能获取到tag
+                MiPushRegister.getInstance(this).register("2882303761520125099", "5782012569099");
             }
         }
         if (RomUtil.isEmui()) {

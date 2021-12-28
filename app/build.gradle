@@ -32,7 +32,7 @@ android {
     signingConfigs {
         release {
             //设置release的签名信息
-            //c204528aaa01367971e36f2b06a2dc25
+            //sha1:  D8:8A:32:E8:3B:5A:37:B8:FF:BD:EC:39:8B:55:45:F4:5E:31:9F:20
             storeFile file('juntaikey.jks')
             storePassword "bugaosuni5156"
             keyAlias "juntaikey"

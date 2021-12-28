@@ -23,6 +23,13 @@ public class ItemSignBean {
         this.signPicPath = signPicPath;
         this.departmentSignPath = departmentSignPath;
     }
+    public ItemSignBean(String signTitle, int signStatus, String signPicPath, String departmentSignPath, String reason) {
+        this.signTitle = signTitle;
+        this.signStatus = signStatus;
+        this.signPicPath = signPicPath;
+        this.departmentSignPath = departmentSignPath;
+        this.reason = reason;
+    }
 
     public String getSignTitle() {
         return signTitle == null ? "" : signTitle;

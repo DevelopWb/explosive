@@ -26,6 +26,7 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
 
     private TextView mCommitBusinessTv;
     public String commitName;
+    protected TextView mSaveDraft;
 
     public void setCommitName(String commitName) {
         this.commitName = commitName == null ? "" : commitName;
@@ -91,9 +92,11 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
         View view = LayoutInflater.from(mContext.getApplicationContext()).inflate(R.layout.footview_save_commit, null);
         mCommitBusinessTv = view.findViewById(R.id.commit_form_tv);
         mCommitBusinessTv.setText(getCommitTextValue());
+
+
         commitName = getCommitTextValue();
         mCommitBusinessTv.setOnClickListener(this);
-        TextView mSaveDraft = view.findViewById(R.id.save_draft_tv);
+        mSaveDraft = view.findViewById(R.id.save_draft_tv);
         mSaveDraft.setOnClickListener(this);
         return view;
     }

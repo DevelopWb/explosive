@@ -1,36 +1,23 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
+
 import android.content.Intent;
 import android.view.View;
-
-import com.juntai.disabled.basecomponent.mvp.IView;
-import com.juntai.wisdom.R;
-import com.juntai.wisdom.explorsive.base.BaseAppActivity;
-import com.juntai.wisdom.explorsive.main.MainContactInterface;
-import com.juntai.wisdom.explorsive.main.MainPresent;
 
 /**
  * @aouther tobato
  * @description 描述  民爆领取(向民爆局)申请
  * @date 2021-12-20 14:15
  */
-public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implements MainContactInterface {
-
-    private ApplyReceiveFragment applyReceiveFragment;
-
+public class ApplyReceiveActivirty extends BaseApplyReceiveActivirty {
     @Override
-    protected MainPresent createPresenter() {
-        return new MainPresent();
-    }
-
-    @Override
-    public int getLayoutView() {
-        return R.layout.apply_receive_activity;
+    protected String getTitleName() {
+        return "民爆领取申请";
     }
 
     @Override
     public void initView() {
-        setTitleName("民爆领取申请");
+        super.initView();
         getTitleRightTv().setText("新增");
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,25 +26,5 @@ public class ApplyReceiveActivirty extends BaseAppActivity<MainPresent> implemen
                 startActivityForResult(new Intent(mContext,AddReceiveApplyActivity.class),BASE_REQUEST_RESULT);
             }
         });
-    }
-
-    @Override
-    public void initData() {
-        applyReceiveFragment = (ApplyReceiveFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_serach_top);
-    }
-
-    @Override
-    public void onSuccess(String tag, Object o) {
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (BASE_REQUEST_RESULT==resultCode) {
-            // : 2021-12-25 刷新数据
-            applyReceiveFragment.requestData();
-        }
-
     }
 }
