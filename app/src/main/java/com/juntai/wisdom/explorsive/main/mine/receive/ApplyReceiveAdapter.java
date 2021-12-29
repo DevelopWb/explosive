@@ -34,6 +34,13 @@ public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean
 
     @Override
     protected void convert(BaseViewHolder helper, OrderListBean.DataBean item) {
+        if (2==item.getIsVoid()) {
+            //作废了
+            helper.setGone(R.id.order_status_iv,true);
+            helper.setImageResource(R.id.order_status_iv,R.mipmap.void_icon);
+        }else {
+            helper.setGone(R.id.order_status_iv,false);
+        }
         helper.setText(R.id.order_no_tv, item.getApplyNumber());
         helper.setText(R.id.order_time_tv, item.getApplyTime());
         helper.setText(R.id.apply_user_tv, item.getApplyUsername());

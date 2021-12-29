@@ -122,6 +122,7 @@ public class UseOrderDetailBean extends BaseResult {
         private String policeSignTime;
         private String policeDepartmentSeal;
         private String policeRemarks;
+        private int policeVoid;
         private String grantTime;
         private String grantUseAddress;
         private String grantUseLongitude;
@@ -153,6 +154,14 @@ public class UseOrderDetailBean extends BaseResult {
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
         private List<ExplosiveUsageReturnBean> explosiveUsageReturn;
+
+        public int getPoliceVoid() {
+            return policeVoid;
+        }
+
+        public void setPoliceVoid(int policeVoid) {
+            this.policeVoid = policeVoid;
+        }
 
         public int getId() {
             return id;

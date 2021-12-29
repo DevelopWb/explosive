@@ -82,11 +82,6 @@ public class ApplyReceiveFragment extends BaseSearchFragment implements View.OnC
         return arrays;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        requestData();
-    }
 
     @Override
     protected void requestData() {

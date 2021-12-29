@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
@@ -27,8 +26,9 @@ import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
-import com.juntai.wisdom.explorsive.main.mine.receiveApprove.ReceiveApproveActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
+import com.juntai.wisdom.explorsive.main.mine.use.UseApproveActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -105,11 +105,12 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         startActivity(new Intent(mContext, FaceCheckActivity.class));
                         break;
                     case MainPresent.APPROVE_RECEIVE:
-                        // TODO: 2021-12-20  民爆领取审批
+                        // : 2021-12-20  民爆领取审批
                         startActivity(new Intent(mContext, ReceiveApproveActivity.class));
                         break;
                     case MainPresent.APPROVE_USE:
-                        // TODO: 2021-12-20  矿场使用审批
+                        // : 2021-12-20  矿场使用审批
+                        startActivity(new Intent(mContext, UseApproveActivity.class));
                         break;
                     case MainPresent.EXPLOSIVE_MANAGE_OFFICE:
                         // TODO: 2021-12-20  民爆管理发放

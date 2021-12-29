@@ -211,14 +211,14 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 helper.setText(R.id.item_small_title_tv, textValueSelectBean.getKey());
                 TextView textViewTv = helper.getView(R.id.select_value_tv);
                 String selectTextValue = textValueSelectBean.getValue();
-                if (!isDetail||isCheck) {
+                if (isDetail||isCheck) {
+                    helper.setGone(R.id.select_arrow_right_iv, false);
+                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.sp_filled_gray_lighter);
+                } else {
                     helper.addOnClickListener(R.id.select_value_tv);
                     helper.addOnClickListener(R.id.tool_pic_iv);
                     helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
                     helper.setGone(R.id.select_arrow_right_iv, true);
-                } else {
-                    helper.setGone(R.id.select_arrow_right_iv, false);
-                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.sp_filled_gray_lighter);
                 }
                 textViewTv.setTag(textValueSelectBean);
                 textViewTv.setHint(textValueSelectBean.getHint());

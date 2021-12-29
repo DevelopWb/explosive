@@ -31,6 +31,17 @@ public class ApplyUseAdapter extends BaseQuickAdapter<OrderListBean.DataBean, Ba
 
     @Override
     protected void convert(BaseViewHolder helper, OrderListBean.DataBean item) {
+        if (2==item.getIsVoid()||2==item.getIsReturn()) {
+            //作废了
+            helper.setGone(R.id.order_status_iv,true);
+            if (2==item.getIsVoid()) {
+                helper.setImageResource(R.id.order_status_iv,R.mipmap.void_icon);
+            }else {
+                helper.setImageResource(R.id.order_status_iv,R.mipmap.reback_icon);
+            }
+        }else {
+            helper.setGone(R.id.order_status_iv,false);
+        }
         helper.setText(R.id.order_no_tv, item.getApplyNumber());
         helper.setText(R.id.order_time_tv, item.getApplyTime());
         helper.setText(R.id.apply_user_tv, item.getApplyUsername());

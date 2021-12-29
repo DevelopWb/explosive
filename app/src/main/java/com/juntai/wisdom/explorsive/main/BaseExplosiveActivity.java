@@ -513,6 +513,10 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             receiveOrderBean.setPoliceRemarks(signBean.getReason());
                             receiveOrderBean.setPoliceSign(signBean.getSignPicPath());
                             receiveOrderBean.setPoliceDepartmentSeal(signBean.getDepartmentSignPath());
+                            useOrderBean.setPoliceVoid(signBean.getIsAgree());
+                            useOrderBean.setPoliceRemarks(signBean.getReason());
+                            useOrderBean.setPoliceSign(signBean.getSignPicPath());
+                            useOrderBean.setPoliceDepartmentSeal(signBean.getDepartmentSignPath());
                             break;
                         case MainContactInterface.SIGN_TITLE_BRIGADE:
                             receiveOrderBean.setBrigadeVoid(signBean.getIsAgree());

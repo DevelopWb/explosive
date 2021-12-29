@@ -79,6 +79,8 @@ public interface AppServer {
 
     @POST(AppHttpPath.POLICE_APPROVE)
     Observable<BaseResult> policeApprove(@Body RequestBody requestBody);
+    @POST(AppHttpPath.POLICE_APPROVE_OF_MINE)
+    Observable<BaseResult> policeApproveOfMine(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.BRIGADE_APPROVE)
     Observable<BaseResult> brigadeApprove(@Body RequestBody requestBody);

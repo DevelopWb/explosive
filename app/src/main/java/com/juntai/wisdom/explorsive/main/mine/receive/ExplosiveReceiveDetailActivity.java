@@ -45,6 +45,28 @@ public class ExplosiveReceiveDetailActivity extends BaseExplosiveActivity {
                         .build(), AppHttpPath.POLICE_APPROVE
                 );
                 break;
+            case 3:
+                mPresenter.brigadeApprove(getBaseBuilder().add("username", UserInfoManager.getUserName())
+                        .add("id", String.valueOf(baseId))
+                        .add("brigadeDepartmentId", String.valueOf(UserInfoManager.getDepartmentId()))
+                        .add("brigadeSign", orderDetailBean.getBrigadeSign())
+                        .add("brigadeDepartmentSeal", orderDetailBean.getBrigadeDepartmentSeal())
+                        .add("isVoid", String.valueOf(orderDetailBean.getBrigadeVoid()))
+                        .add("reason", orderDetailBean.getBrigadeRemarks())
+                        .build(), AppHttpPath.POLICE_APPROVE
+                );
+                break;
+            case 4:
+                mPresenter.leaderApprove(getBaseBuilder().add("username", UserInfoManager.getUserName())
+                        .add("id", String.valueOf(baseId))
+                        .add("leaderDepartmentId", String.valueOf(UserInfoManager.getDepartmentId()))
+                        .add("leaderSign", orderDetailBean.getLeaderSign())
+                        .add("leaderDepartmentSeal", orderDetailBean.getLeaderDepartmentSeal())
+                        .add("isVoid", String.valueOf(orderDetailBean.getLeaderVoid()))
+                        .add("reason", orderDetailBean.getLeaderRemarks())
+                        .build(), AppHttpPath.POLICE_APPROVE
+                );
+                break;
             default:
                 break;
         }
@@ -68,35 +90,12 @@ public class ExplosiveReceiveDetailActivity extends BaseExplosiveActivity {
                         switch (orderStatus) {
                             // 1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
                             case 1:
-                                if (2 == UserInfoManager.getDepartmentType()) {
-                                    //派出所账户
-                                    adapter.setDetail(false);
-                                    adapter.setCheck(true);
-                                    adapter.setNewData(mPresenter.getRecieveApplyCheckData(dataBean));
-                                    adapter.addFooterView(getFootView());
-                                } else {
-                                    adapter.setDetail(true);
-                                    adapter.setCheck(false);
-                                    adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
-
-                                }
-                                break;
                             case 2:
-                                if (3 == UserInfoManager.getDepartmentType()) {
-                                    //治安大队账户
-                                    adapter.setDetail(false);
-                                    adapter.setCheck(true);
-                                    adapter.setNewData(mPresenter.getRecieveApplyCheckData(dataBean));
-                                    adapter.addFooterView(getFootView());
-                                } else {
-                                    adapter.setDetail(true);
-                                    adapter.setCheck(false);
-                                    adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
-
-                                }
-
+                            case 3:
+                                initAdapterData(dataBean, orderStatus+1);
                                 break;
                             default:
+                                initAdapterData(dataBean, orderStatus+1);
                                 break;
                         }
 
@@ -113,5 +112,22 @@ public class ExplosiveReceiveDetailActivity extends BaseExplosiveActivity {
         }
 
 
+    }
+
+    private void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean, int i) {
+        if (i == UserInfoManager.getDepartmentType()) {
+            adapter.setDetail(false);
+            adapter.setCheck(true);
+            adapter.setNewData(mPresenter.getRecieveApplyCheckData(dataBean));
+            if (2!=dataBean.getIsVoid()) {
+                //没有作废
+                adapter.addFooterView(getFootView());
+            }
+        } else {
+            adapter.setDetail(true);
+            adapter.setCheck(false);
+            adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
+
+        }
     }
 }

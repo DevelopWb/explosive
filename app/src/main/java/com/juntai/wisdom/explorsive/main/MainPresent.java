@@ -88,10 +88,12 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     menus.add(new MyMenuBean(MINE_MANAGER, R.mipmap.ic_launcher));
                     break;
                 case 5:
+                    menus.add(new MyMenuBean(APPROVE_RECEIVE, R.mipmap.ic_launcher));
+                    menus.add(new MyMenuBean(APPROVE_USE, R.mipmap.ic_launcher));
+                    break;
                 case 6:
                 case 7:
                     menus.add(new MyMenuBean(APPROVE_RECEIVE, R.mipmap.ic_launcher));
-                    menus.add(new MyMenuBean(APPROVE_USE, R.mipmap.ic_launcher));
                     break;
                 case 8:
                 case 9:
@@ -146,10 +148,11 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 3, null, null)));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
             } else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
             }
+
         } else {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
 
@@ -177,17 +180,17 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE,  3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
             } else {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
             }
             if (TextUtils.isEmpty(bean.getBrigadeSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 3 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE,  3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
             } else {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 2, bean.getBrigadeSign(), bean.getBrigadeDepartmentSeal(), bean.getBrigadeRemarks())));
             }
             if (TextUtils.isEmpty(bean.getLeaderSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 4 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
+                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER,  3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
             } else {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 2, bean.getLeaderSign(), bean.getLeaderDepartmentSeal(), bean.getLeaderRemarks())));
             }
@@ -371,6 +374,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public void policeApprove(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .policeApprove(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void policeApproveOfMine(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .policeApproveOfMine(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override

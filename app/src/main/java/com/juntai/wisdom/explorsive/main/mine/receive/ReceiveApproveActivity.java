@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine.receiveApprove;
+package com.juntai.wisdom.explorsive.main.mine.receive;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

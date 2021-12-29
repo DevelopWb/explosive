@@ -99,14 +99,17 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      */
     public void useApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
-        switch (dataBean.getStat()) {
-            case 1:
-                // : 2021-12-21 订单详情 矿内使用派出所审核
-                context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+        // : 2021-12-21 订单详情 矿内使用派出所审核
+        context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
-                break;
-            default:
-                break;
-        }
+//        switch (dataBean.getStat()) {
+//            case 1:
+//                // : 2021-12-21 订单详情 矿内使用派出所审核
+//                context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+//
+//                break;
+//            default:
+//                break;
+//        }
     }
 }

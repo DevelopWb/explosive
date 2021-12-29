@@ -58,6 +58,7 @@ public class AppHttpPath {
      * 派出所审批
      */
     public static final String POLICE_APPROVE = BASE + "/policeApprove";
+    public static final String POLICE_APPROVE_OF_MINE = BASE + "/minePoliceApprove";
     public static final String BRIGADE_APPROVE = BASE + "/brigadeApprove";
     public static final String LEADER_APPROVE = BASE + "/leaderApprove";
 

@@ -18,23 +18,17 @@ import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveFragment;
  * @description 描述 矿内使用申请
  * @date 2021-12-20 17:03
  */
-public class ApplyUseActivity extends BaseAppActivity<MainPresent> implements MainContactInterface {
+public class ApplyUseActivity extends BaseApplyUseActivity {
 
-    private ApplyUseFragment applyUseFragment;
 
     @Override
     protected MainPresent createPresenter() {
         return new MainPresent();
     }
 
-    @Override
-    public int getLayoutView() {
-        return R.layout.activity_apply_use;
-    }
 
     @Override
     public void initView() {
-        setTitleName("矿内使用申请");
         getTitleRightTv().setText("新增");
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,22 +41,9 @@ public class ApplyUseActivity extends BaseAppActivity<MainPresent> implements Ma
     }
 
     @Override
-    public void initData() {
-        applyUseFragment = (ApplyUseFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_serach_top);
-
+    protected String getTitleName() {
+        return "矿内使用申请";
     }
 
-    @Override
-    public void onSuccess(String tag, Object o) {
 
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (BASE_REQUEST_RESULT==resultCode) {
-            // : 2021-12-25 刷新数据
-            applyUseFragment.requestData();
-        }
-
-    }
 }

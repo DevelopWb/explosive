@@ -1,6 +1,7 @@
 package com.juntai.wisdom.explorsive.base;
 
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -98,6 +99,7 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
         mStartTimeTv = (TextView) getView(R.id.select_start_time_tv);
         mEndTimeTv = (TextView) getView(R.id.select_end_time_tv);
         mResultRv = getView(R.id.recyclerview);
+        mResultRv.setBackgroundColor(ContextCompat.getColor(mContext,R.color.gray_light));
         mSmartrefreshlayout = getView(R.id.smartrefreshlayout);
         getBaseActivity().initRecyclerview(mResultRv, getSearchResultAdapter(), LinearLayoutManager.VERTICAL);
         mStartTimeTv.setOnClickListener(this);
@@ -195,10 +197,15 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
 
     @Override
     protected void lazyLoad() {
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         clearData();
         requestData();
     }
-
 
     /**
      * 搜索的回调
