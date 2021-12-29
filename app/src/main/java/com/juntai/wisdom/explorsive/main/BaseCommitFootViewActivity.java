@@ -92,8 +92,6 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
         View view = LayoutInflater.from(mContext.getApplicationContext()).inflate(R.layout.footview_save_commit, null);
         mCommitBusinessTv = view.findViewById(R.id.commit_form_tv);
         mCommitBusinessTv.setText(getCommitTextValue());
-
-
         commitName = getCommitTextValue();
         mCommitBusinessTv.setOnClickListener(this);
         mSaveDraft = view.findViewById(R.id.save_draft_tv);

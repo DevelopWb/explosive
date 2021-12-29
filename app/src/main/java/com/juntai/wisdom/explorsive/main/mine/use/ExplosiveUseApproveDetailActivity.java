@@ -3,7 +3,6 @@ package com.juntai.wisdom.explorsive.main.mine.use;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -13,7 +12,7 @@ import com.juntai.wisdom.explorsive.utils.UserInfoManager;
  * @description 描述  民爆使用详情
  * @date 2021-12-27 11:24
  */
-public class ExplosiveUseDetailActivity extends BaseExplosiveActivity {
+public class ExplosiveUseApproveDetailActivity extends BaseExplosiveUseDetailActivity {
 
     @Override
     protected String getTitleName() {
@@ -21,12 +20,6 @@ public class ExplosiveUseDetailActivity extends BaseExplosiveActivity {
     }
 
 
-    @Override
-    public void initView() {
-        super.initView();
-        mPresenter.getExplosiveUseDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.USE_EXPLOSIVE_DETAIL);
-        adapter.setDetail(true);
-    }
     @Override
     protected void commitLogic(BaseAdapterDataBean baseAdapterDataBean) {
         //部门类型（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
@@ -49,33 +42,14 @@ public class ExplosiveUseDetailActivity extends BaseExplosiveActivity {
 
     }
 
+
     @Override
-    public void onSuccess(String tag, Object o) {
-        super.onSuccess(tag, o);
-        switch (tag) {
-            case AppHttpPath.USE_EXPLOSIVE_DETAIL:
-                UseOrderDetailBean orderDetailBean = (UseOrderDetailBean) o;
-                if (orderDetailBean != null) {
-                    UseOrderDetailBean.DataBean dataBean = orderDetailBean.getData();
-                    if (dataBean != null) {
-                        initAdapterData(dataBean,dataBean.getStat()+1);
-                    }
-                }
-                break;
-            case AppHttpPath.POLICE_APPROVE:
-                ToastUtils.toast(mContext, "提交成功");
-                finish();
-                break;
-            default:
-                break;
-        }
-
-
-    }
-    private void initAdapterData(UseOrderDetailBean.DataBean dataBean, int i) {
-        if (i == UserInfoManager.getDepartmentType()) {
-            adapter.setDetail(false);
-            adapter.setCheck(true);
+    protected void initAdapterData(UseOrderDetailBean.DataBean dataBean) {
+        // 1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
+        //             账户性质   1矿场；2派出所；3治安大队；4县公安局；5民爆仓库
+        int orderStatus = dataBean.getStat() + 1;
+        if (orderStatus == UserInfoManager.getDepartmentType()) {
+            adapter.setCanSelect(true);
             adapter.setNewData(mPresenter.getUseApplyData(dataBean,true));
             if (2!=dataBean.getIsVoid()) {
                 //没有作废
@@ -83,10 +57,10 @@ public class ExplosiveUseDetailActivity extends BaseExplosiveActivity {
             }
 
         } else {
-            adapter.setDetail(true);
-            adapter.setCheck(false);
+            adapter.setCanSelect(false);
             adapter.setNewData(mPresenter.getUseApplyData(dataBean, true));
 
         }
     }
+
 }

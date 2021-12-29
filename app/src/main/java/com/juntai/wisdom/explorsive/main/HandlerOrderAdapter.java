@@ -10,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,11 +30,9 @@ import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
-import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
-import com.juntai.wisdom.explorsive.main.mine.receive.AddReceiveApplyActivity;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -53,7 +50,7 @@ import okhttp3.FormBody;
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
     private boolean isDetail = false;//是否是详情模式
-    private boolean isCheck = false;//是否检查模式
+    private boolean canSelect = true;//是否可操作模式
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -81,8 +78,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     }
 
 
-    public void setCheck(boolean check) {
-        isCheck = check;
+    public void setCanSelect(boolean canSelect) {
+        this.canSelect = canSelect;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         switch (item.getItemType()) {
 
             case MultipleItem.ITEM_APPLY_DOSAGE:
-                if (isDetail||isCheck) {
+                if (isDetail) {
                     helper.setGone(R.id.add_dosage_iv, false);
                 } else {
                     helper.setGone(R.id.add_dosage_iv, true);
@@ -98,7 +95,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 helper.addOnClickListener(R.id.add_dosage_iv);
                 List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
                 DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
-                dosageAdapter.setDetail(isDetail||isCheck);
+                dosageAdapter.setDetail(isDetail);
                 RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
                 LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 dosageRv.setLayoutManager(dosageManager);
@@ -146,7 +143,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_EDIT:
                 TextKeyValueBean textValueEditBean = (TextKeyValueBean) item.getObject();
                 EditText editText = helper.getView(R.id.edit_value_et);
-                if (isDetail||isCheck) {
+                if (isDetail) {
                     if (TextUtils.isEmpty(textValueEditBean.getValue())) {
                         textValueEditBean.setValue("暂无");
                     }
@@ -211,14 +208,14 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 helper.setText(R.id.item_small_title_tv, textValueSelectBean.getKey());
                 TextView textViewTv = helper.getView(R.id.select_value_tv);
                 String selectTextValue = textValueSelectBean.getValue();
-                if (isDetail||isCheck) {
-                    helper.setGone(R.id.select_arrow_right_iv, false);
-                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.sp_filled_gray_lighter);
-                } else {
+                if (!isDetail||canSelect) {
                     helper.addOnClickListener(R.id.select_value_tv);
                     helper.addOnClickListener(R.id.tool_pic_iv);
                     helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
                     helper.setGone(R.id.select_arrow_right_iv, true);
+                } else {
+                    helper.setGone(R.id.select_arrow_right_iv, false);
+                    helper.setBackgroundRes(R.id.select_value_tv, R.drawable.sp_filled_gray_lighter);
                 }
                 textViewTv.setTag(textValueSelectBean);
                 textViewTv.setHint(textValueSelectBean.getHint());
@@ -248,7 +245,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_SELECT_TIME:
                 TimeBean timeBean = (TimeBean) item.getObject();
-                if (isDetail||isCheck) {
+                if (isDetail) {
                     helper.setGone(R.id.location_iv, false);
                 } else {
                     helper.addOnClickListener(R.id.location_ll);
@@ -262,7 +259,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_LOCATION:
                 LocationBean locationBean = (LocationBean) item.getObject();
-                if (isDetail||isCheck) {
+                if (isDetail) {
                     helper.setGone(R.id.location_iv, false);
                 } else {
                     helper.addOnClickListener(R.id.location_ll);

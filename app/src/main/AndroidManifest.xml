@@ -30,10 +30,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.mine.use.UseApproveActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveDeliveryDetailActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveOutDetailActivity" />
+        <activity android:name=".explorsive.main.explosiveManage.ExplosiveManageActivity" />
+        <activity android:name=".explorsive.main.explosiveManage.AllMinesActivity" />
+        <activity android:name=".explorsive.main.mine.use.UseApproveActivity" />
         <activity android:name=".explorsive.main.mine.receive.ReceiveApproveActivity" />
-        <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity" />
-        <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveDetailActivity" />
+        <activity android:name=".explorsive.main.mine.use.ExplosiveUseApproveDetailActivity" />
+        <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveApproveDetailActivity" />
         <activity android:name=".explorsive.main.mine.use.AddUseApplyActivity" />
         <activity android:name=".explorsive.main.mine.receive.AddReceiveApplyActivity" />
         <activity android:name=".explorsive.main.mine.use.ApplyUseActivity" />

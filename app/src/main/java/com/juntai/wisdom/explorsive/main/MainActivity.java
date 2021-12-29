@@ -25,6 +25,8 @@ import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
+import com.juntai.wisdom.explorsive.main.explosiveManage.AllMinesActivity;
+import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
@@ -113,7 +115,8 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         startActivity(new Intent(mContext, UseApproveActivity.class));
                         break;
                     case MainPresent.EXPLOSIVE_MANAGE_OFFICE:
-                        // TODO: 2021-12-20  民爆管理发放
+                        // : 2021-12-20  民爆管理发放
+                        startActivity(new Intent(mContext, ExplosiveManageActivity.class));
                         break;
                     case MainPresent.DOSAGE:
                         // TODO: 2021-12-20  用量

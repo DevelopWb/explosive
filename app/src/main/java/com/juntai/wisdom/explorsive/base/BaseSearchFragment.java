@@ -99,7 +99,7 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
         mStartTimeTv = (TextView) getView(R.id.select_start_time_tv);
         mEndTimeTv = (TextView) getView(R.id.select_end_time_tv);
         mResultRv = getView(R.id.recyclerview);
-        mResultRv.setBackgroundColor(ContextCompat.getColor(mContext,R.color.gray_light));
+        mResultRv.setBackgroundColor(ContextCompat.getColor(mContext, R.color.gray_light));
         mSmartrefreshlayout = getView(R.id.smartrefreshlayout);
         getBaseActivity().initRecyclerview(mResultRv, getSearchResultAdapter(), LinearLayoutManager.VERTICAL);
         mStartTimeTv.setOnClickListener(this);
@@ -236,8 +236,11 @@ public abstract class BaseSearchFragment extends BaseAppFragment<SearchPresent> 
     protected RequestBody getRequestBody() {
         FormBody.Builder builder = new FormBody.Builder();
         builder.add("mobile", UserInfoManager.getMobile())
-                .add("departmentId", String.valueOf(UserInfoManager.getDepartmentId()))
                 .add("token", UserInfoManager.getUserToken());
+        if (1 == UserInfoManager.getDepartmentType() || 2 == UserInfoManager.getDepartmentType()) {
+            //只有矿内账号和派出所账号传部门id
+            builder.add("departmentId", String.valueOf(UserInfoManager.getDepartmentId()));
+        }
         String content = mSearchContentSv.getQuery().toString();
         if (StringTools.isStringValueOk(content)) {
             builder.add("keyword", content);

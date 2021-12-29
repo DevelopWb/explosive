@@ -1,5 +1,7 @@
 package com.juntai.wisdom.explorsive.bean;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,7 @@ import java.io.Serializable;
  * 2020/3/7
  * email:954101549@qq.com
  */
-public class MyMenuBean implements Serializable {
+public class MyMenuBean  {
 
     private String name;
     private int imageId;
@@ -16,6 +18,7 @@ public class MyMenuBean implements Serializable {
         this.name = name;
         this.imageId = imageId;
     }
+
 
     public String getName() {
         return name;

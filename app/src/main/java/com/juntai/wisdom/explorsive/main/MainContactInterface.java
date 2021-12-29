@@ -30,6 +30,7 @@ public interface MainContactInterface extends IView {
     String PLAN_USE_START_TIME = "预计使用开始时间";
     String PLAN_USE_END_TIME = "预计使用结束时间";
     String SAFER = "安全员:";
+    String DELIVERY = "配送人员:";
     String BLASTER = "爆破员:";
     String MANAGER = "保管员:";
 
