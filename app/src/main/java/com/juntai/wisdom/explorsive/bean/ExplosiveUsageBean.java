@@ -1,5 +1,7 @@
 package com.juntai.wisdom.explorsive.bean;
 
+import com.contrarywind.interfaces.IPickerViewData;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021-12-25 17:13
  */
-public class ExplosiveUsageBean {
+public class ExplosiveUsageBean implements IPickerViewData {
     /**
      * typeName : 煤矿许用瞬发电雷管
      * applyQuantity : 5000
@@ -22,12 +24,21 @@ public class ExplosiveUsageBean {
     private int applyQuantity;
     private String quantityWords;
     private String typeUnit;
+    private Integer usageId;
 
     public ExplosiveUsageBean(String typeName, int applyQuantity, String quantityWords, String typeUnit) {
         this.typeName = typeName;
         this.applyQuantity = applyQuantity;
         this.quantityWords = quantityWords;
         this.typeUnit = typeUnit;
+    }
+
+    public Integer getUsageId() {
+        return usageId;
+    }
+
+    public void setUsageId(Integer usageId) {
+        this.usageId = usageId;
     }
 
     private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
@@ -70,6 +81,11 @@ public class ExplosiveUsageBean {
 
     public void setExplosiveUsageNumber(List<ExplosiveUsageNumberBean> explosiveUsageNumber) {
         this.explosiveUsageNumber = explosiveUsageNumber;
+    }
+
+    @Override
+    public String getPickerViewText() {
+        return typeName;
     }
 
     public static class ExplosiveUsageNumberBean {

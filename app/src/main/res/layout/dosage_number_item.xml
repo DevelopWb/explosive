@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/explosive_num_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/explosive_num_start_et"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="center|left"
+        android:paddingLeft="8dp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:paddingTop="8dp"
+        android:layout_marginRight="5dp"
+        android:paddingBottom="8dp"
+        android:text="名称"
+        android:textColor="@color/black"
+        android:textSize="14dp"></TextView>
+
+    <EditText
+        android:id="@+id/explosive_num_start_et"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="10"
+        android:layout_marginRight="5dp"
+        app:layout_constraintRight_toLeftOf="@+id/explosive_num_end_et"
+        app:layout_constraintTop_toTopOf="@+id/explosive_num_end_et"
+        app:layout_constraintBottom_toBottomOf="@+id/explosive_num_end_et"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="14dp"></EditText>
+    <EditText
+        android:id="@+id/explosive_num_end_et"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="10"
+        android:layout_marginRight="5dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="14dp"></EditText>
+
+
+</android.support.constraint.ConstraintLayout>

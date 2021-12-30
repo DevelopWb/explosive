@@ -14,6 +14,7 @@ import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
@@ -248,7 +249,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getRecieveApplyOutData(ReceiveOrderDetailBean.DataBean bean) {
+    public List<MultipleItem> getRecieveApplyOutData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -281,7 +282,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.DELIVERY, bean == null ? "" :
                         String.valueOf(getDeliverys(bean.getDeliveryUser())), String.format("%s%s", "请选择",
                         MainContactInterface.DELIVERY), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, ""));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, isDetail?bean.getExplosiveUsageNumberBeans():getExplosiveDosageNumbers()));
         return arrays;
     }
 
@@ -308,6 +309,16 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     private List<ExplosiveUsageBean> getExplosiveDosage() {
         List<ExplosiveUsageBean> arrays = new ArrayList<>();
         arrays.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
+        return arrays;
+    }
+    /**
+     * 获取默认的数据
+     *
+     * @return
+     */
+    private List<ExplosiveUsageNumberBean> getExplosiveDosageNumbers() {
+        List<ExplosiveUsageNumberBean> arrays = new ArrayList<>();
+        arrays.add(new ExplosiveUsageNumberBean(0,"请选择爆炸物种类", "0","0"));
         return arrays;
     }
 

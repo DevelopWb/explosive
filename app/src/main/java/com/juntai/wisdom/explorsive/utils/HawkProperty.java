@@ -16,4 +16,8 @@ public class HawkProperty {
      * 民爆使用申请
      */
     public static String   EXPLOSIVE_USE_APPLY = "explosive_use_apply";
+    /**
+     * 当前选中的爆炸物的类型
+     */
+    public static String   CURRENT_SELECTED_EXPLOSIVE_TYPES = "selected_explosive_types";
 }

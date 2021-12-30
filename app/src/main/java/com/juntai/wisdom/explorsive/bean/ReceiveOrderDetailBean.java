@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive.bean;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -120,6 +121,7 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private int isVoid;
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
+        private List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans;
         private List<DeliveryListBean.DataBean> deliveryUser;
 
         public String getPoliceDepartmentSeal() {
@@ -530,6 +532,15 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             this.deliveryUser = deliveryUser;
         }
 
+        public List<ExplosiveUsageNumberBean> getExplosiveUsageNumberBeans() {
+            if (explosiveUsageNumberBeans == null) {
+                return new ArrayList<>();
+            }
+            return explosiveUsageNumberBeans;
+        }
 
+        public void setExplosiveUsageNumberBeans(List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans) {
+            this.explosiveUsageNumberBeans = explosiveUsageNumberBeans;
+        }
     }
 }

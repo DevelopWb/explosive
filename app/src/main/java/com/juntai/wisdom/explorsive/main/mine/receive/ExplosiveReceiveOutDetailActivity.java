@@ -6,7 +6,9 @@ import android.widget.TextView;
 
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 /**
  * @aouther tobato
@@ -23,10 +25,11 @@ public class ExplosiveReceiveOutDetailActivity extends BaseReceiveDetailActivity
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
+        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES,dataBean.getExplosiveUsage());
         if (5 == UserInfoManager.getDepartmentType()) {
             adapter.setCanSelect(true);
             adapter.setCanAddIssue(true);
-            adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean));
+            adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean,false));
             if (2 != dataBean.getIsVoid()) {
                 //没有作废
                 adapter.addFooterView(getFootView());

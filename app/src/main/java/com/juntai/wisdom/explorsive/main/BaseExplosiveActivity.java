@@ -26,6 +26,7 @@ import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
 import com.juntai.wisdom.explorsive.bean.ItemCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -237,6 +238,12 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 //添加用量
                                 List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) multipleItem.getObject();
                                 explosiveUsageBeans.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
+                                adapter.notifyItemChanged(position);
+                                break;
+                            case R.id.add_issue_iv:
+                                //添加编号
+                                List<ExplosiveUsageNumberBean> explosiveUsageNumBeans = (List<ExplosiveUsageNumberBean>) multipleItem.getObject();
+                                explosiveUsageNumBeans.add(new ExplosiveUsageNumberBean(0,"请选择爆炸物种类", "0","0"));
                                 adapter.notifyItemChanged(position);
                                 break;
 

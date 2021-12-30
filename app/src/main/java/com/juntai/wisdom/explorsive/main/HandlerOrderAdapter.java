@@ -29,6 +29,7 @@ import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
+import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -37,9 +38,12 @@ import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
+import com.juntai.wisdom.explorsive.main.mine.DosageNumberAdapter;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -104,42 +108,30 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                     helper.setGone(R.id.add_issue_iv, false);
                 }
                 helper.addOnClickListener(R.id.add_issue_iv);
-//                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
-//                DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
-//                dosageAdapter.setDetail(isDetail);
-//                RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
-//                LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-//                dosageRv.setLayoutManager(dosageManager);
-//                dosageRv.setAdapter(dosageAdapter);
-//                dosageAdapter.setNewData(explosiveUsageBeans);
-//                dosageAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-//                    @Override
-//                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                        ExplosiveUsageBean explosiveUsageBean = (ExplosiveUsageBean) adapter.getData().get(position);
-//                        AppNetModule
-//                                .createrRetrofit()
-//                                .getExplosiveTypes(getBaseBuilder().build())
-//                                .compose(RxScheduler.ObsIoMain((BaseExplosiveActivity) mContext))
-//                                .subscribe(new BaseObserver<ExplosiveTypeBean>((BaseExplosiveActivity) mContext) {
-//                                    @Override
-//                                    public void onSuccess(ExplosiveTypeBean o) {
-//                                        PickerManager.getInstance().showOptionPicker(mContext, o.getData(), new PickerManager.OnOptionPickerSelectedListener() {
-//                                            @Override
-//                                            public void onOptionsSelect(int options1, int option2, int options3, View v) {
-//                                                ExplosiveTypeBean.DataBean dataBean = o.getData().get(options1);
-//                                                explosiveUsageBean.setTypeName(dataBean.getName());
-//                                                explosiveUsageBean.setTypeUnit(dataBean.getUnit());
-//                                                adapter.notifyItemChanged(position);
-//                                            }
-//                                        });
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(String msg) {
-//                                    }
-//                                });
-//                    }
-//                });
+                List<ExplosiveUsageNumberBean> numberBeans = (List<ExplosiveUsageNumberBean>) item.getObject();
+                DosageNumberAdapter numberAdapter = new DosageNumberAdapter(R.layout.dosage_number_item);
+                numberAdapter.setDetail(!canAddIssue);
+                RecyclerView dosageNumRv = helper.getView(R.id.apply_issue_rv);
+                LinearLayoutManager dosageNumManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                dosageNumRv.setLayoutManager(dosageNumManager);
+                dosageNumRv.setAdapter(numberAdapter);
+                numberAdapter.setNewData(numberBeans);
+                numberAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                    @Override
+                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        ExplosiveUsageNumberBean  numberBean = (ExplosiveUsageNumberBean) adapter.getData().get(position);
+                        List<ExplosiveUsageBean> explosiveUsageBeans = Hawk.get(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES);
+                        PickerManager.getInstance().showOptionPicker(mContext, explosiveUsageBeans, new PickerManager.OnOptionPickerSelectedListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                                ExplosiveUsageBean dataBean = explosiveUsageBeans.get(options1);
+                                numberBean.setUsageId(dataBean.getUsageId());
+                                numberBean.setTypeName(dataBean.getTypeName());
+                                adapter.notifyItemChanged(position);
+                            }
+                        });
+                    }
+                });
                 break;
             case MultipleItem.ITEM_APPLY_DOSAGE:
                 if (isDetail) {
