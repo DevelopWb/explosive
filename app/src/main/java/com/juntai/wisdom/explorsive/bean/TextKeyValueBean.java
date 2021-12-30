@@ -2,6 +2,9 @@ package com.juntai.wisdom.explorsive.bean;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author: tobato
  * @Description: 作用描述
@@ -11,17 +14,30 @@ import android.text.TextUtils;
  */
 public class TextKeyValueBean {
 
-    private  String key;
-    private  String value;
+    private String key;
+    private String value;
     private String hint;
-    private  int id;
+    private int id;
     private int type;//0代表高度固定的edittext  1代表高度不固定的edittext
     private boolean isImportant;//是否必填
     private boolean valueGravityToRight;//value靠右
+    //选择配送人员的时候使用
+    private List<DeliveryListBean.DataBean> deliveryBean;
 
     public TextKeyValueBean(String key, String value) {
         this.key = key;
         this.value = value;
+    }
+
+    public List<DeliveryListBean.DataBean> getDeliveryBean() {
+        if (deliveryBean == null) {
+            return new ArrayList<>();
+        }
+        return deliveryBean;
+    }
+
+    public void setDeliveryBean(List<DeliveryListBean.DataBean> deliveryBean) {
+        this.deliveryBean = deliveryBean;
     }
 
     public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant) {

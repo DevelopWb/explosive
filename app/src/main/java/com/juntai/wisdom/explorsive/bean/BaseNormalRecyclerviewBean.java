@@ -1,7 +1,5 @@
 package com.juntai.wisdom.explorsive.bean;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-
 
 /**
  * @Author: tobato
@@ -13,27 +11,49 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 public class BaseNormalRecyclerviewBean {
 
 
-    private  int  type = 0;
+    private  int recyclerType ;
+    private  int layoutManagerType;
+    //当是GridLayoutManager的时候 列数
+    private  int spanCount;
     private Object  object ;
-    private BaseQuickAdapter adapter;
 
-    public BaseNormalRecyclerviewBean(int type, Object object, BaseQuickAdapter adapter) {
-        this.type = type;
+    public BaseNormalRecyclerviewBean(int recyclerType, int layoutManagerType, Object object) {
+        this.recyclerType = recyclerType;
+        this.layoutManagerType = layoutManagerType;
         this.object = object;
-        this.adapter = adapter;
     }
 
-    public int getType() {
-        return type;
+    public BaseNormalRecyclerviewBean(int recyclerType, int layoutManagerType, int spanCount, Object object) {
+        this.recyclerType = recyclerType;
+        this.layoutManagerType = layoutManagerType;
+        this.spanCount = spanCount;
+        this.object = object;
     }
 
-    public BaseQuickAdapter getAdapter() {
-        return adapter;
+    public int getSpanCount() {
+        return spanCount;
     }
 
-    public void setAdapter(BaseQuickAdapter adapter) {
-        this.adapter = adapter;
+    public void setSpanCount(int spanCount) {
+        this.spanCount = spanCount;
     }
+
+    public void setRecyclerType(int recyclerType) {
+        this.recyclerType = recyclerType;
+    }
+
+    public int getLayoutManagerType() {
+        return layoutManagerType;
+    }
+
+    public void setLayoutManagerType(int layoutManagerType) {
+        this.layoutManagerType = layoutManagerType;
+    }
+
+    public int getRecyclerType() {
+        return recyclerType;
+    }
+
 
     public Object getObject() {
         return object;

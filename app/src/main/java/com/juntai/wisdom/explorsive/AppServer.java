@@ -2,8 +2,10 @@ package com.juntai.wisdom.explorsive;
 
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
+import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
+import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
@@ -79,6 +81,7 @@ public interface AppServer {
 
     @POST(AppHttpPath.POLICE_APPROVE)
     Observable<BaseResult> policeApprove(@Body RequestBody requestBody);
+
     @POST(AppHttpPath.POLICE_APPROVE_OF_MINE)
     Observable<BaseResult> policeApproveOfMine(@Body RequestBody requestBody);
 
@@ -87,6 +90,9 @@ public interface AppServer {
 
     @POST(AppHttpPath.LEADER_APPROVE)
     Observable<BaseResult> leaderApprove(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.GET_DELIVERY_LIST)
+    Observable<DeliveryListBean> getDeliveryList(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.USE_EXPLOSIVE_DETAIL)
     Observable<UseOrderDetailBean> getExplosiveUseDetail(@Body RequestBody requestBody);

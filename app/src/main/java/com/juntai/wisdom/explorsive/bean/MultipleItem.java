@@ -30,12 +30,14 @@ public class MultipleItem implements MultiItemEntity {
     public static final int ITEM_DIVIDER = 18;//  分割线
     public static final int ITEM_APPLY_DOSAGE = 19;//  申请用量
     public static final int ITEM_SELECT_TIME = 20;//  选择时间
+    public static final int ITEM_ISSUE_NO = 21;//  发放编号
 
 
 
 
     public static final int  BASE_RECYCLERVIEW_TYPE_TEXT_VALUE = 100;//textvalue。类型
-    int  BASE_RECYCLERVIEW_TYPE_OTHER = 101;//其他。类型
+    public static final int  BASE_RECYCLERVIEW_TYPE_CHECKBOX = 101;//textvalue。类型
+    int  BASE_RECYCLERVIEW_TYPE_OTHER = 110;//其他。类型
     private int itemType;
     private Object object;
 

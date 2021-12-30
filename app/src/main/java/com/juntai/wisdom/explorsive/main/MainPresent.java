@@ -12,8 +12,10 @@ import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.base.BaseAppPresent;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
+import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -118,8 +120,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
-                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerDataInUse(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE, 1,
+                getApplyerDataInUse(bean, isDetail))));
         if (!isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_START_TIME, bean == null ? null : bean.getEstimateStartUseTime(), "请选择预计使用开始时间")));
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT_TIME, new TimeBean(MainContactInterface.PLAN_USE_END_TIME, bean == null ? null : bean.getEstimateEndUseTime(), "请选择预计使用结束时间")));
@@ -169,8 +171,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
-                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean, isDetail), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE, 1,
+                getApplyerData(bean, isDetail))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
@@ -213,8 +215,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
-                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean, true), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE, 1,
+                getApplyerData(bean, true))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
@@ -250,8 +252,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
-                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE,
-                getApplyerData(bean, true), new TextKeyValueAdapter(R.layout.text_key_value_item))));
+                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE, 1,
+                getApplyerData(bean, true))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude())));
@@ -279,7 +281,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.DELIVERY, bean == null ? "" :
                         String.valueOf(getDeliverys(bean.getDeliveryUser())), String.format("%s%s", "请选择",
                         MainContactInterface.DELIVERY), 0, true)));
-
+        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, ""));
         return arrays;
     }
 
@@ -289,9 +291,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @param deliveryUser
      * @return
      */
-    private String getDeliverys(List<ReceiveOrderDetailBean.DataBean.DeliveryUserBean> deliveryUser) {
+    private String getDeliverys(List<DeliveryListBean.DataBean> deliveryUser) {
         StringBuilder sb = new StringBuilder(deliveryUser.size());
-        for (ReceiveOrderDetailBean.DataBean.DeliveryUserBean deliveryUserBean : deliveryUser) {
+        for (DeliveryListBean.DataBean deliveryUserBean : deliveryUser) {
             sb.append(deliveryUserBean.getUsername());
         }
         return sb.toString();
@@ -498,6 +500,27 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override
                     public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void getDeliveryList(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getDeliveryList(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<DeliveryListBean>(getView()) {
+                    @Override
+                    public void onSuccess(DeliveryListBean o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }

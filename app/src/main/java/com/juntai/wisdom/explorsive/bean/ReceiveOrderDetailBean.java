@@ -120,7 +120,7 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private int isVoid;
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
-        private List<DeliveryUserBean> deliveryUser;
+        private List<DeliveryListBean.DataBean> deliveryUser;
 
         public String getPoliceDepartmentSeal() {
             return policeDepartmentSeal == null ? "" : policeDepartmentSeal;
@@ -522,29 +522,14 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             this.explosiveUsage = explosiveUsage;
         }
 
-        public List<DeliveryUserBean> getDeliveryUser() {
+        public List<DeliveryListBean.DataBean> getDeliveryUser() {
             return deliveryUser;
         }
 
-        public void setDeliveryUser(List<DeliveryUserBean> deliveryUser) {
+        public void setDeliveryUser(List<DeliveryListBean.DataBean> deliveryUser) {
             this.deliveryUser = deliveryUser;
         }
 
 
-        public static class DeliveryUserBean {
-            /**
-             * username : 王进喜
-             */
-
-            private String username;
-
-            public String getUsername() {
-                return username;
-            }
-
-            public void setUsername(String username) {
-                this.username = username;
-            }
-        }
     }
 }

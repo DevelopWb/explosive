@@ -2,11 +2,12 @@ package com.juntai.wisdom.explorsive;
 
 public class AppHttpPath {
 
-    //            public static final String BASE = "http://192.168.124.115:8080/disabledPersonsFederation/u/app";
     public static final String BASE_ROOT = "http://192.168.124.118:8080/explosive-manage/";
+    //    public static final String BASE_ROOT = "http://www.juntaikeji.com:20708/explosive-manage/";
     public static final String BASE = BASE_ROOT + "app";
 
     public static final String BASE_IMAGE = "http://192.168.124.118:9600";
+//    public static final String BASE_IMAGE = "http://www.juntaikeji.com:20710";
 
 
     /**
@@ -61,6 +62,11 @@ public class AppHttpPath {
     public static final String POLICE_APPROVE_OF_MINE = BASE + "/minePoliceApprove";
     public static final String BRIGADE_APPROVE = BASE + "/brigadeApprove";
     public static final String LEADER_APPROVE = BASE + "/leaderApprove";
+
+    /**
+     * 配送人员列表
+     */
+    public static final String GET_DELIVERY_LIST = BASE + "/getDistributionUserList";
 
 
 

@@ -17,17 +17,22 @@ import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.act.LocateSelectionActivity;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
+import com.juntai.wisdom.explorsive.base.BaseMultiselectBottomDialog;
 import com.juntai.wisdom.explorsive.base.customview.GestureSignatureView;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
+import com.juntai.wisdom.explorsive.bean.ItemCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
@@ -72,6 +77,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
     protected int baseId;
+    private BaseMultiselectBottomDialog multiselectBottomDialog;
 
     protected abstract String getTitleName();
 
@@ -183,6 +189,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             case MainContactInterface.MANAGER:
                                 mPresenter.getReceiverOfMine(getBaseBuilder().build(), MainContactInterface.MANAGER);
                                 break;
+                            case MainContactInterface.DELIVERY:
+                                mPresenter.getDeliveryList(getBaseBuilder().build(), AppHttpPath.GET_DELIVERY_LIST);
+                                break;
                             default:
                                 break;
                         }
@@ -196,18 +205,17 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 mSignIv = (ImageView) view.findViewById(R.id.user_sign_iv);
                                 if (MainContactInterface.SIGN_TITLE_UNIT.equals(itemSignBean.getSignTitle())) {
                                     showSignatureView();
-                                }else {
-                                    if (0==itemSignBean.getIsAgree()) {
-                                        ToastUtils.toast(mContext,"请选择是否同意申请");
+                                } else {
+                                    if (0 == itemSignBean.getIsAgree()) {
+                                        ToastUtils.toast(mContext, "请选择是否同意申请");
                                         return;
                                     }
-                                    if (2==itemSignBean.getIsAgree()&&TextUtils.isEmpty(itemSignBean.getReason())) {
-                                        ToastUtils.toast(mContext,"请输入拒绝申请的原因");
+                                    if (2 == itemSignBean.getIsAgree() && TextUtils.isEmpty(itemSignBean.getReason())) {
+                                        ToastUtils.toast(mContext, "请输入拒绝申请的原因");
                                         return;
                                     }
                                     showSignatureView();
                                 }
-
 
 
                                 break;
@@ -386,6 +394,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
             }
             bottomSheetDialog = null;
         }
+        releaseDialog();
         //清除签名文件
         FileCacheUtils.clearImage(getSignPath(FileCacheUtils.SIGN_PIC_NAME));
     }
@@ -408,7 +417,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
                     BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
 
-                    switch (baseNormalRecyclerviewBean.getType()) {
+                    switch (baseNormalRecyclerviewBean.getRecyclerType()) {
                         case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
                             List<TextKeyValueBean> textKeyValueBeans = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
                             for (TextKeyValueBean textKeyValueBean : textKeyValueBeans) {
@@ -552,6 +561,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             useOrderBean.setSafekeepingId(id);
                             useOrderBean.setSafekeepingName(selectValue);
                             break;
+                        case MainContactInterface.DELIVERY:
+                           receiveOrderBean.setDeliveryUser(selectBean.getDeliveryBean());
+                            break;
                         default:
                             break;
                     }
@@ -633,7 +645,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     itemSignBean.setSignStatus(2);
                     itemSignBean.setSignTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                     if (!MainContactInterface.SIGN_TITLE_UNIT.equals(itemSignBean.getSignTitle())) {
-                        itemSignBean.setReason(1==itemSignBean.getIsAgree()?"同意申请":itemSignBean.getReason());
+                        itemSignBean.setReason(1 == itemSignBean.getIsAgree() ? "同意申请" : itemSignBean.getReason());
                     }
                     adapter.notifyItemChanged(currentPosition);
                 }
@@ -650,6 +662,51 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
             case MainContactInterface.MANAGER:
                 //获取场内领取人信息
                 initMineOfReceiver(o, 3);
+                break;
+            case AppHttpPath.GET_DELIVERY_LIST:
+                DeliveryListBean  deliveryListBean = (DeliveryListBean) o;
+                if (deliveryListBean != null) {
+                    List<DeliveryListBean.DataBean> arrays = deliveryListBean.getData();
+                    if (arrays != null) {
+                        if (multiselectBottomDialog==null) {
+                            multiselectBottomDialog = new BaseMultiselectBottomDialog();
+                        }
+                        List<ItemCheckBoxBean> checkBoxBeans = new ArrayList<>();
+                        for (DeliveryListBean.DataBean array : arrays) {
+                            checkBoxBeans.add(new ItemCheckBoxBean(array.getUserId(),array.getUsername()));
+                        }
+                        multiselectBottomDialog.initAdapterData(new BaseNormalRecyclerviewBean(MultipleItem.BASE_RECYCLERVIEW_TYPE_CHECKBOX,1,new RecycleCheckBoxBean(checkBoxBeans,"",false)));
+                        multiselectBottomDialog.show(getSupportFragmentManager(),"array");
+                        multiselectBottomDialog.setOnBottomDialogCallBack(new BaseMultiselectBottomDialog.OnDialogItemClick() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onConfirmClick(BaseQuickAdapter checkAdapter) {
+                                List<ItemCheckBoxBean> arrays = checkAdapter.getData();
+                                List<DeliveryListBean.DataBean> selectedUsers = new ArrayList<>();
+                                StringBuilder sb = new StringBuilder(arrays.size());
+                                for (ItemCheckBoxBean array : arrays) {
+                                    if (array.isSelecte()) {
+                                        sb.append(array.getName()+" ");
+                                        selectedUsers.add(new DeliveryListBean.DataBean(array.getId(),array.getName()));
+                                    }
+
+                                }
+                                if (sb.toString().trim().length()==0) {
+                                    ToastUtils.toast(mContext,"请选择配送人员");
+                                    return;
+                                }
+                                multiselectBottomDialog.dismiss();
+                                selectBean.setValue(sb.toString());
+                                selectBean.setDeliveryBean(selectedUsers);
+                                adapter.notifyItemChanged(currentPosition);
+                            }
+                        });
+                    }
+                }
                 break;
             default:
                 break;
@@ -687,5 +744,20 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
     public interface OnSignedCallBack {
         void signed(String picPath);
+    }
+
+    /**
+     * 释放dialog
+     */
+    private void releaseDialog() {
+        if (multiselectBottomDialog != null) {
+            if (multiselectBottomDialog.isAdded()) {
+                multiselectBottomDialog.setOnBottomDialogCallBack(null);
+                if (multiselectBottomDialog.getDialog().isShowing()){
+                    multiselectBottomDialog.dismiss();
+                }
+            }
+        }
+        multiselectBottomDialog = null;
     }
 }

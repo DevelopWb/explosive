@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive.main;
 
 
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,6 +24,8 @@ import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppNetModule;
+import com.juntai.wisdom.explorsive.base.CheckBoxAdapter;
+import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
@@ -30,6 +33,7 @@ import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
+import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
@@ -50,7 +54,13 @@ import okhttp3.FormBody;
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
     private boolean isDetail = false;//是否是详情模式
-    private boolean canSelect = true;//是否可操作模式
+    private boolean canSelect = false;//是否可操作模式
+    private boolean canAddIssue = false;//是否可操作模式
+
+
+    public void setCanAddIssue(boolean canAddIssue) {
+        this.canAddIssue = canAddIssue;
+    }
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -69,6 +79,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_SIGN, R.layout.item_layout_type_sign);
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
+        addItemType(MultipleItem.ITEM_ISSUE_NO, R.layout.item_layout_issue_no);
 
 
     }
@@ -86,6 +97,50 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
 
+            case MultipleItem.ITEM_ISSUE_NO:
+                if (canAddIssue || !isDetail) {
+                    helper.setGone(R.id.add_issue_iv, true);
+                } else {
+                    helper.setGone(R.id.add_issue_iv, false);
+                }
+                helper.addOnClickListener(R.id.add_issue_iv);
+//                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
+//                DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
+//                dosageAdapter.setDetail(isDetail);
+//                RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
+//                LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+//                dosageRv.setLayoutManager(dosageManager);
+//                dosageRv.setAdapter(dosageAdapter);
+//                dosageAdapter.setNewData(explosiveUsageBeans);
+//                dosageAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+//                    @Override
+//                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+//                        ExplosiveUsageBean explosiveUsageBean = (ExplosiveUsageBean) adapter.getData().get(position);
+//                        AppNetModule
+//                                .createrRetrofit()
+//                                .getExplosiveTypes(getBaseBuilder().build())
+//                                .compose(RxScheduler.ObsIoMain((BaseExplosiveActivity) mContext))
+//                                .subscribe(new BaseObserver<ExplosiveTypeBean>((BaseExplosiveActivity) mContext) {
+//                                    @Override
+//                                    public void onSuccess(ExplosiveTypeBean o) {
+//                                        PickerManager.getInstance().showOptionPicker(mContext, o.getData(), new PickerManager.OnOptionPickerSelectedListener() {
+//                                            @Override
+//                                            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+//                                                ExplosiveTypeBean.DataBean dataBean = o.getData().get(options1);
+//                                                explosiveUsageBean.setTypeName(dataBean.getName());
+//                                                explosiveUsageBean.setTypeUnit(dataBean.getUnit());
+//                                                adapter.notifyItemChanged(position);
+//                                            }
+//                                        });
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(String msg) {
+//                                    }
+//                                });
+//                    }
+//                });
+                break;
             case MultipleItem.ITEM_APPLY_DOSAGE:
                 if (isDetail) {
                     helper.setGone(R.id.add_dosage_iv, false);
@@ -208,7 +263,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 helper.setText(R.id.item_small_title_tv, textValueSelectBean.getKey());
                 TextView textViewTv = helper.getView(R.id.select_value_tv);
                 String selectTextValue = textValueSelectBean.getValue();
-                if (!isDetail||canSelect) {
+                if (!isDetail || canSelect) {
                     helper.addOnClickListener(R.id.select_value_tv);
                     helper.addOnClickListener(R.id.tool_pic_iv);
                     helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
@@ -228,20 +283,41 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
                 //recycleview
                 BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
-                RecyclerView recyclerView = helper.getView(R.id.item_normal_rv);
-                LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL
-                        , false);
-                BaseQuickAdapter adapter = baseNormalRecyclerviewBean.getAdapter();
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(manager);
-                switch (baseNormalRecyclerviewBean.getType()) {
-                    case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
-                        List<TextKeyValueBean> arrays = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
-                        adapter.setNewData(arrays);
+                int layoutType = baseNormalRecyclerviewBean.getLayoutManagerType();
+                LinearLayoutManager manager = null;
+                BaseQuickAdapter adapter = null;
+                switch (layoutType) {
+                    case 0:
+                        manager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL
+                                , false);
+                        break;
+                    case 1:
+                        manager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL
+                                , false);
+                        break;
+                    case 2:
+                        manager = new GridLayoutManager(mContext, baseNormalRecyclerviewBean.getSpanCount());
                         break;
                     default:
                         break;
                 }
+                RecyclerView recyclerView = helper.getView(R.id.item_normal_rv);
+                switch (baseNormalRecyclerviewBean.getRecyclerType()) {
+                    case MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE:
+                        adapter = new TextKeyValueAdapter(R.layout.text_key_value_item);
+                        List<TextKeyValueBean> arrays = (List<TextKeyValueBean>) baseNormalRecyclerviewBean.getObject();
+                        adapter.setNewData(arrays);
+                        break;
+                    case MultipleItem.BASE_RECYCLERVIEW_TYPE_CHECKBOX:
+                        RecycleCheckBoxBean recycleBean = (RecycleCheckBoxBean) baseNormalRecyclerviewBean.getObject();
+                        adapter = new CheckBoxAdapter(R.layout.item_checkboxes,
+                                recycleBean.getData(), recycleBean.isSigleSelect());
+                        break;
+                    default:
+                        break;
+                }
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(manager);
                 break;
             case MultipleItem.ITEM_SELECT_TIME:
                 TimeBean timeBean = (TimeBean) item.getObject();
@@ -356,7 +432,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                     helper.setText(R.id.sign_time_tv, signBean.getSignTime());
                     if (!TextUtils.isEmpty(signBean.getReason())) {
                         helper.setGone(R.id.reason_detail_tv, true);
-                        helper.setText(R.id.reason_detail_tv,signBean.getReason());
+                        helper.setText(R.id.reason_detail_tv, signBean.getReason());
                     }
 
                 } else {

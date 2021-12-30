@@ -25,6 +25,7 @@ public class ExplosiveReceiveOutDetailActivity extends BaseReceiveDetailActivity
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
         if (5 == UserInfoManager.getDepartmentType()) {
             adapter.setCanSelect(true);
+            adapter.setCanAddIssue(true);
             adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean));
             if (2 != dataBean.getIsVoid()) {
                 //没有作废
@@ -32,6 +33,7 @@ public class ExplosiveReceiveOutDetailActivity extends BaseReceiveDetailActivity
             }
         } else {
             adapter.setCanSelect(false);
+            adapter.setCanAddIssue(false);
             adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
 
         }
