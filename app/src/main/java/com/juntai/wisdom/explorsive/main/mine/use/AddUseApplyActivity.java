@@ -69,8 +69,9 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     protected void saveDraft() {
-        if (getBaseAdapterData(true) != null) {
-            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, getBaseAdapterData(true).getUseOrderBean());
+        BaseAdapterDataBean dataBean = getBaseAdapterData(true);
+        if (dataBean!= null) {
+            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, dataBean.getUseOrderBean());
             ToastUtils.toast(mContext, "草稿保存成功");
             finish();
         }

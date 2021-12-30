@@ -15,7 +15,9 @@ import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveApproveDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveDeliveryDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveOutDetailActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveOutOperateActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
 import okhttp3.RequestBody;
 
@@ -88,11 +90,24 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 break;
             case 4:
-                //出库
-                context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                //  待出库状态
+                if (5 == UserInfoManager.getDepartmentType()) {
+                    //可操作
+                    context.startActivity(new Intent(context, ExplosiveReceiveOutOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                }else {
+                    //只可查看   只能看到出库之前的状态
+                    context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                }
                 break;
             case 5:
-                context.startActivity(new Intent(context, ExplosiveReceiveDeliveryDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                if (5 == UserInfoManager.getDepartmentType()) {
+                    //可操作
+
+                }else {
+                    context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                }
                 break;
             default:
                 break;

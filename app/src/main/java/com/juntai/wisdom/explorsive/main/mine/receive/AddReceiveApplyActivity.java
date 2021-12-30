@@ -68,8 +68,9 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     protected void saveDraft() {
-        if (getBaseAdapterData(true) != null) {
-            Hawk.put(HawkProperty.EXPLOSIVE_RECEIVE_APPLY, getBaseAdapterData(true).getReceiveOrderBean());
+        BaseAdapterDataBean dataBean = getBaseAdapterData(true);
+        if (dataBean!= null) {
+            Hawk.put(HawkProperty.EXPLOSIVE_RECEIVE_APPLY, dataBean.getReceiveOrderBean());
             ToastUtils.toast(mContext, "草稿保存成功");
             finish();
         }

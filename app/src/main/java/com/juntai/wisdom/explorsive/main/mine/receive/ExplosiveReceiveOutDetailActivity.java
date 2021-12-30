@@ -1,14 +1,23 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.juntai.disabled.basecomponent.utils.DialogUtil;
+import com.juntai.disabled.basecomponent.utils.GsonTools;
+import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
+import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
+import com.juntai.wisdom.explorsive.bean.OutHouseBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
+
+import okhttp3.RequestBody;
 
 /**
  * @aouther tobato
@@ -25,46 +34,9 @@ public class ExplosiveReceiveOutDetailActivity extends BaseReceiveDetailActivity
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
-        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES,dataBean.getExplosiveUsage());
-        if (5 == UserInfoManager.getDepartmentType()) {
-            adapter.setCanSelect(true);
-            adapter.setCanAddIssue(true);
-            adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean,false));
-            if (2 != dataBean.getIsVoid()) {
-                //没有作废
-                adapter.addFooterView(getFootView());
-            }
-        } else {
-            adapter.setCanSelect(false);
-            adapter.setCanAddIssue(false);
-            adapter.setNewData(mPresenter.getRecieveApplyData(dataBean, true));
+        adapter.setCanSelect(false);
+        adapter.setCanAddIssue(false);
+        adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean));
 
-        }
-
-    }
-
-    protected View getFootView() {
-        View view = LayoutInflater.from(mContext.getApplicationContext()).inflate(R.layout.footview_save_commit, null);
-        TextView mCommitBusinessTv = view.findViewById(R.id.commit_form_tv);
-        mCommitBusinessTv.setText("出库提交");
-        mCommitBusinessTv.setOnClickListener(this);
-        TextView mSaveDraft = view.findViewById(R.id.save_draft_tv);
-        mSaveDraft.setOnClickListener(this);
-        return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.commit_form_tv:
-                // TODO: 2021-12-29 提交出库
-                break;
-            case R.id.save_draft_tv:
-                // TODO: 2021-12-29 保存草稿
-                break;
-            default:
-                break;
-        }
     }
 }

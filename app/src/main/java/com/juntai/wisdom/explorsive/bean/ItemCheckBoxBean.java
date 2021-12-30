@@ -9,41 +9,41 @@ package com.juntai.wisdom.explorsive.bean;
  */
 public class ItemCheckBoxBean {
 
-    private int id;//序号
-    private String name;
+    private int itemId;//序号
+    private String itemName;
     private boolean selecte;
 
     public ItemCheckBoxBean(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this.itemId = id;
+        this.itemName = name;
     }
 
     public ItemCheckBoxBean(String key, boolean selecte) {
-        this.name = key;
+        this.itemName = key;
         this.selecte = selecte;
     }
 
     public ItemCheckBoxBean(int index, String key, boolean selecte) {
-        this.id = index;
-        this.name = key;
+        this.itemId = index;
+        this.itemName = key;
         this.selecte = selecte;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public String getName() {
-        return name == null ? "" : name;
+    public String getItemName() {
+        return itemName == null ? "" : itemName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? "" : name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName == null ? "" : itemName;
     }
 
     public boolean isSelecte() {

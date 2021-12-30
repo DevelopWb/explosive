@@ -446,6 +446,10 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                         receiveOrderBean.setApplyDepartmentName(applyValue);
                                         useOrderBean.setApplyDepartmentName(applyValue);
                                         break;
+                                    case MainContactInterface.APPLY_TIME:
+                                        receiveOrderBean.setApplyTime(applyValue);
+                                        useOrderBean.setApplyTime(applyValue);
+                                        break;
                                     case MainContactInterface.APPLY_USER_UNIT_ADDR:
                                         receiveOrderBean.setApplyDepartmentAddress(applyValue);
                                         useOrderBean.setApplyDepartmentAddress(applyValue);
@@ -631,6 +635,10 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     useOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     break;
+                case MultipleItem.ITEM_ISSUE_NO:
+                    List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans = (List<ExplosiveUsageNumberBean>) item.getObject();
+                    receiveOrderBean.setExplosiveUsageNumber(explosiveUsageNumberBeans);
+                    break;
                 default:
                     break;
             }
@@ -697,8 +705,8 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 StringBuilder sb = new StringBuilder(arrays.size());
                                 for (ItemCheckBoxBean array : arrays) {
                                     if (array.isSelecte()) {
-                                        sb.append(array.getName()+" ");
-                                        selectedUsers.add(new DeliveryListBean.DataBean(array.getId(),array.getName()));
+                                        sb.append(array.getItemName()+"\u3000");
+                                        selectedUsers.add(new DeliveryListBean.DataBean(array.getItemId(),array.getItemName()));
                                     }
 
                                 }

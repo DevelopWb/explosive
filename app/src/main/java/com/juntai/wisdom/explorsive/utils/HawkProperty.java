@@ -20,4 +20,9 @@ public class HawkProperty {
      * 当前选中的爆炸物的类型
      */
     public static String   CURRENT_SELECTED_EXPLOSIVE_TYPES = "selected_explosive_types";
+
+    /**
+     * 出库单
+     */
+    public static String   SAVE_OUT_ORDER = "out_order";
 }

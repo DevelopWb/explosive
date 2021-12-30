@@ -41,7 +41,7 @@ public class CheckBoxAdapter extends BaseQuickAdapter<ItemCheckBoxBean, BaseView
 //        }else {
 //            checkBox.setEnabled(true);
 //        }
-        checkBox.setText(item.getName());
+        checkBox.setText(item.getItemName());
         if (item.isSelecte()) {
             checkBox.setChecked(true);
         } else {
@@ -63,7 +63,6 @@ public class CheckBoxAdapter extends BaseQuickAdapter<ItemCheckBoxBean, BaseView
                 } else {
                     item.setSelecte(true);
                 }
-                item.setId(helper.getAdapterPosition());
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {

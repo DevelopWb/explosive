@@ -47,6 +47,14 @@ public class TextKeyValueBean {
         this.type = type;
         this.isImportant = isImportant;
     }
+    public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant,List<DeliveryListBean.DataBean> deliveryBean) {
+        this.key = key;
+        this.value = value;
+        this.hint = hint;
+        this.type = type;
+        this.isImportant = isImportant;
+        this.deliveryBean = deliveryBean;
+    }
 
     public int getId() {
         return id;

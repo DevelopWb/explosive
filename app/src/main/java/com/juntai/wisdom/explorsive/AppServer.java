@@ -93,6 +93,8 @@ public interface AppServer {
 
     @POST(AppHttpPath.GET_DELIVERY_LIST)
     Observable<DeliveryListBean> getDeliveryList(@Body RequestBody requestBody);
+    @POST(AppHttpPath.OUT_HOUSE)
+    Observable<BaseResult> outHouse(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.USE_EXPLOSIVE_DETAIL)
     Observable<UseOrderDetailBean> getExplosiveUseDetail(@Body RequestBody requestBody);

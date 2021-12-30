@@ -32,6 +32,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveDeliveryDetailActivity"></activity>
         <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveOutDetailActivity" />
+        <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveOutOperateActivity" />
         <activity android:name=".explorsive.main.explosiveManage.ExplosiveManageActivity" />
         <activity android:name=".explorsive.main.explosiveManage.AllMinesActivity" />
         <activity android:name=".explorsive.main.mine.use.UseApproveActivity" />

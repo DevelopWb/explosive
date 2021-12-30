@@ -121,7 +121,7 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private int isVoid;
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
-        private List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans;
+        private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
         private List<DeliveryListBean.DataBean> deliveryUser;
 
         public String getPoliceDepartmentSeal() {
@@ -532,15 +532,15 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             this.deliveryUser = deliveryUser;
         }
 
-        public List<ExplosiveUsageNumberBean> getExplosiveUsageNumberBeans() {
-            if (explosiveUsageNumberBeans == null) {
+        public List<ExplosiveUsageNumberBean> getExplosiveUsageNumber() {
+            if (explosiveUsageNumber == null) {
                 return new ArrayList<>();
             }
-            return explosiveUsageNumberBeans;
+            return explosiveUsageNumber;
         }
 
-        public void setExplosiveUsageNumberBeans(List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans) {
-            this.explosiveUsageNumberBeans = explosiveUsageNumberBeans;
+        public void setExplosiveUsageNumber(List<ExplosiveUsageNumberBean> explosiveUsageNumber) {
+            this.explosiveUsageNumber = explosiveUsageNumber;
         }
     }
 }

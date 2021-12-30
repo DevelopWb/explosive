@@ -67,6 +67,10 @@ public class AppHttpPath {
      * 配送人员列表
      */
     public static final String GET_DELIVERY_LIST = BASE + "/getDistributionUserList";
+    /**
+     * 出库
+     */
+    public static final String OUT_HOUSE = BASE + "/exWarehouse";
 
 
 

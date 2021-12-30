@@ -249,7 +249,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getRecieveApplyOutData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
+    public List<MultipleItem> getRecieveApplyOutData(ReceiveOrderDetailBean.DataBean bean) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -281,8 +281,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
                 new TextKeyValueBean(MainContactInterface.DELIVERY, bean == null ? "" :
                         String.valueOf(getDeliverys(bean.getDeliveryUser())), String.format("%s%s", "请选择",
-                        MainContactInterface.DELIVERY), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, isDetail?bean.getExplosiveUsageNumberBeans():getExplosiveDosageNumbers()));
+                        MainContactInterface.DELIVERY), 0, true,bean.getDeliveryUser())));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, bean.getExplosiveUsageNumber().isEmpty()?getExplosiveDosageNumbers():bean.getExplosiveUsageNumber()));
         return arrays;
     }
 
@@ -532,6 +532,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<DeliveryListBean>(getView()) {
                     @Override
                     public void onSuccess(DeliveryListBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void outHouse(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .outHouse(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }
