@@ -1,6 +1,7 @@
 package com.juntai.wisdom.explorsive.main;
 
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,10 +27,12 @@ import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.base.CheckBoxAdapter;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
+import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
+import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -60,7 +63,13 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     private boolean isDetail = false;//是否是详情模式
     private boolean canSelect = false;//是否可操作模式
     private boolean canAddIssue = false;//是否可操作模式
+    private boolean canDeletePic = false;//是否可操作模式
+    private FragmentManager mFragmentManager;
 
+
+    public void setCanDeletePic(boolean canDeletePic) {
+        this.canDeletePic = canDeletePic;
+    }
 
     public void setCanAddIssue(boolean canAddIssue) {
         this.canAddIssue = canAddIssue;
@@ -72,11 +81,12 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    public HandlerOrderAdapter(List<MultipleItem> data) {
+    public HandlerOrderAdapter(List<MultipleItem> data, FragmentManager mFragmentManager) {
         super(data);
         addItemType(MultipleItem.ITEM_TITILE_BIG, R.layout.item_layout_type_title_big);
         addItemType(MultipleItem.ITEM_TITILE_SMALL, R.layout.item_layout_type_title_small);
         addItemType(MultipleItem.ITEM_EDIT, R.layout.item_layout_type_edit);
+        addItemType(MultipleItem.ITEM_TEXT, R.layout.item_layout_type_text);
         addItemType(MultipleItem.ITEM_LOCATION, R.layout.item_layout_location);
         addItemType(MultipleItem.ITEM_SELECT_TIME, R.layout.item_layout_location);
         addItemType(MultipleItem.ITEM_SELECT, R.layout.item_text_select);
@@ -84,8 +94,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
         addItemType(MultipleItem.ITEM_ISSUE_NO, R.layout.item_layout_issue_no);
-
-
+        addItemType(MultipleItem.ITEM_FRAGMENT, R.layout.item_layout_fragment);
+        this.mFragmentManager = mFragmentManager;
     }
 
     public void setDetail(boolean detail) {
@@ -100,7 +110,31 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
+            case MultipleItem.ITEM_FRAGMENT:
+                //上传材料时 多选照片
+                FragmentPicBean picBean = (FragmentPicBean) item.getObject();
+                SelectPhotosFragment fragment = (SelectPhotosFragment) mFragmentManager.findFragmentById(R.id.photo_fg);
+                fragment.setObject(picBean);
 
+                if (canDeletePic||!isDetail) {
+                    fragment.setPhotoDelateable(true).setMaxCount(1);
+                } else {
+                    fragment.setPhotoDelateable(false).setMaxCount(picBean.getFragmentPics().size());
+                    if (!picBean.getFragmentPics().isEmpty()) {
+                        fragment.setIcons(picBean.getFragmentPics());
+                    }
+                }
+
+                fragment.setSpanCount(1).setOnPicLoadSuccessCallBack(new SelectPhotosFragment.OnPicLoadSuccessCallBack() {
+                    @Override
+                    public void loadSuccess(List<String> icons) {
+                        FragmentPicBean picBean = (FragmentPicBean) fragment.getObject();
+                        picBean.setFragmentPics(icons);
+                    }
+                });
+
+
+                break;
             case MultipleItem.ITEM_ISSUE_NO:
                 if (canAddIssue || !isDetail) {
                     helper.setGone(R.id.add_issue_iv, true);
@@ -119,7 +153,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 numberAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                     @Override
                     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                        ExplosiveUsageNumberBean  numberBean = (ExplosiveUsageNumberBean) adapter.getData().get(position);
+                        ExplosiveUsageNumberBean numberBean = (ExplosiveUsageNumberBean) adapter.getData().get(position);
                         List<ExplosiveUsageBean> explosiveUsageBeans = Hawk.get(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES);
                         PickerManager.getInstance().showOptionPicker(mContext, explosiveUsageBeans, new PickerManager.OnOptionPickerSelectedListener() {
                             @Override
@@ -186,6 +220,11 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 ImportantTagBean importantTagBean = (ImportantTagBean) item.getObject();
                 helper.setGone(R.id.important_tag_tv, importantTagBean.isImportant());
                 helper.setText(R.id.item_small_title_tv, importantTagBean.getTitleName());
+                break;
+            case MultipleItem.ITEM_TEXT:
+                TextKeyValueBean textBean = (TextKeyValueBean) item.getObject();
+                helper.setText(R.id.item_text_key,textBean.getKey());
+                helper.setText(R.id.item_text_value,textBean.getValue());
                 break;
             case MultipleItem.ITEM_EDIT:
                 TextKeyValueBean textValueEditBean = (TextKeyValueBean) item.getObject();
@@ -379,6 +418,9 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 }
                 if (StringTools.isStringValueOk(signBean.getDepartmentSignPath())) {
                     ImageLoadUtil.loadImage(mContext, UrlFormatUtil.getImageOriginalUrl(signBean.getDepartmentSignPath()),
+                            helper.getView(R.id.department_sign_iv));
+                }else {
+                    ImageLoadUtil.loadImage(mContext, R.color.white,
                             helper.getView(R.id.department_sign_iv));
                 }
                 //同意和拒绝相关的逻辑

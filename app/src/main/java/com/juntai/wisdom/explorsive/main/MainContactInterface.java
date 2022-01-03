@@ -31,8 +31,12 @@ public interface MainContactInterface extends IView {
     String PLAN_USE_END_TIME = "预计使用结束时间";
     String SAFER = "安全员:";
     String DELIVERY = "配送人员:";
+    String DELIVERY_TIME = "配送时间:";
+    String DELIVERY_ADDR = "配送地点:";
+    String ARRIVERE_PHOTO = "单据接收方签字后拍照";
     String BLASTER = "爆破员:";
     String MANAGER = "保管员:";
+    String ARRIVERE_SIGN = "接收矿场签字确认";
 
 
 

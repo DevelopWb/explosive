@@ -17,6 +17,7 @@ public class MultipleItem implements MultiItemEntity {
     public static final int ITEM_TITILE_BIG = 5;//类型3
     public static final int ITEM_TITILE_SMALL = 6;//类型3
     public static final int ITEM_EDIT = 7;//类型3
+    public static final int ITEM_TEXT = 701;//文本类型
     public static final int ITEM_SELECT = 8;//类型3
     public static final int ITEM_RADIO = 9;//类型3
     public static final int ITEM_PIC = 10;//类型3

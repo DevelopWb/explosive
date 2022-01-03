@@ -24,25 +24,28 @@ import okhttp3.RequestBody;
  * @UpdateUser: 更新者
  * @UpdateDate: 2020/6/3 8:38
  */
-public abstract class BaseAppPresent<M extends IModel, V extends IView> extends BasePresenter<M,V>{
+public abstract class BaseAppPresent<M extends IModel, V extends IView> extends BasePresenter<M, V> {
 
     /**
      * 获取builder
+     *
      * @return
      */
     public MultipartBody.Builder getPublishMultipartBody() {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("userId", String.valueOf(UserInfoManager.getUserId()))
+                .addFormDataPart("mobile", UserInfoManager.getMobile())
                 .addFormDataPart("token", UserInfoManager.getUserToken());
     }
 
     /**
      * 上传文件
+     *
      * @param
      * @param body
      */
-    private void uploadFiles( RequestBody body,String tag) {
+    private void uploadFiles(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .uploadFiles(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
@@ -66,45 +69,49 @@ public abstract class BaseAppPresent<M extends IModel, V extends IView> extends 
 
     /**
      * 上传文件
+     *
      * @param filePaths
      */
-    public void uploadFile(String tag,String... filePaths){
-        if (filePaths.length>0) {
+    public void uploadFile(String tag, String... filePaths) {
+        if (filePaths.length > 0) {
             MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM);
             for (String filePath : filePaths) {
                 String fileName = null;
                 if (filePath.contains("/")) {
-                    fileName = filePath.substring(filePath.lastIndexOf("/"),filePath.length());
+                    fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
                 }
                 builder.addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("file"), new File(filePath)));
             }
-            uploadFiles(builder.build(),tag);
+            uploadFiles(builder.build(), tag);
         }
 
     }
+
     /**
      * 上传文件
+     *
      * @param filePaths
      */
-    public void uploadFile(List<String> filePaths, String tag){
-        if (filePaths.size()>0) {
+    public void uploadFile(List<String> filePaths, String tag) {
+        if (filePaths.size() > 0) {
             MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM);
             for (String filePath : filePaths) {
                 String fileName = null;
                 if (filePath.contains("/")) {
-                    fileName = filePath.substring(filePath.lastIndexOf("/"),filePath.length());
+                    fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
                 }
                 builder.addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("file"), new File(filePath)));
             }
-            uploadFiles(builder.build(),tag);
+            uploadFiles(builder.build(), tag);
         }
 
     }
 
     /**
      * 获取用户信息
+     *
      * @param tag
      * @param body
      */

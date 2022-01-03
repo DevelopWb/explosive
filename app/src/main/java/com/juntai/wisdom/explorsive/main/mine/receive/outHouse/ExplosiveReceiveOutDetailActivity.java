@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine.receive;
+package com.juntai.wisdom.explorsive.main.mine.receive.outHouse;
 
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.OutHouseBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.main.mine.receive.BaseReceiveDetailActivity;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;

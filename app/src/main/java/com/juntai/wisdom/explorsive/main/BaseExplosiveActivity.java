@@ -16,6 +16,7 @@ import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.act.LocateSelectionActivity;
+import com.juntai.disabled.video.img.ImageZoomActivity;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
@@ -27,6 +28,7 @@ import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
+import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
 import com.juntai.wisdom.explorsive.bean.ItemCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -41,13 +43,16 @@ import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * @Author: tobato
@@ -114,7 +119,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         mSmartrefreshlayout = (SmartRefreshLayout) findViewById(R.id.smartrefreshlayout);
         mSmartrefreshlayout.setEnableLoadMore(false);
         mSmartrefreshlayout.setEnableRefresh(false);
-        adapter = new HandlerOrderAdapter(null);
+        adapter = new HandlerOrderAdapter(null,getSupportFragmentManager());
         initRecyclerview(mRecyclerview, adapter, LinearLayoutManager.VERTICAL);
         setAdapterClick();
 
@@ -132,12 +137,6 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         mCommitTv.setText("提交");
         mCommitTv.setOnClickListener(this);
         return view;
-    }
-
-    /**
-     * 提交的逻辑
-     */
-    protected void commitLogic(BaseAdapterDataBean baseAdapterDataBean) {
     }
 
     private void setAdapterClick() {
@@ -204,18 +203,23 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 itemSignBean = (ItemSignBean) multipleItem.getObject();
                                 //签名
                                 mSignIv = (ImageView) view.findViewById(R.id.user_sign_iv);
-                                if (MainContactInterface.SIGN_TITLE_UNIT.equals(itemSignBean.getSignTitle())) {
-                                    showSignatureView();
-                                } else {
-                                    if (0 == itemSignBean.getIsAgree()) {
-                                        ToastUtils.toast(mContext, "请选择是否同意申请");
-                                        return;
-                                    }
-                                    if (2 == itemSignBean.getIsAgree() && TextUtils.isEmpty(itemSignBean.getReason())) {
-                                        ToastUtils.toast(mContext, "请输入拒绝申请的原因");
-                                        return;
-                                    }
-                                    showSignatureView();
+
+                                switch (itemSignBean.getSignTitle()) {
+                                    case MainContactInterface.SIGN_TITLE_UNIT:
+                                    case MainContactInterface.ARRIVERE_SIGN:
+                                        showSignatureView();
+                                        break;
+                                    default:
+                                        if (0 == itemSignBean.getIsAgree()) {
+                                            ToastUtils.toast(mContext, "请选择是否同意申请");
+                                            return;
+                                        }
+                                        if (2 == itemSignBean.getIsAgree() && TextUtils.isEmpty(itemSignBean.getReason())) {
+                                            ToastUtils.toast(mContext, "请输入拒绝申请的原因");
+                                            return;
+                                        }
+                                        showSignatureView();
+                                        break;
                                 }
 
 
@@ -269,6 +273,12 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
     }
 
+    /**
+     * 提交的逻辑
+     */
+    protected void commitLogic(BaseAdapterDataBean baseAdapterDataBean) {
+    }
+
 
     @Override
     protected void selectedPicsAndEmpressed(List<String> icons) {
@@ -301,18 +311,18 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
     @Override
     public void onPicClick(BaseQuickAdapter adapter, int position) {
-//        ArrayList<String> photos = new ArrayList<>();
-//        List<String> arrays = adapter.getData();
-//        for (String array : arrays) {
+        ArrayList<String> photos = new ArrayList<>();
+        List<String> arrays = adapter.getData();
+        for (String array : arrays) {
 //            if (array.contains(AppHttpPath.BASE_IMAGE_THUM)) {
 //                array = array.replace(AppHttpPath.BASE_IMAGE_THUM, AppHttpPath.BASE_IMAGE);
 //            }
-//            photos.add(array);
-//        }
-//        //查看图片
-//        startActivity(new Intent(mContext, ImageZoomActivity.class)
-//                .putExtra("paths", photos)
-//                .putExtra("item", position));
+            photos.add(array);
+        }
+        //查看图片
+        startActivity(new Intent(mContext, ImageZoomActivity.class)
+                .putExtra("paths", photos)
+                .putExtra("item", position));
     }
 
     @Override
@@ -421,6 +431,33 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         List<MultipleItem> arrays = adapter.getData();
         for (MultipleItem item : arrays) {
             switch (item.getItemType()) {
+                case MultipleItem.ITEM_FRAGMENT:
+                    //多选图片
+                    FragmentPicBean fragmentPicBean = (FragmentPicBean) item.getObject();
+                    List<String> photos = fragmentPicBean.getFragmentPics();
+                    String name = fragmentPicBean.getPicName();
+                    String msg = null;
+                    switch (name) {
+                        case MainContactInterface.ARRIVERE_PHOTO:
+                            msg = "请选择单据照片";
+                            break;
+                        default:
+                            break;
+                    }
+                    if (photos.isEmpty()) {
+                        ToastUtils.toast(mContext, msg);
+                        return null;
+                    }
+                    for (int i = 0; i < photos.size(); i++) {
+                        String picPah = photos.get(i);
+                        if (0 == i) {
+                            builder.addFormDataPart("arrivePhoto", "arrivePhoto.jpeg",
+                                    RequestBody.create(MediaType.parse("file"),
+                                            new File(picPah)));
+                        }
+                    }
+
+                    break;
                 case MultipleItem.ITEM_NORMAL_RECYCLEVIEW:
                     BaseNormalRecyclerviewBean baseNormalRecyclerviewBean = (BaseNormalRecyclerviewBean) item.getObject();
 
@@ -510,6 +547,12 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                         return null;
                                     }
                                     break;
+                                case 5:
+                                    if (MainContactInterface.ARRIVERE_SIGN.equals(signBean.getSignTitle())) {
+                                        ToastUtils.toast(mContext, "请签名");
+                                        return null;
+                                    }
+                                    break;
                                 default:
                                     break;
                             }
@@ -549,6 +592,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             receiveOrderBean.setLeaderRemarks(signBean.getReason());
                             receiveOrderBean.setLeaderSign(signBean.getSignPicPath());
                             receiveOrderBean.setLeaderDepartmentSeal(signBean.getDepartmentSignPath());
+                            break;
+                        case MainContactInterface.ARRIVERE_SIGN:
+                            receiveOrderBean.setArriveSign(signBean.getSignPicPath());
                             break;
                         default:
                             break;
@@ -622,12 +668,23 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     break;
                 case MultipleItem.ITEM_LOCATION:
                     LocationBean locationBean = (LocationBean) item.getObject();
-                    receiveOrderBean.setUseAddress(locationBean.getAddress());
-                    receiveOrderBean.setUseLatitude(locationBean.getLatitude());
-                    receiveOrderBean.setUseLongitude(locationBean.getLongitude());
-                    useOrderBean.setEstimateUseAddress(locationBean.getAddress());
-                    useOrderBean.setEstimateUseLatitude(locationBean.getLatitude());
-                    useOrderBean.setEstimateUseLongitude(locationBean.getLongitude());
+                    switch (locationBean.getKey()) {
+                        case MainContactInterface.DELIVERY_ADDR:
+                            receiveOrderBean.setArriveAddress(locationBean.getAddress());
+                            receiveOrderBean.setArriveLatitude(locationBean.getLatitude());
+                            receiveOrderBean.setArriveLongitude(locationBean.getLongitude());
+                            break;
+                        default:
+                            receiveOrderBean.setUseAddress(locationBean.getAddress());
+                            receiveOrderBean.setUseLatitude(locationBean.getLatitude());
+                            receiveOrderBean.setUseLongitude(locationBean.getLongitude());
+                            useOrderBean.setEstimateUseAddress(locationBean.getAddress());
+                            useOrderBean.setEstimateUseLatitude(locationBean.getLatitude());
+                            useOrderBean.setEstimateUseLongitude(locationBean.getLongitude());
+                            break;
+                    }
+
+
                     break;
 
                 case MultipleItem.ITEM_APPLY_DOSAGE:

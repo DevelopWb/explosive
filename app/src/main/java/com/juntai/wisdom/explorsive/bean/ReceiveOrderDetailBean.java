@@ -124,16 +124,140 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
         private List<DeliveryListBean.DataBean> deliveryUser;
 
-        public String getPoliceDepartmentSeal() {
-            return policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        public int getId() {
+            return id;
         }
 
-        public void setPoliceDepartmentSeal(String policeDepartmentSeal) {
-            this.policeDepartmentSeal = policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        public void setId(int id) {
+            this.id = id;
         }
 
-        public String getBrigadeDepartmentSeal() {
-            return brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
+        public String getApplyNumber() {
+            return applyNumber == null ? "" : applyNumber;
+        }
+
+        public void setApplyNumber(String applyNumber) {
+            this.applyNumber = applyNumber == null ? "" : applyNumber;
+        }
+
+        public String getMobile() {
+            return mobile == null ? "" : mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile == null ? "" : mobile;
+        }
+
+        public String getToken() {
+            return token == null ? "" : token;
+        }
+
+        public void setToken(String token) {
+            this.token = token == null ? "" : token;
+        }
+
+        public int getApplyUserId() {
+            return applyUserId;
+        }
+
+        public void setApplyUserId(int applyUserId) {
+            this.applyUserId = applyUserId;
+        }
+
+        public String getApplyUsername() {
+            return applyUsername == null ? "" : applyUsername;
+        }
+
+        public void setApplyUsername(String applyUsername) {
+            this.applyUsername = applyUsername == null ? "" : applyUsername;
+        }
+
+        public String getApplyPhone() {
+            return applyPhone == null ? "" : applyPhone;
+        }
+
+        public void setApplyPhone(String applyPhone) {
+            this.applyPhone = applyPhone == null ? "" : applyPhone;
+        }
+
+        public int getApplyDepartmentId() {
+            return applyDepartmentId;
+        }
+
+        public void setApplyDepartmentId(int applyDepartmentId) {
+            this.applyDepartmentId = applyDepartmentId;
+        }
+
+        public String getApplyDepartmentName() {
+            return applyDepartmentName == null ? "" : applyDepartmentName;
+        }
+
+        public void setApplyDepartmentName(String applyDepartmentName) {
+            this.applyDepartmentName = applyDepartmentName == null ? "" : applyDepartmentName;
+        }
+
+        public String getApplyDepartmentAddress() {
+            return applyDepartmentAddress == null ? "" : applyDepartmentAddress;
+        }
+
+        public void setApplyDepartmentAddress(String applyDepartmentAddress) {
+            this.applyDepartmentAddress = applyDepartmentAddress == null ? "" : applyDepartmentAddress;
+        }
+
+        public String getApplyDepartmentSeal() {
+            return applyDepartmentSeal == null ? "" : applyDepartmentSeal;
+        }
+
+        public void setApplyDepartmentSeal(String applyDepartmentSeal) {
+            this.applyDepartmentSeal = applyDepartmentSeal == null ? "" : applyDepartmentSeal;
+        }
+
+        public String getApplyTime() {
+            return applyTime == null ? "" : applyTime;
+        }
+
+        public void setApplyTime(String applyTime) {
+            this.applyTime = applyTime == null ? "" : applyTime;
+        }
+
+        public String getUseAddress() {
+            return useAddress == null ? "" : useAddress;
+        }
+
+        public void setUseAddress(String useAddress) {
+            this.useAddress = useAddress == null ? "" : useAddress;
+        }
+
+        public String getUseLongitude() {
+            return useLongitude == null ? "" : useLongitude;
+        }
+
+        public void setUseLongitude(String useLongitude) {
+            this.useLongitude = useLongitude == null ? "" : useLongitude;
+        }
+
+        public String getUseLatitude() {
+            return useLatitude == null ? "" : useLatitude;
+        }
+
+        public void setUseLatitude(String useLatitude) {
+            this.useLatitude = useLatitude == null ? "" : useLatitude;
+        }
+
+        public String getRemarks() {
+            return remarks == null ? "" : remarks;
+        }
+
+        public void setRemarks(String remarks) {
+            this.remarks = remarks == null ? "" : remarks;
+        }
+
+        public String getApplySign() {
+            return applySign == null ? "" : applySign;
+        }
+
+        public void setApplySign(String applySign) {
+            this.applySign = applySign == null ? "" : applySign;
         }
 
         public int getPoliceVoid() {
@@ -184,162 +308,6 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             this.leaderRemarks = leaderRemarks == null ? "" : leaderRemarks;
         }
 
-        public void setBrigadeDepartmentSeal(String brigadeDepartmentSeal) {
-            this.brigadeDepartmentSeal = brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
-        }
-
-        public String getLeaderDepartmentSeal() {
-            return leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
-        }
-
-        public void setLeaderDepartmentSeal(String leaderDepartmentSeal) {
-            this.leaderDepartmentSeal = leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
-        }
-
-        public String getApplyDepartmentSeal() {
-            return applyDepartmentSeal == null ? "" : applyDepartmentSeal;
-        }
-
-        public void setApplyDepartmentSeal(String applyDepartmentSeal) {
-            this.applyDepartmentSeal = applyDepartmentSeal == null ? "" : applyDepartmentSeal;
-        }
-
-        public String getMobile() {
-            return mobile == null ? "" : mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile == null ? "" : mobile;
-        }
-
-        public String getToken() {
-            return token == null ? "" : token;
-        }
-
-        public void setToken(String token) {
-            this.token = token == null ? "" : token;
-        }
-
-        public int getSignStatus() {
-            return signStatus;
-        }
-
-        public void setSignStatus(int signStatus) {
-            this.signStatus = signStatus;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getApplyNumber() {
-            return applyNumber;
-        }
-
-        public void setApplyNumber(String applyNumber) {
-            this.applyNumber = applyNumber;
-        }
-
-        public int getApplyUserId() {
-            return applyUserId;
-        }
-
-        public void setApplyUserId(int applyUserId) {
-            this.applyUserId = applyUserId;
-        }
-
-        public String getApplyUsername() {
-            return applyUsername;
-        }
-
-        public void setApplyUsername(String applyUsername) {
-            this.applyUsername = applyUsername;
-        }
-
-        public String getApplyPhone() {
-            return applyPhone;
-        }
-
-        public void setApplyPhone(String applyPhone) {
-            this.applyPhone = applyPhone;
-        }
-
-        public int getApplyDepartmentId() {
-            return applyDepartmentId;
-        }
-
-        public void setApplyDepartmentId(int applyDepartmentId) {
-            this.applyDepartmentId = applyDepartmentId;
-        }
-
-        public String getApplyDepartmentName() {
-            return applyDepartmentName;
-        }
-
-        public void setApplyDepartmentName(String applyDepartmentName) {
-            this.applyDepartmentName = applyDepartmentName;
-        }
-
-        public String getApplyDepartmentAddress() {
-            return applyDepartmentAddress;
-        }
-
-        public void setApplyDepartmentAddress(String applyDepartmentAddress) {
-            this.applyDepartmentAddress = applyDepartmentAddress;
-        }
-
-        public String getApplyTime() {
-            return applyTime;
-        }
-
-        public void setApplyTime(String applyTime) {
-            this.applyTime = applyTime;
-        }
-
-        public String getUseAddress() {
-            return useAddress;
-        }
-
-        public void setUseAddress(String useAddress) {
-            this.useAddress = useAddress;
-        }
-
-        public String getUseLongitude() {
-            return useLongitude;
-        }
-
-        public void setUseLongitude(String useLongitude) {
-            this.useLongitude = useLongitude;
-        }
-
-        public String getUseLatitude() {
-            return useLatitude;
-        }
-
-        public void setUseLatitude(String useLatitude) {
-            this.useLatitude = useLatitude;
-        }
-
-        public String getRemarks() {
-            return remarks;
-        }
-
-        public void setRemarks(String remarks) {
-            this.remarks = remarks;
-        }
-
-        public String getApplySign() {
-            return applySign;
-        }
-
-        public void setApplySign(String applySign) {
-            this.applySign = applySign;
-        }
-
         public int getPoliceDepartmentId() {
             return policeDepartmentId;
         }
@@ -349,19 +317,19 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         }
 
         public String getPoliceSign() {
-            return policeSign;
+            return policeSign == null ? "" : policeSign;
         }
 
         public void setPoliceSign(String policeSign) {
-            this.policeSign = policeSign;
+            this.policeSign = policeSign == null ? "" : policeSign;
         }
 
         public String getPoliceUsername() {
-            return policeUsername;
+            return policeUsername == null ? "" : policeUsername;
         }
 
         public void setPoliceUsername(String policeUsername) {
-            this.policeUsername = policeUsername;
+            this.policeUsername = policeUsername == null ? "" : policeUsername;
         }
 
         public int getBrigadeDepartmentId() {
@@ -373,19 +341,23 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         }
 
         public String getBrigadeSign() {
-            return brigadeSign;
+            return brigadeSign == null ? "" : brigadeSign;
         }
 
         public void setBrigadeSign(String brigadeSign) {
-            this.brigadeSign = brigadeSign;
+            this.brigadeSign = brigadeSign == null ? "" : brigadeSign;
         }
 
         public String getBrigadeUsername() {
-            return brigadeUsername;
+            return brigadeUsername == null ? "" : brigadeUsername;
         }
 
         public void setBrigadeUsername(String brigadeUsername) {
-            this.brigadeUsername = brigadeUsername;
+            this.brigadeUsername = brigadeUsername == null ? "" : brigadeUsername;
+        }
+
+        public void setBrigadeDepartmentSeal(String brigadeDepartmentSeal) {
+            this.brigadeDepartmentSeal = brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
         }
 
         public int getLeaderDepartmentId() {
@@ -397,99 +369,107 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         }
 
         public String getLeaderSign() {
-            return leaderSign;
+            return leaderSign == null ? "" : leaderSign;
         }
 
         public void setLeaderSign(String leaderSign) {
-            this.leaderSign = leaderSign;
+            this.leaderSign = leaderSign == null ? "" : leaderSign;
         }
 
         public String getLeaderUsername() {
-            return leaderUsername;
+            return leaderUsername == null ? "" : leaderUsername;
         }
 
         public void setLeaderUsername(String leaderUsername) {
-            this.leaderUsername = leaderUsername;
+            this.leaderUsername = leaderUsername == null ? "" : leaderUsername;
+        }
+
+        public String getLeaderDepartmentSeal() {
+            return leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
+        }
+
+        public void setLeaderDepartmentSeal(String leaderDepartmentSeal) {
+            this.leaderDepartmentSeal = leaderDepartmentSeal == null ? "" : leaderDepartmentSeal;
         }
 
         public String getDeliveryTime() {
-            return deliveryTime;
+            return deliveryTime == null ? "" : deliveryTime;
         }
 
         public void setDeliveryTime(String deliveryTime) {
-            this.deliveryTime = deliveryTime;
+            this.deliveryTime = deliveryTime == null ? "" : deliveryTime;
         }
 
         public String getDeliveryAddress() {
-            return deliveryAddress;
+            return deliveryAddress == null ? "" : deliveryAddress;
         }
 
         public void setDeliveryAddress(String deliveryAddress) {
-            this.deliveryAddress = deliveryAddress;
+            this.deliveryAddress = deliveryAddress == null ? "" : deliveryAddress;
         }
 
         public String getDeliveryLongitude() {
-            return deliveryLongitude;
+            return deliveryLongitude == null ? "" : deliveryLongitude;
         }
 
         public void setDeliveryLongitude(String deliveryLongitude) {
-            this.deliveryLongitude = deliveryLongitude;
+            this.deliveryLongitude = deliveryLongitude == null ? "" : deliveryLongitude;
         }
 
         public String getDeliveryLatitude() {
-            return deliveryLatitude;
+            return deliveryLatitude == null ? "" : deliveryLatitude;
         }
 
         public void setDeliveryLatitude(String deliveryLatitude) {
-            this.deliveryLatitude = deliveryLatitude;
+            this.deliveryLatitude = deliveryLatitude == null ? "" : deliveryLatitude;
         }
 
         public String getArriveTime() {
-            return arriveTime;
+            return arriveTime == null ? "" : arriveTime;
         }
 
         public void setArriveTime(String arriveTime) {
-            this.arriveTime = arriveTime;
+            this.arriveTime = arriveTime == null ? "" : arriveTime;
         }
 
         public String getArriveAddress() {
-            return arriveAddress;
+            return arriveAddress == null ? "" : arriveAddress;
         }
 
         public void setArriveAddress(String arriveAddress) {
-            this.arriveAddress = arriveAddress;
+            this.arriveAddress = arriveAddress == null ? "" : arriveAddress;
         }
 
         public String getArriveLongitude() {
-            return arriveLongitude;
+            return arriveLongitude == null ? "" : arriveLongitude;
         }
 
         public void setArriveLongitude(String arriveLongitude) {
-            this.arriveLongitude = arriveLongitude;
+            this.arriveLongitude = arriveLongitude == null ? "" : arriveLongitude;
         }
 
         public String getArriveLatitude() {
-            return arriveLatitude;
+            return arriveLatitude == null ? "" : arriveLatitude;
         }
 
         public void setArriveLatitude(String arriveLatitude) {
-            this.arriveLatitude = arriveLatitude;
+            this.arriveLatitude = arriveLatitude == null ? "" : arriveLatitude;
         }
 
         public String getArrivePicture() {
-            return arrivePicture;
+            return arrivePicture == null ? "-1" : arrivePicture;
         }
 
         public void setArrivePicture(String arrivePicture) {
-            this.arrivePicture = arrivePicture;
+            this.arrivePicture = arrivePicture == null ? "" : arrivePicture;
         }
 
         public String getArriveSign() {
-            return arriveSign;
+            return arriveSign == null ? "" : arriveSign;
         }
 
         public void setArriveSign(String arriveSign) {
-            this.arriveSign = arriveSign;
+            this.arriveSign = arriveSign == null ? "" : arriveSign;
         }
 
         public int getStat() {
@@ -500,6 +480,14 @@ public class ReceiveOrderDetailBean  extends BaseResult {
             this.stat = stat;
         }
 
+        public int getSignStatus() {
+            return signStatus;
+        }
+
+        public void setSignStatus(int signStatus) {
+            this.signStatus = signStatus;
+        }
+
         public int getIsVoid() {
             return isVoid;
         }
@@ -507,6 +495,19 @@ public class ReceiveOrderDetailBean  extends BaseResult {
         public void setIsVoid(int isVoid) {
             this.isVoid = isVoid;
         }
+
+        public String getPoliceDepartmentSeal() {
+            return policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        }
+
+        public void setPoliceDepartmentSeal(String policeDepartmentSeal) {
+            this.policeDepartmentSeal = policeDepartmentSeal == null ? "" : policeDepartmentSeal;
+        }
+
+        public String getBrigadeDepartmentSeal() {
+            return brigadeDepartmentSeal == null ? "" : brigadeDepartmentSeal;
+        }
+
 
         public String getRefuseRemarks() {
             return refuseRemarks == null ? "" : refuseRemarks;

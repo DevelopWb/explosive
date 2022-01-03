@@ -13,9 +13,10 @@ import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveApproveDetailActivity;
-import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveDeliveryDetailActivity;
-import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveOutDetailActivity;
-import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveOutOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryDetailActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutOperateActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -101,13 +102,17 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 }
                 break;
             case 5:
+                //待配送环节
                 if (5 == UserInfoManager.getDepartmentType()) {
                     //可操作
-
+                    context.startActivity(new Intent(context, ExplosiveReceiveDeliveryOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 }else {
                     context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 }
+                break;
+            case 6:
+                context.startActivity(new Intent(context, ExplosiveReceiveDeliveryDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 break;
             default:
                 break;

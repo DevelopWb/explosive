@@ -41,6 +41,7 @@ public  abstract class BaseReceiveDetailActivity extends BaseExplosiveActivity {
                 }
                 break;
             case AppHttpPath.POLICE_APPROVE:
+            case AppHttpPath.DELIVERY:
             case AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY:
                 ToastUtils.toast(mContext, "提交成功");
                 finish();

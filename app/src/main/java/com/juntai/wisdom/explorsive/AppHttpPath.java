@@ -71,6 +71,10 @@ public class AppHttpPath {
      * 出库
      */
     public static final String OUT_HOUSE = BASE + "/exWarehouse";
+    /**
+     * 配送
+     */
+    public static final String DELIVERY = BASE + "/distribution";
 
 
 
