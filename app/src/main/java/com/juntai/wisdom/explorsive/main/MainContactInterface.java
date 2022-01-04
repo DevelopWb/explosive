@@ -13,6 +13,7 @@ import com.juntai.disabled.basecomponent.mvp.IView;
 public interface MainContactInterface extends IView {
 
     String REMARK = "备注";
+    String IS_RETURN = "是否退库";
     String APPLICATION = "用途";
     String USE_LOCATION = "使用地点";
     String UPLOAD_SIGN = "上传签名";
@@ -35,6 +36,7 @@ public interface MainContactInterface extends IView {
     String OUT_IN_MINE_TIME = "发放时间:";
     String OUT_IN_MINE_ADDR = "发放地点:";
     String ARRIVERE_PHOTO = "单据接收方签字后拍照";
+    String USE_RECORD_PHOTO = "使用单据拍照";
     String RECEIVER = "领取人:";
     String SAFER = "安全员:";
     String BLASTER = "爆破员:";

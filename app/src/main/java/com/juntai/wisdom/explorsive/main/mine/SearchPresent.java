@@ -20,6 +20,7 @@ import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMine
 import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMineDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -159,7 +160,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
             case 3:
                 //使用申请
                 if (1 == UserInfoManager.getDepartmentType()&&UserInfoManager.getWorkIds().contains(3)&& MainActivity.isUseInMine) {
-                    context.startActivity(new Intent(context, ExplosiveOutInMineActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    context.startActivity(new Intent(context, ExplosiveUseActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 } else {
                     context.startActivity(new Intent(context, ExplosiveOutInMineDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));

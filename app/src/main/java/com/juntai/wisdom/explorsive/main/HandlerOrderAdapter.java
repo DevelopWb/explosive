@@ -13,6 +13,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
@@ -29,6 +31,7 @@ import com.juntai.wisdom.explorsive.base.CheckBoxAdapter;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
@@ -97,6 +100,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_ISSUE_NO, R.layout.item_layout_issue_no);
         addItemType(MultipleItem.ITEM_FRAGMENT, R.layout.item_layout_fragment);
         addItemType(MultipleItem.ITEM_FACE_CHECK, R.layout.item_face_check);
+        addItemType(MultipleItem.ITEM_RADIO, R.layout.item_layout_type_radio);
+
         this.mFragmentManager = mFragmentManager;
     }
 
@@ -112,7 +117,66 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
+            case MultipleItem.ITEM_RADIO:
+                RadioBean radioBean = (RadioBean) item.getObject();
+                RadioGroup radioGroup = helper.getView(R.id.item_radio_g);
+                if (isDetail) {
+                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                        radioGroup.getChildAt(i).setEnabled(false);
+                    }
+                } else {
+                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                        radioGroup.getChildAt(i).setEnabled(true);
+                    }
+                }
+                radioGroup.setTag(radioBean);
+                RadioButton radioButton0 = helper.getView(R.id.radio_zero_rb);
+                RadioButton radioButton1 = helper.getView(R.id.radio_first_rb);
+                String[] values = radioBean.getValues();
+                if (values != null) {
+                    if (values.length > 1) {
+                        radioButton0.setText(values[0]);
+                        radioButton1.setText(values[1]);
+                    }
 
+                } else {
+                    radioButton0.setText("是");
+                    radioButton1.setText("否");
+                }
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        RadioBean radioBean = (RadioBean) group.getTag();
+                        switch (checkedId) {
+                            case R.id.radio_zero_rb:
+                                radioBean.setDefaultSelectedIndex(0);
+                                break;
+                            case R.id.radio_first_rb:
+                                radioBean.setDefaultSelectedIndex(1);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                int defaultIndex = radioBean.getDefaultSelectedIndex();
+
+                switch (defaultIndex) {
+                    case 0:
+                        radioButton0.setChecked(true);
+                        radioButton1.setChecked(false);
+                        break;
+                    case 1:
+                        radioButton0.setChecked(false);
+                        radioButton1.setChecked(true);
+                        break;
+                    default:
+                        radioButton0.setChecked(false);
+                        radioButton1.setChecked(false);
+                        break;
+                }
+
+                break;
             case MultipleItem.ITEM_FACE_CHECK:
                 FaceCheckBean  faceCheckBean = (FaceCheckBean) item.getObject();
                 helper.setText(R.id.face_title_tv,faceCheckBean.getPersonName());

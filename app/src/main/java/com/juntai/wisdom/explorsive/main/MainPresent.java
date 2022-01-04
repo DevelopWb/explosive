@@ -25,6 +25,7 @@ import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
+import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
@@ -118,10 +119,11 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
     /**
      * 民爆使用申请
-     *showReceiver  是否展示领取人
+     * showReceiver  是否展示领取人
+     *
      * @return
      */
-    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail,boolean showReceiver) {
+    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail, boolean showReceiver) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -168,35 +170,73 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         }
         return arrays;
     }
+
     /**
      * 矿内出库
      *
      * @return
      */
-    public List<MultipleItem> getUseApplyOutInMineData(UseOrderDetailBean.DataBean bean,boolean isDetail) {
-        List<MultipleItem> arrays = getUseApplyData(bean,true,false);
+    public List<MultipleItem> getUseApplyOutInMineData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
+        List<MultipleItem> arrays = getUseApplyData(bean, true, false);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
-                new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail?bean.getGrantTime():new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))));
+                new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail ? bean.getGrantTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, !isDetail ? null :
                 bean.getGrantUseAddress()
                 , !isDetail ? null : bean.getGrantUseLatitude(), !isDetail ? null : bean.getGrantUseLongitude())));
 
-        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getReceiveId(),MainContactInterface.RECEIVER+bean.getApplyUsername()
-                ,bean.getReceivePhoto(),bean.getReceiveSign(),!TextUtils.isEmpty(bean.getReceivePhoto())
-                )));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getSafetyId(),MainContactInterface.SAFER+bean.getSafetyName()
-                ,bean.getSafetyPhoto(),bean.getSafetySign(),!TextUtils.isEmpty(bean.getSafetyPhoto())
-                )));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getBlasterId(),MainContactInterface.BLASTER+bean.getBlasterName()
-                ,bean.getBlasterPhoto(),bean.getBlasterSign(),!TextUtils.isEmpty(bean.getBlasterPhoto())
-                )));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getSafekeepingId(),MainContactInterface.MANAGER+bean.getSafekeepingName()
-                ,bean.getSafekeepingPhoto(),bean.getSafekeepingSign(),!TextUtils.isEmpty(bean.getSafekeepingPhoto())
-                )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getReceiveId(), MainContactInterface.RECEIVER + bean.getApplyUsername()
+                , bean.getReceivePhoto(), bean.getReceiveSign(), !TextUtils.isEmpty(bean.getReceivePhoto())
+        )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getSafetyId(), MainContactInterface.SAFER + bean.getSafetyName()
+                , bean.getSafetyPhoto(), bean.getSafetySign(), !TextUtils.isEmpty(bean.getSafetyPhoto())
+        )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getBlasterId(), MainContactInterface.BLASTER + bean.getBlasterName()
+                , bean.getBlasterPhoto(), bean.getBlasterSign(), !TextUtils.isEmpty(bean.getBlasterPhoto())
+        )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getSafekeepingId(), MainContactInterface.MANAGER + bean.getSafekeepingName()
+                , bean.getSafekeepingPhoto(), bean.getSafekeepingSign(), !TextUtils.isEmpty(bean.getSafekeepingPhoto())
+        )));
         arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, bean.getExplosiveUsageNumber().isEmpty() ? getExplosiveDosageNumbers() : bean.getExplosiveUsageNumber()));
 
         return arrays;
     }
+
+
+    /**
+     * 矿内使用
+     *
+     * @param bean
+     * @param isDetail
+     * @return
+     */
+    public List<MultipleItem> getApplyOfUseInMineData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
+        List<MultipleItem> arrays = getUseApplyOutInMineData(bean, true);
+        arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "使用人"));
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
+                        String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
+                        MainContactInterface.SAFER), 0, true)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
+                        String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
+                        MainContactInterface.BLASTER), 0, true)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
+                        String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
+                        MainContactInterface.MANAGER), 0, true)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, MainContactInterface.USE_RECORD_PHOTO));
+        List<String> pics = new ArrayList<>();
+        pics.add(UrlFormatUtil.getImageOriginalUrl(bean.getUseBillUrl()));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FRAGMENT,
+                new FragmentPicBean(MainContactInterface.USE_RECORD_PHOTO, 0, pics)));
+        initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.REMARK, bean == null ? "" :
+                bean.getUseRemarks(), false, 1);
+        arrays.add(new MultipleItem(MultipleItem.ITEM_RADIO, new RadioBean(MainContactInterface.IS_RETURN, bean.getIsReturn(),
+                new String[]{"无需退库", "需要退库"})));
+        return arrays;
+    }
+
 
     /**
      * 民爆领取申请
@@ -300,10 +340,10 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getRecieveApplyDeliveryData(ReceiveOrderDetailBean.DataBean bean,boolean isDetail) {
+    public List<MultipleItem> getRecieveApplyDeliveryData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = getRecieveApplyOutData(bean);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
-                new TextKeyValueBean(MainContactInterface.DELIVERY_TIME, isDetail?bean.getArriveTime():new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))));
+                new TextKeyValueBean(MainContactInterface.DELIVERY_TIME, isDetail ? bean.getArriveTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.DELIVERY_ADDR, !isDetail ? null :
                 bean.getArriveAddress()
                 , !isDetail ? null : bean.getArriveLatitude(), !isDetail ? null : bean.getArriveLongitude())));
@@ -312,8 +352,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<String> pics = new ArrayList<>();
         pics.add(UrlFormatUtil.getImageOriginalUrl(bean.getArrivePicture()));
         arrays.add(new MultipleItem(MultipleItem.ITEM_FRAGMENT,
-                new FragmentPicBean(MainContactInterface.ARRIVERE_PHOTO, 0,pics)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.ARRIVERE_SIGN, isDetail?2:0, bean.getArriveSign(),null)));
+                new FragmentPicBean(MainContactInterface.ARRIVERE_PHOTO, 0, pics)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.ARRIVERE_SIGN, isDetail ? 2 : 0, bean.getArriveSign(), null)));
 
         return arrays;
     }
@@ -599,6 +639,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
     public void outInMine(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .outInMine(body)
@@ -619,6 +660,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
     public void delivery(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .delivery(body)

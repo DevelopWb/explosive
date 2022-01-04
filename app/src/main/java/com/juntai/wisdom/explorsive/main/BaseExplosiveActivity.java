@@ -39,6 +39,7 @@ import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.OutInMineRequest;
+import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
@@ -322,6 +323,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 //
 //        }
     }
+
     @Override
     public void onLocationReceived(BDLocation bdLocation) {
         super.onLocationReceived(bdLocation);
@@ -333,6 +335,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         }
 
     }
+
     /**
      * 更新定位item
      */
@@ -351,6 +354,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
             }
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -501,6 +505,17 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         List<MultipleItem> arrays = adapter.getData();
         for (MultipleItem item : arrays) {
             switch (item.getItemType()) {
+                case MultipleItem.ITEM_RADIO:
+                    RadioBean radioBean = (RadioBean) item.getObject();
+                    switch (radioBean.getKey()) {
+                        case MainContactInterface.IS_RETURN:
+                            // * 是否退回（1否；2是）
+                            useOrderBean.setIsReturn(radioBean.getDefaultSelectedIndex()+1);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 case MultipleItem.ITEM_FRAGMENT:
                     //多选图片
                     FragmentPicBean fragmentPicBean = (FragmentPicBean) item.getObject();
@@ -509,6 +524,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     String msg = null;
                     switch (name) {
                         case MainContactInterface.ARRIVERE_PHOTO:
+                        case MainContactInterface.USE_RECORD_PHOTO:
                             msg = "请选择单据照片";
                             break;
                         default:
@@ -521,9 +537,15 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     for (int i = 0; i < photos.size(); i++) {
                         String picPah = photos.get(i);
                         if (0 == i) {
-                            builder.addFormDataPart("arrivePhoto", "arrivePhoto.jpeg",
-                                    RequestBody.create(MediaType.parse("file"),
-                                            new File(picPah)));
+                            if (MainContactInterface.ARRIVERE_PHOTO.equals(name)) {
+                                builder.addFormDataPart("arrivePhoto", "arrivePhoto.jpeg",
+                                        RequestBody.create(MediaType.parse("file"),
+                                                new File(picPah)));
+                            } else if (MainContactInterface.USE_RECORD_PHOTO.equals(name)) {
+                                useOrderBean.setUseBillUrl(picPah);
+                            }
+
+
                         }
                     }
 
@@ -723,14 +745,20 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                         case MainContactInterface.SAFER:
                             useOrderBean.setSafetyId(id);
                             useOrderBean.setSafetyName(selectValue);
+                            useOrderBean.setUseSafetyId(id);
+                            useOrderBean.setUseSafetyName(selectValue);
                             break;
                         case MainContactInterface.BLASTER:
                             useOrderBean.setBlasterId(id);
                             useOrderBean.setBlasterName(selectValue);
+                            useOrderBean.setUseBlasterId(id);
+                            useOrderBean.setUseBlasterName(selectValue);
                             break;
                         case MainContactInterface.MANAGER:
                             useOrderBean.setSafekeepingId(id);
                             useOrderBean.setSafekeepingName(selectValue);
+                            useOrderBean.setUseSafekeepingId(id);
+                            useOrderBean.setUseSafekeepingName(selectValue);
                             break;
                         case MainContactInterface.DELIVERY:
                             receiveOrderBean.setDeliveryUser(selectBean.getDeliveryBean());
