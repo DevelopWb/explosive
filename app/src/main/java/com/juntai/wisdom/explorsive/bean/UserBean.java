@@ -45,11 +45,20 @@ public class UserBean extends BaseResult {
         private String headPortrait;
         private String mobile;
         private int departmentId;
+        private String idNumber;
         private int departmentType;
         private String departmentName;
         private String departmentAddress;//部门地址
         private String sealUrl;//部门印章地址
         private String token;
+
+        public String getIdNumber() {
+            return idNumber == null ? "" : idNumber;
+        }
+
+        public void setIdNumber(String idNumber) {
+            this.idNumber = idNumber == null ? "" : idNumber;
+        }
 
         public int getDepartmentType() {
             return departmentType;

@@ -13,11 +13,21 @@ import okhttp3.MultipartBody;
 public class BaseAdapterDataBean {
 
     private  MultipartBody.Builder  builder;
-    private ReceiveOrderDetailBean.DataBean  receiveOrderBean;
+
+    private  OutInMineRequest  outInMineRequest;
+   private ReceiveOrderDetailBean.DataBean  receiveOrderBean;
     private UseOrderDetailBean.DataBean  useOrderBean;
 
     public UseOrderDetailBean.DataBean getUseOrderBean() {
         return useOrderBean;
+    }
+
+    public OutInMineRequest getOutInMineRequest() {
+        return outInMineRequest;
+    }
+
+    public void setOutInMineRequest(OutInMineRequest outInMineRequest) {
+        this.outInMineRequest = outInMineRequest;
     }
 
     public void setUseOrderBean(UseOrderDetailBean.DataBean useOrderBean) {

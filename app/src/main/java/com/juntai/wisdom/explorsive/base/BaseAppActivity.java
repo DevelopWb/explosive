@@ -104,7 +104,6 @@ public abstract class BaseAppActivity<P extends BasePresenter> extends BaseSelec
         FormBody.Builder builder = new FormBody.Builder();
         builder.add("token", UserInfoManager.getUserToken());
         builder.add("mobile", UserInfoManager.getMobile());
-        builder.add("userId", String.valueOf(UserInfoManager.getUserId()));
         return builder;
     }
 

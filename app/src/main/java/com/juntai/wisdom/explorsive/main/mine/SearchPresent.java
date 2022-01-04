@@ -12,9 +12,12 @@ import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
+import com.juntai.wisdom.explorsive.main.MainActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveApproveDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMineActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMineDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutOperateActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
@@ -95,7 +98,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 if (5 == UserInfoManager.getDepartmentType()) {
                     //可操作
                     context.startActivity(new Intent(context, ExplosiveReceiveOutOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
-                }else {
+                } else {
                     //只可查看   只能看到出库之前的状态
                     context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
@@ -106,7 +109,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 if (5 == UserInfoManager.getDepartmentType()) {
                     //可操作
                     context.startActivity(new Intent(context, ExplosiveReceiveDeliveryOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
-                }else {
+                } else {
                     context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 }
@@ -127,11 +130,41 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      */
     public void useApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
         //  订单详情  （1派出所审核；2仓库领用；3使用；4完成）
-        // : 2021-12-21 订单详情 矿内使用派出所审核
+        // 部门类型（1矿场；2派出所；5民爆仓库）
+        //权限
+//        2 民爆申请人
+//        3 矿场内爆炸物申请人
+//        4 矿场内爆炸物仓库管理员
+//        5 派出所审批人
+//        6 治安大队审批人
+//        7 县公安局审批人
+//        8 民爆仓库管理员
+//        9 民爆仓库配送员
+        // : 202-12-21 订单详情 矿内使用派出所审核
         switch (dataBean.getStat()) {
             case 1:
                 // : 2021-12-21 订单详情 矿内使用派出所审核
                 context.startActivity(new Intent(context, ExplosiveUseApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                break;
+            case 2:
+                //仓库领用
+                if (1 == UserInfoManager.getDepartmentType()&&UserInfoManager.getWorkIds().contains(4)&& MainActivity.isManager) {
+                    context.startActivity(new Intent(context, ExplosiveOutInMineActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                } else {
+                    context.startActivity(new Intent(context, ExplosiveUseApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                }
+                break;
+            case 3:
+                //使用申请
+                if (1 == UserInfoManager.getDepartmentType()&&UserInfoManager.getWorkIds().contains(3)&& MainActivity.isUseInMine) {
+                    context.startActivity(new Intent(context, ExplosiveOutInMineActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                } else {
+                    context.startActivity(new Intent(context, ExplosiveOutInMineDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
+                }
                 break;
             default:
                 break;

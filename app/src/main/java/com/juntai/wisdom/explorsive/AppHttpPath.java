@@ -2,12 +2,12 @@ package com.juntai.wisdom.explorsive;
 
 public class AppHttpPath {
 
-    public static final String BASE_ROOT = "http://192.168.124.118:8080/explosive-manage/";
-    //    public static final String BASE_ROOT = "http://www.juntaikeji.com:20708/explosive-manage/";
+//    public static final String BASE_ROOT = "http://192.168.124.118:8080/explosive-manage/";
+        public static final String BASE_ROOT = "http://www.juntaikeji.com:20708/explosive-manage/";
     public static final String BASE = BASE_ROOT + "app";
 
-    public static final String BASE_IMAGE = "http://192.168.124.118:9600";
-//    public static final String BASE_IMAGE = "http://www.juntaikeji.com:20710";
+//    public static final String BASE_IMAGE = "http://192.168.124.118:9600";
+    public static final String BASE_IMAGE = "http://www.juntaikeji.com:20710";
 
 
     /**
@@ -98,6 +98,11 @@ public class AppHttpPath {
      * 民爆使用订单详情
      */
     public static final String USE_EXPLOSIVE_DETAIL = BASE + "/getMineReceiveOrderInfo";
+
+    /**
+     * 出库
+     */
+    public static final String OUT_IN_MINE = BASE + "/mineGrantReceive";
 
     /*====================================================    个人中心   ==============================================================*/
 

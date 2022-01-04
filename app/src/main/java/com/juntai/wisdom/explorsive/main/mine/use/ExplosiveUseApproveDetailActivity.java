@@ -50,13 +50,13 @@ public class ExplosiveUseApproveDetailActivity extends BaseExplosiveUseDetailAct
         int orderStatus = dataBean.getStat() + 1;
         adapter.setCanSelect(false);
         if (orderStatus == UserInfoManager.getDepartmentType()) {
-            adapter.setNewData(mPresenter.getUseApplyData(dataBean,true));
+            adapter.setNewData(mPresenter.getUseApplyData(dataBean,true,true));
             if (2!=dataBean.getIsVoid()) {
                 //没有作废
                 adapter.addFooterView(getFootView());
             }
         } else {
-            adapter.setNewData(mPresenter.getUseApplyData(dataBean, true));
+            adapter.setNewData(mPresenter.getUseApplyData(dataBean, true,true));
 
         }
     }

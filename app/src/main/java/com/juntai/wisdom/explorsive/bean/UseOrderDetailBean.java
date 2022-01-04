@@ -93,9 +93,11 @@ public class UseOrderDetailBean extends BaseResult {
         private int id;
         private String applyNumber;
         private int applyUserId;
+        private String applyIdNumber;
         private String applyUsername;
         private String applyPhone;
         private int applyDepartmentId;
+
         private String applyDepartmentName;
         private String applyDepartmentAddress;
         private String applyDepartmentSeal;
@@ -128,9 +130,18 @@ public class UseOrderDetailBean extends BaseResult {
         private String grantUseLongitude;
         private String grantUseLatitude;
         private String receiveSign;
+        private String receivePhoto;
+        private String safetyPhoto;
+        private String blasterPhoto;
+        private String safekeepingPhoto;
+        private int receiveId;
         private String safetySign;
         private String blasterSign;
         private String safekeepingSign;
+        private boolean receiveCheckSuccess;
+        private boolean safetyCheckSuccess;
+        private boolean blasterCheckSuccess;
+        private boolean safekeepingCheckSuccess;
         private String useTime;
         private String useAddress;
         private String useLongitude;
@@ -153,7 +164,99 @@ public class UseOrderDetailBean extends BaseResult {
         private String token;
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
+        private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
         private List<ExplosiveUsageReturnBean> explosiveUsageReturn;
+
+        public boolean isReceiveCheckSuccess() {
+            return receiveCheckSuccess;
+        }
+
+        public String getReceivePhoto() {
+            return receivePhoto == null ? "" : receivePhoto;
+        }
+
+        public void setReceivePhoto(String receivePhoto) {
+            this.receivePhoto = receivePhoto == null ? "" : receivePhoto;
+        }
+
+        public String getSafetyPhoto() {
+            return safetyPhoto == null ? "" : safetyPhoto;
+        }
+
+        public void setSafetyPhoto(String safetyPhoto) {
+            this.safetyPhoto = safetyPhoto == null ? "" : safetyPhoto;
+        }
+
+        public String getBlasterPhoto() {
+            return blasterPhoto == null ? "" : blasterPhoto;
+        }
+
+        public void setBlasterPhoto(String blasterPhoto) {
+            this.blasterPhoto = blasterPhoto == null ? "" : blasterPhoto;
+        }
+
+        public String getSafekeepingPhoto() {
+            return safekeepingPhoto == null ? "" : safekeepingPhoto;
+        }
+
+        public void setSafekeepingPhoto(String safekeepingPhoto) {
+            this.safekeepingPhoto = safekeepingPhoto == null ? "" : safekeepingPhoto;
+        }
+
+        public void setReceiveCheckSuccess(boolean receiveCheckSuccess) {
+            this.receiveCheckSuccess = receiveCheckSuccess;
+        }
+
+        public boolean isSafetyCheckSuccess() {
+            return safetyCheckSuccess;
+        }
+
+        public void setSafetyCheckSuccess(boolean safetyCheckSuccess) {
+            this.safetyCheckSuccess = safetyCheckSuccess;
+        }
+
+        public boolean isBlasterCheckSuccess() {
+            return blasterCheckSuccess;
+        }
+
+        public void setBlasterCheckSuccess(boolean blasterCheckSuccess) {
+            this.blasterCheckSuccess = blasterCheckSuccess;
+        }
+
+        public boolean isSafekeepingCheckSuccess() {
+            return safekeepingCheckSuccess;
+        }
+
+        public void setSafekeepingCheckSuccess(boolean safekeepingCheckSuccess) {
+            this.safekeepingCheckSuccess = safekeepingCheckSuccess;
+        }
+
+        public int getReceiveId() {
+            return receiveId;
+        }
+
+        public void setReceiveId(int receiveId) {
+            this.receiveId = receiveId;
+        }
+
+        public List<ExplosiveUsageNumberBean> getExplosiveUsageNumber() {
+            if (explosiveUsageNumber == null) {
+                return new ArrayList<>();
+            }
+            return explosiveUsageNumber;
+        }
+
+        public String getApplyIdNumber() {
+            return applyIdNumber == null ? "" : applyIdNumber;
+        }
+
+        public void setApplyIdNumber(String applyIdNumber) {
+            this.applyIdNumber = applyIdNumber == null ? "" : applyIdNumber;
+        }
+
+        public void setExplosiveUsageNumber(List<ExplosiveUsageNumberBean> explosiveUsageNumber) {
+            this.explosiveUsageNumber = explosiveUsageNumber;
+        }
 
         public int getPoliceVoid() {
             return policeVoid;

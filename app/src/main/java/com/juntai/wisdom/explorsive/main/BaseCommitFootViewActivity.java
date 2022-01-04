@@ -36,17 +36,7 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
 
     }
 
-    @Override
-    public void onLocationReceived(BDLocation bdLocation) {
-        super.onLocationReceived(bdLocation);
-        if (bdLocation != null) {
-            lat = bdLocation.getLatitude();
-            lng = bdLocation.getLongitude();
-            address = bdLocation.getAddrStr();
-            notifyLocationItem();
-        }
 
-    }
 
     @Override
     public void initView() {
@@ -54,37 +44,8 @@ public abstract class BaseCommitFootViewActivity extends BaseExplosiveActivity {
         adapter.setFooterView(getFootView());
     }
 
-    /**
-     * 更新定位item
-     */
-    private void notifyLocationItem() {
-        List<MultipleItem> arrays = adapter.getData();
-        for (int i = 0; i < arrays.size(); i++) {
-            MultipleItem array = arrays.get(i);
-            if (MultipleItem.ITEM_LOCATION == array.getItemType()) {
-                //定位
-                LocationBean locationBean = (LocationBean) array.getObject();
-                locationBean.setAddress(address);
-                locationBean.setLatitude(String.valueOf(lat));
-                locationBean.setLongitude(String.valueOf(lng));
-                adapter.notifyItemChanged(i);
-                break;
-            }
-        }
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_ADDR && resultCode == RESULT_OK) {
-            //地址选择
-            lat = data.getDoubleExtra("lat", 0.0);
-            lng = data.getDoubleExtra("lng", 0.0);
-            address = data.getStringExtra("address");
-            notifyLocationItem();
-        }
 
-    }
 
 
     @Override

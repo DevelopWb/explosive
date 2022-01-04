@@ -8,6 +8,7 @@ import android.view.View;
 import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
+import com.juntai.wisdom.explorsive.main.MainActivity;
 import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 import com.juntai.wisdom.explorsive.main.mine.receive.AddReceiveApplyActivity;
@@ -26,9 +27,15 @@ public class ApplyUseActivity extends BaseApplyUseActivity {
         return new MainPresent();
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity.isUseInMine = true;
+    }
 
     @Override
     public void initView() {
+        super.initView();
         getTitleRightTv().setText("新增");
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,8 +49,13 @@ public class ApplyUseActivity extends BaseApplyUseActivity {
 
     @Override
     protected String getTitleName() {
-        return "矿内使用申请";
+        return "矿场爆炸物使用申请";
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.isUseInMine = false;
 
+    }
 }

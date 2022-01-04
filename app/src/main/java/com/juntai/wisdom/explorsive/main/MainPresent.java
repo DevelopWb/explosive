@@ -15,6 +15,7 @@ import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
+import com.juntai.wisdom.explorsive.bean.FaceCheckBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
@@ -117,10 +118,10 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
     /**
      * 民爆使用申请
-     *
+     *showReceiver  是否展示领取人
      * @return
      */
-    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
+    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail,boolean showReceiver) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -136,21 +137,23 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                 bean.getRemarks(), false, 1);
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage() : bean.getExplosiveUsage()));
+        if (showReceiver) {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
 
-        arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                    new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
+                            String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
+                            MainContactInterface.SAFER), 0, true)));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                    new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
+                            String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
+                            MainContactInterface.BLASTER), 0, true)));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
+                    new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
+                            String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
+                            MainContactInterface.MANAGER), 0, true)));
+        }
 
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
-                        String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
-                        MainContactInterface.SAFER), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
-                        String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
-                        MainContactInterface.BLASTER), 0, true)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
-                        String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
-                        MainContactInterface.MANAGER), 0, true)));
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
@@ -163,6 +166,35 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
 
         }
+        return arrays;
+    }
+    /**
+     * 矿内出库
+     *
+     * @return
+     */
+    public List<MultipleItem> getUseApplyOutInMineData(UseOrderDetailBean.DataBean bean,boolean isDetail) {
+        List<MultipleItem> arrays = getUseApplyData(bean,true,false);
+        arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
+                new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail?bean.getGrantTime():new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()))));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, !isDetail ? null :
+                bean.getGrantUseAddress()
+                , !isDetail ? null : bean.getGrantUseLatitude(), !isDetail ? null : bean.getGrantUseLongitude())));
+
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getReceiveId(),MainContactInterface.RECEIVER+bean.getApplyUsername()
+                ,bean.getReceivePhoto(),bean.getReceiveSign(),!TextUtils.isEmpty(bean.getReceivePhoto())
+                )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getSafetyId(),MainContactInterface.SAFER+bean.getSafetyName()
+                ,bean.getSafetyPhoto(),bean.getSafetySign(),!TextUtils.isEmpty(bean.getSafetyPhoto())
+                )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getBlasterId(),MainContactInterface.BLASTER+bean.getBlasterName()
+                ,bean.getBlasterPhoto(),bean.getBlasterSign(),!TextUtils.isEmpty(bean.getBlasterPhoto())
+                )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK,new FaceCheckBean(bean.getSafekeepingId(),MainContactInterface.MANAGER+bean.getSafekeepingName()
+                ,bean.getSafekeepingPhoto(),bean.getSafekeepingSign(),!TextUtils.isEmpty(bean.getSafekeepingPhoto())
+                )));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_ISSUE_NO, bean.getExplosiveUsageNumber().isEmpty() ? getExplosiveDosageNumbers() : bean.getExplosiveUsageNumber()));
+
         return arrays;
     }
 
@@ -357,8 +389,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_USER_UNIT_ADDR, dataBean == null ? UserInfoManager.getDepartmentAddr() : dataBean.getApplyDepartmentAddress()));
         arrays.add(new TextKeyValueBean(MainContactInterface.APPLY_TIME, !isDetail ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) : dataBean.getApplyTime()));
         if (isDetail) {
-            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_START_TIME + ":", dataBean.getEstimateStartUseTime()));
-            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_END_TIME + ":", dataBean.getEstimateEndUseTime()));
+            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_START_TIME, dataBean.getEstimateStartUseTime()));
+            arrays.add(new TextKeyValueBean(MainContactInterface.PLAN_USE_END_TIME, dataBean.getEstimateEndUseTime()));
         }
         return arrays;
     }
@@ -550,6 +582,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public void outHouse(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .outHouse(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void outInMine(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .outInMine(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override

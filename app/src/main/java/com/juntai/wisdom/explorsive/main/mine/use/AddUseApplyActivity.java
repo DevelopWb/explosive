@@ -24,14 +24,14 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getUseApplyData(null,false));
+        adapter.setNewData(mPresenter.getUseApplyData(null,false,true));
         UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getUseApplyData(savedBean,false));
+                            adapter.setNewData(mPresenter.getUseApplyData(savedBean,false,true));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
@@ -50,7 +50,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     protected String getCommitTextValue() {
-        return "矿场使用提交";
+        return "提交";
     }
 
     @Override
@@ -60,6 +60,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
         useBean.setApplyUserId(UserInfoManager.getUserId());
         useBean.setApplyDepartmentId(UserInfoManager.getDepartmentId());
         useBean.setMobile(UserInfoManager.getMobile());
+        useBean.setApplyIdNumber(UserInfoManager.getIDCard());
         useBean.setToken(UserInfoManager.getUserToken());
         String route= GsonTools.createGsonString(useBean);//通过Gson将Bean转化为Json字符串形式
         RequestBody body= RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),route);

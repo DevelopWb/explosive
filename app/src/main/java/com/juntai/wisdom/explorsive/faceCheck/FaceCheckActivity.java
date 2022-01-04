@@ -1,5 +1,6 @@
 package com.juntai.wisdom.explorsive.faceCheck;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -28,8 +29,13 @@ import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 import com.juntai.wisdom.explorsive.utils.NV21ToBitmap;
+import com.juntai.wisdom.explorsive.utils.cropbitmap.CropViewUtils;
 import com.tu.tcircleprogresslibrary.TCircleProgressView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +47,12 @@ import java.util.Map;
  * @date 2018/8/7  9:57
  */
 public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements SurfaceHolder.Callback, MainContactInterface {
+
+    public static String PERSION_ID = "persionId";
+    public static String FACE_HEAD = "facehead";
+    public static int FACE_CODE = 10089;
+    private int persionId;
+
     private float currentProgress;
     // ===========================================================
     // Constants
@@ -95,6 +107,7 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
         }
     };
     private TextView mReCheckTv;
+    private String facePath;
 
     @Override
     protected MainPresent createPresenter() {
@@ -108,6 +121,9 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
 
     @Override
     public void initView() {
+        if (getIntent() != null) {
+            persionId = getIntent().getIntExtra(PERSION_ID, 0);
+        }
         SurfaceView surfaceView = findViewById(R.id.sv_camera);
         mReCheckTv = findViewById(R.id.recheck_tv);
         mReCheckTv.setOnClickListener(new View.OnClickListener() {
@@ -286,13 +302,18 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
                     @Override
                     public void onPreviewFrame(byte[] bytes, Camera camera) {
                         NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(mContext);
-                        String imageStr = FileCacheUtils.saveBitmapToBase64(nv21ToBitmap.nv21ToBitmap(bytes, mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height), "888888.jpg");
-                        mPresenter.startFaceCheck(getBaseBuilder().add("id", String.valueOf("14")).add("image", imageStr).build(), AppHttpPath.FACE_CHECK);
+                        String path = getHeadPicPath();
+                        FileCacheUtils.saveBitmap(nv21ToBitmap.nv21ToBitmap(bytes, mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height),path);
+                        //上传头像
+                        mPresenter.uploadFile(AppHttpPath.UPLOAD_FILES, path);
                     }
                 });
             }
         }
     };
+    private String getHeadPicPath() {
+        return String.format("%s%s%s", FileCacheUtils.getAppImagePath(), persionId, ".jpeg");
+    }
 
     @Override
     protected void onPause() {
@@ -309,16 +330,30 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
 
     @Override
     public void onSuccess(String tag, Object o) {
-        FaceCheckResponseBean responseBean = (FaceCheckResponseBean) o;
-        if (responseBean != null) {
-            FaceCheckResponseBean.DataBean dataBean = responseBean.getData();
-            if (dataBean != null) {
-                if (dataBean.getResponse().isIsMatch()) {
-                    mHandler.sendEmptyMessage(4);
-                } else {
-                    mHandler.sendEmptyMessage(5);
+        switch (tag) {
+            case AppHttpPath.FACE_CHECK:
+                FaceCheckResponseBean responseBean = (FaceCheckResponseBean) o;
+                if (responseBean != null) {
+                    FaceCheckResponseBean.DataBean dataBean = responseBean.getData();
+                    if (dataBean != null) {
+                        if (dataBean.getResponse().isIsMatch()) {
+                            mHandler.sendEmptyMessage(4);
+                            setResult(FACE_CODE, new Intent().putExtra(FACE_HEAD, facePath));
+                            finish();
+                        } else {
+                            mHandler.sendEmptyMessage(5);
+                        }
+                    }
                 }
-            }
+                break;
+
+            case AppHttpPath.UPLOAD_FILES:
+                List<String> pics = (List<String>) o;
+                facePath = pics == null ? "" : pics.get(0);
+                mPresenter.startFaceCheck(getBaseBuilder().add("id", String.valueOf(persionId)).add("image", facePath).build(), AppHttpPath.FACE_CHECK);
+                break;
+            default:
+                break;
         }
 
 

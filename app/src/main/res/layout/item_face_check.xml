@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_face_cl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingTop="10dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="10dp">
+
+
+    <TextView
+        android:id="@+id/face_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="签字盖章"
+        android:textColor="@color/text_title"
+        android:textSize="14dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    <TextView
+        android:id="@+id/face_status_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:text="已经人脸验证"
+        android:textColor="@color/colorAccent"
+        android:textSize="14dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/face_title_tv"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/face_title_tv"></TextView>
+
+    <ImageView
+        android:id="@+id/user_face_iv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/face_check_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/face_title_tv"></ImageView>
+
+
+    <ImageView
+        android:id="@+id/user_sign_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/app_icon"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_face_iv"></ImageView>
+
+    <TextView
+        android:id="@+id/face_start_sign_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stroke_blue_square_bg"
+        android:paddingLeft="25dp"
+        android:paddingTop="10dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="10dp"
+        android:text="点击签字"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/user_sign_iv"
+        app:layout_constraintRight_toRightOf="@+id/user_sign_iv"
+        app:layout_constraintTop_toTopOf="@+id/user_sign_iv"></TextView>
+
+</android.support.constraint.ConstraintLayout>

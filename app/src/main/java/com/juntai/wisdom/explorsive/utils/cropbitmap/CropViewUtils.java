@@ -712,4 +712,28 @@ public class CropViewUtils {
         bitmap = null;
         return newBitmap;
     }
+
+    /**
+
+     * 旋转图片，使图片保持正确的方向。
+
+     */
+
+    public static Bitmap rotaPic(String filePath,Bitmap bitmap){
+
+        Matrix matrix = new Matrix();
+
+        matrix.setRotate(readPictureDegree(filePath), bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+
+        Bitmap bmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        if (null != bitmap) {
+
+            bitmap.recycle();
+
+        }
+
+        return bmp;
+
+    }
 }

@@ -3,6 +3,7 @@ package com.juntai.disabled.basecomponent.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Environment;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -22,6 +23,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.Calendar;
+
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * 文件
@@ -106,7 +111,30 @@ public class FileCacheUtils {
         }
         return destDir.getAbsolutePath() + "/";
     }
+    /**
+     * 缓存bmp
+     *
+     * @param bmp
+     * @return
+     */
+    public static String saveBitmap(Bitmap bmp, String picName) {
+        bmp =  FileCacheUtils.rotaingImageView(270,bmp);
 
+        FileOutputStream out;
+        File file;
+        try {
+            file = new File(picName);
+            out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return picName;
+    }
     /**
      * 缓存bmp
      *
@@ -140,6 +168,16 @@ public class FileCacheUtils {
         }
         return path;
     }
+    public static Bitmap rotaingImageView(int angle , Bitmap bitmap) {
+        //旋转图片 动作
+        Matrix matrix = new Matrix();;
+        matrix.postRotate(angle);
+        System.out.println("angle2=" + angle);
+        // 创建新的图片
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+                bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return resizedBitmap;
+    }
 
     /**
      * 缓存bmp
@@ -147,53 +185,17 @@ public class FileCacheUtils {
      * @param bmp
      * @return
      */
-    public static String saveBitmap(Bitmap bmp, String picName) {
+    public static String saveBitmapToBase64(Bitmap bmp, String picPath) {
         FileOutputStream out;
         File file;
         String path = null;
         try {
-            // 获取SDCard指定目录下
-            String sdCardDir = getAppImagePath();
-            File dirFile = new File(sdCardDir);  //目录转化成文件夹
-            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
-                dirFile.mkdirs();
-            }
-            file = new File(sdCardDir, picName);
+            file = new File(picPath);
             out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-            path = sdCardDir + picName;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return path;
-    }
-    /**
-     * 缓存bmp
-     *
-     * @param bmp
-     * @return
-     */
-    public static String saveBitmapToBase64(Bitmap bmp, String picName) {
-        FileOutputStream out;
-        File file;
-        String path = null;
-        try {
-            // 获取SDCard指定目录下
-            String sdCardDir = getAppImagePath();
-            File dirFile = new File(sdCardDir);  //目录转化成文件夹
-            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
-                dirFile.mkdirs();
-            }
-            file = new File(sdCardDir, picName);
-            out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-           return imageToBase64(sdCardDir + picName);
+           return imageToBase64(picPath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

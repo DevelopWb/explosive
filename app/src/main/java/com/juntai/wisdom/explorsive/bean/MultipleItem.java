@@ -32,6 +32,7 @@ public class MultipleItem implements MultiItemEntity {
     public static final int ITEM_APPLY_DOSAGE = 19;//  申请用量
     public static final int ITEM_SELECT_TIME = 20;//  选择时间
     public static final int ITEM_ISSUE_NO = 21;//  发放编号
+    public static final int ITEM_FACE_CHECK = 22;//  人脸验证
 
 
 

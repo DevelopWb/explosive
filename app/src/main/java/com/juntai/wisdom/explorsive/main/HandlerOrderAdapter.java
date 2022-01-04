@@ -32,6 +32,7 @@ import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
+import com.juntai.wisdom.explorsive.bean.FaceCheckBean;
 import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
@@ -95,6 +96,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
         addItemType(MultipleItem.ITEM_ISSUE_NO, R.layout.item_layout_issue_no);
         addItemType(MultipleItem.ITEM_FRAGMENT, R.layout.item_layout_fragment);
+        addItemType(MultipleItem.ITEM_FACE_CHECK, R.layout.item_face_check);
         this.mFragmentManager = mFragmentManager;
     }
 
@@ -110,8 +112,35 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
+
+            case MultipleItem.ITEM_FACE_CHECK:
+                FaceCheckBean  faceCheckBean = (FaceCheckBean) item.getObject();
+                helper.setText(R.id.face_title_tv,faceCheckBean.getPersonName());
+                if (!isDetail) {
+                    helper.addOnClickListener(R.id.user_face_iv);
+                }
+                if (faceCheckBean.isCheckSuccess()) {
+                    helper.setVisible(R.id.face_status_tv,true);
+                    ImageLoadUtil.loadCirImgNoCrash(mContext,UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonHeadPic()),helper.getView(R.id.user_face_iv));
+                }else {
+                    helper.setVisible(R.id.face_status_tv,false);
+                    helper.setImageResource(R.id.user_face_iv,R.mipmap.face_check_icon);
+                }
+                if (TextUtils.isEmpty(faceCheckBean.getPersonSignPic())) {
+                    helper.setVisible(R.id.user_sign_iv,false);
+                    helper.setGone(R.id.face_start_sign_tv,true);
+                    if (!isDetail) {
+                        helper.addOnClickListener(R.id.face_start_sign_tv);
+                    }
+                }else {
+                    helper.setVisible(R.id.user_sign_iv,true);
+                    helper.setGone(R.id.face_start_sign_tv,false);
+                    ImageLoadUtil.loadImage(mContext,UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonSignPic()),helper.getView(R.id.user_sign_iv));
+
+                }
+                break;
             case MultipleItem.ITEM_FRAGMENT:
-                //上传材料时 多选照片
+                //
                 FragmentPicBean picBean = (FragmentPicBean) item.getObject();
                 SelectPhotosFragment fragment = (SelectPhotosFragment) mFragmentManager.findFragmentById(R.id.photo_fg);
                 fragment.setObject(picBean);

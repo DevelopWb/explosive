@@ -176,6 +176,9 @@ public class ImageLoadUtil {
     public static void loadCirImgNoCrash(Context context, int resId, ImageView view) {
         Glide.with(context).load(resId).apply(new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(view);
     }
+    public static void loadCirImgNoCrash(Context context, String resId, ImageView view) {
+        Glide.with(context).load(resId).apply(new RequestOptions().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)).into(view);
+    }
 
     public interface BitmapCallBack {
         void getBitmap(Bitmap bitmap);

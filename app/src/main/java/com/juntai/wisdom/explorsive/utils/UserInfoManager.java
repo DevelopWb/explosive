@@ -125,6 +125,20 @@ public class UserInfoManager {
         return "";
     }
 
+
+    public static  List<Integer>  getWorkIds(){
+        List<Integer> arrays = new ArrayList<>();
+        if (getUser() != null && getUser().getData() != null) {
+            List<UserBean.DataBean.PostBean> postBeanList = getUser().getData().getPost();
+            if (postBeanList != null && !postBeanList.isEmpty()) {
+                for (int i = 0; i < postBeanList.size(); i++) {
+                    UserBean.DataBean.PostBean postBean = postBeanList.get(i);
+                    arrays.add(postBean.getId());
+                }
+            }
+        }
+        return arrays;
+    }
     /**
      * 获取getUserId
      *
@@ -132,6 +146,14 @@ public class UserInfoManager {
      */
     public static int getUserId() {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getUserId() : -1;
+    }
+    /**
+     * 身份证号
+     *
+     * @return
+     */
+    public static String getIDCard() {
+        return getUser() != null && getUser().getData() != null ? getUser().getData().getIdNumber() : "";
     }
     public static int getDepartmentId() {
         return getUser() != null && getUser().getData() != null ? getUser().getData().getDepartmentId() : -1;

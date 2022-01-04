@@ -29,6 +29,7 @@ import com.juntai.wisdom.explorsive.main.explosiveManage.AllMinesActivity;
 import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveManageOfMineActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.UseApproveActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
@@ -41,7 +42,10 @@ import com.juntai.wisdom.explorsive.utils.UserInfoManager;
  * @date 2021-12-20 9:47
  */
 public class MainActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener {
-    //
+    //矿内管理
+    public static boolean  isManager = false;
+    //矿内使用
+    public static boolean  isUseInMine = false;
     CGBroadcastReceiver broadcastReceiver = new CGBroadcastReceiver();
     private ImageView mUserHeadIv;
     /**
@@ -103,8 +107,8 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
 
                         break;
                     case MainPresent.MINE_MANAGER:
-                        // TODO: 2021-12-20  矿场管理发放
-                        startActivity(new Intent(mContext, FaceCheckActivity.class));
+                        // : 2021-12-20  矿场管理发放
+                        startActivity(new Intent(mContext, ExplosiveManageOfMineActivity.class));
                         break;
                     case MainPresent.APPROVE_RECEIVE:
                         // : 2021-12-20  民爆领取审批

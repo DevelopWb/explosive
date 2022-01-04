@@ -30,8 +30,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryDetailActivity"></activity>
-        <activity android:name=".explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryOperateActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receive.manager.ExplosiveOutInMineDetailActivity"></activity>
+        <activity android:name=".explorsive.main.mine.receive.manager.ExplosiveOutInMineActivity" />
+        <activity android:name=".explorsive.main.mine.receive.manager.ExplosiveManageOfMineActivity" />
+        <activity android:name=".explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryDetailActivity" />
+        <activity android:name=".explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryOperateActivity" />
         <activity android:name=".explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity" />
         <activity android:name=".explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutOperateActivity" />
         <activity android:name=".explorsive.main.explosiveManage.ExplosiveManageActivity" />
