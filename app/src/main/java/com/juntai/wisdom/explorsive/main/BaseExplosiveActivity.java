@@ -1,7 +1,6 @@
 package com.juntai.wisdom.explorsive.main;
 
 import android.content.Intent;
-import android.media.FaceDetector;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
-import com.juntai.disabled.basecomponent.utils.GsonTools;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
@@ -28,6 +26,7 @@ import com.juntai.wisdom.explorsive.base.customview.GestureSignatureView;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.BaseUsageBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
@@ -39,7 +38,6 @@ import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.OutInMineRequest;
-import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
@@ -158,7 +156,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                         TimeBean timeBean = (TimeBean) multipleItem.getObject();
                         switch (timeBean.getTimeKey()) {
                             case MainContactInterface.PLAN_USE_START_TIME:
-                                PickerManager.getInstance().showTimePickerView(mContext, null, "预计使用开始时间", new PickerManager.OnTimePickerTimeSelectedListener() {
+                                PickerManager.getInstance().showTimePickerView(mContext, new boolean[]{true, true, true, true, true, false}, "预计使用开始时间", new PickerManager.OnTimePickerTimeSelectedListener() {
                                     @Override
                                     public void onTimeSelect(Date date, View v) {
                                         timeBean.setTimeValue(sdf.format(date));
@@ -167,7 +165,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                 });
                                 break;
                             case MainContactInterface.PLAN_USE_END_TIME:
-                                PickerManager.getInstance().showTimePickerView(mContext, null, "预计使用结束时间", new PickerManager.OnTimePickerTimeSelectedListener() {
+                                PickerManager.getInstance().showTimePickerView(mContext, new boolean[]{true, true, true, true, true, false}, "预计使用结束时间", new PickerManager.OnTimePickerTimeSelectedListener() {
                                     @Override
                                     public void onTimeSelect(Date date, View v) {
                                         timeBean.setTimeValue(sdf.format(date));
@@ -262,17 +260,39 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                         }
                         adapter.notifyItemChanged(position);
                         break;
-                    default:
+                    case MultipleItem.ITEM_APPLY_DOSAGE:
                         switch (view.getId()) {
                             case R.id.add_dosage_iv:
                                 //添加用量
-                                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) multipleItem.getObject();
+                                BaseUsageBean usageBean = (BaseUsageBean) multipleItem.getObject();
+                                List<ExplosiveUsageBean> explosiveUsageBeans = usageBean.getUsageBeanList();
                                 explosiveUsageBeans.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
                                 adapter.notifyItemChanged(position);
                                 break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case MultipleItem.ITEM_RETURN_DOSAGE:
+                        switch (view.getId()) {
+                            case R.id.add_dosage_iv:
+                                //添加用量
+                                BaseUsageBean returnUsaeBean = (BaseUsageBean) multipleItem.getObject();
+                                List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> explosiveUsageRetrunBeans =returnUsaeBean.getUsageReturnBeans();
+                                explosiveUsageRetrunBeans.add(new UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean(0,"请选择爆炸物种类", 0, "零", "个",null));
+                                adapter.notifyItemChanged(position);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        switch (view.getId()) {
+
                             case R.id.add_issue_iv:
                                 //添加编号
-                                List<ExplosiveUsageNumberBean> explosiveUsageNumBeans = (List<ExplosiveUsageNumberBean>) multipleItem.getObject();
+                                BaseUsageBean usageNumBean = (BaseUsageBean) multipleItem.getObject();
+                                List<ExplosiveUsageNumberBean> explosiveUsageNumBeans = usageNumBean.getUsageNumberBeanList();
                                 explosiveUsageNumBeans.add(new ExplosiveUsageNumberBean(0, "请选择爆炸物种类", "0", "0"));
                                 adapter.notifyItemChanged(position);
                                 break;
@@ -505,17 +525,6 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         List<MultipleItem> arrays = adapter.getData();
         for (MultipleItem item : arrays) {
             switch (item.getItemType()) {
-                case MultipleItem.ITEM_RADIO:
-                    RadioBean radioBean = (RadioBean) item.getObject();
-                    switch (radioBean.getKey()) {
-                        case MainContactInterface.IS_RETURN:
-                            // * 是否退回（1否；2是）
-                            useOrderBean.setIsReturn(radioBean.getDefaultSelectedIndex()+1);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
                 case MultipleItem.ITEM_FRAGMENT:
                     //多选图片
                     FragmentPicBean fragmentPicBean = (FragmentPicBean) item.getObject();
@@ -800,6 +809,10 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             receiveOrderBean.setRemarks(value);
                             useOrderBean.setRemarks(value);
                             break;
+                        case MainContactInterface.REMARK:
+                            //备注
+                            useOrderBean.setUseRemarks(value);
+                            break;
                         default:
                             break;
                     }
@@ -836,12 +849,20 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     break;
 
                 case MultipleItem.ITEM_APPLY_DOSAGE:
-                    List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
+                    BaseUsageBean usageBean = (BaseUsageBean) item.getObject();
+                    List<ExplosiveUsageBean> explosiveUsageBeans = usageBean.getUsageBeanList();
                     receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     useOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     break;
+                case MultipleItem.ITEM_RETURN_DOSAGE:
+                    BaseUsageBean returnDosage = (BaseUsageBean) item.getObject();
+                    List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> returnBeans = returnDosage.getUsageReturnBeans();
+                    useOrderBean.setExplosiveUsageReturn(returnBeans);
+                    useOrderBean.setIsReturn(returnDosage.getIsReturn());
+                    break;
                 case MultipleItem.ITEM_ISSUE_NO:
-                    List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans = (List<ExplosiveUsageNumberBean>) item.getObject();
+                    BaseUsageBean usageNumBean = (BaseUsageBean) item.getObject();
+                    List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans = usageNumBean.getUsageNumberBeanList();
                     receiveOrderBean.setExplosiveUsageNumber(explosiveUsageNumberBeans);
                     useOrderBean.setExplosiveUsageNumber(explosiveUsageNumberBeans);
                     outInMineRequest.setNumber(explosiveUsageNumberBeans);

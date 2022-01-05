@@ -43,20 +43,20 @@ public class ExplosiveUseActivity extends BaseExplosiveUseDetailActivity {
     @Override
     public void initData() {
         super.initData();
-//        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_OUT_ORDER_IN_MINE);
-//        if (savedBean != null) {
-//            setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
-//                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            adapter.setNewData(mPresenter.getUseApplyOutInMineData(savedBean,false));
-//                        }
-//                    }).setNegativeButton("否", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                        }
-//                    }).show(), -1, 0);
-//        }
+        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_USE_ORDER_IN_MINE);
+        if (savedBean != null) {
+            setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
+                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            adapter.setNewData(mPresenter.getApplyOfUseInMineData(savedBean,false));
+                        }
+                    }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show(), -1, 0);
+        }
 
     }
 
@@ -85,24 +85,24 @@ public class ExplosiveUseActivity extends BaseExplosiveUseDetailActivity {
         switch (v.getId()) {
             case R.id.commit_form_tv:
                 // : 2021-12-29 提交出库
-//                BaseAdapterDataBean adapterData = getBaseAdapterData(false);
-//                if (adapterData != null) {
-//                    OutInMineRequest outInMineRequest = adapterData.getOutInMineRequest();
-//                    outInMineRequest.setMobile(UserInfoManager.getMobile());
-//                    outInMineRequest.setToken(UserInfoManager.getUserToken());
-//                    outInMineRequest.setId(baseId);
-//                    RequestBody body = GsonTools.getJsonRequest(outInMineRequest);
-//                    mPresenter.outInMine(body, AppHttpPath.OUT_IN_MINE);
-//                }
+                BaseAdapterDataBean adapterData = getBaseAdapterData(false);
+                if (adapterData != null) {
+                    UseOrderDetailBean.DataBean orderBean = adapterData.getUseOrderBean();
+                    orderBean.setMobile(UserInfoManager.getMobile());
+                    orderBean.setToken(UserInfoManager.getUserToken());
+                    orderBean.setId(baseId);
+                    RequestBody body = GsonTools.getJsonRequest(orderBean);
+                    mPresenter.useInMine(body, AppHttpPath.USE_IN_MINE);
+                }
 
 
                 break;
             case R.id.save_draft_tv:
                 // : 2021-12-29 保存草稿
-//                BaseAdapterDataBean baseAdapterData = getBaseAdapterData(true);
-//                Hawk.put(HawkProperty.SAVE_OUT_ORDER_IN_MINE, baseAdapterData.getUseOrderBean());
-//                ToastUtils.toast(mContext, "草稿保存成功");
-//                finish();
+                BaseAdapterDataBean baseAdapterData = getBaseAdapterData(true);
+                Hawk.put(HawkProperty.SAVE_USE_ORDER_IN_MINE, baseAdapterData.getUseOrderBean());
+                ToastUtils.toast(mContext, "草稿保存成功");
+                finish();
 
                 break;
             default:

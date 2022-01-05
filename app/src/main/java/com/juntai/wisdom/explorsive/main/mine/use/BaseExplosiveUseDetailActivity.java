@@ -36,6 +36,7 @@ public abstract class BaseExplosiveUseDetailActivity extends BaseExplosiveActivi
                 }
                 break;
             case AppHttpPath.POLICE_APPROVE:
+            case AppHttpPath.USE_IN_MINE:
             case AppHttpPath.OUT_IN_MINE:
                 ToastUtils.toast(mContext, "提交成功");
                 finish();

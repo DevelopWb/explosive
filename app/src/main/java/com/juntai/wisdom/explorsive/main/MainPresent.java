@@ -24,7 +24,6 @@ import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.MyMenuBean;
-import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
@@ -216,25 +215,25 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
                 new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
-                        String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
+                        String.valueOf(bean.getUseSafetyName()), String.format("%s%s", "请选择",
                         MainContactInterface.SAFER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
                 new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
-                        String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
+                        String.valueOf(bean.getUseBlasterName()), String.format("%s%s", "请选择",
                         MainContactInterface.BLASTER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
                 new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
-                        String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
+                        String.valueOf(bean.getUseSafekeepingName()), String.format("%s%s", "请选择",
                         MainContactInterface.MANAGER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, MainContactInterface.USE_RECORD_PHOTO));
         List<String> pics = new ArrayList<>();
-        pics.add(UrlFormatUtil.getImageOriginalUrl(bean.getUseBillUrl()));
+        pics.add(TextUtils.isEmpty(bean.getUseBillUrl())?"-1":bean.getUseBillUrl());
         arrays.add(new MultipleItem(MultipleItem.ITEM_FRAGMENT,
                 new FragmentPicBean(MainContactInterface.USE_RECORD_PHOTO, 0, pics, isDetail)));
         initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.REMARK, bean == null ? "" :
                 bean.getUseRemarks(), false, 1,isDetail);
-        arrays.add(new MultipleItem(MultipleItem.ITEM_RADIO, new RadioBean(MainContactInterface.IS_RETURN, bean.getIsReturn(),
-                new String[]{"无需退库", "需要退库"}, isDetail)));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_RETURN_DOSAGE, bean==null||bean.getExplosiveUsageReturn().isEmpty()? getExplosiveReturnDosage() :new BaseUsageBean(bean.getExplosiveUsageReturn(),isDetail,bean.getIsReturn())));
+
         return arrays;
     }
 
@@ -388,6 +387,16 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<ExplosiveUsageBean> arrays = new ArrayList<>();
         arrays.add(new ExplosiveUsageBean("请选择爆炸物种类", 0, "零", "个"));
         return new BaseUsageBean(arrays,false);
+    }
+    /**
+     * 获取默认的数据
+     *
+     * @return
+     */
+    private BaseUsageBean getExplosiveReturnDosage() {
+        List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> arrays = new ArrayList<>();
+        arrays.add(new UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean(0,"请选择爆炸物种类", 0, "零", "个",null));
+        return new BaseUsageBean(arrays,false,0);
     }
 
     /**
@@ -655,6 +664,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public void outInMine(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .outInMine(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void useInMine(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .useInMine(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override

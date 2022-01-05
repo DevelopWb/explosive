@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:paddingTop="3dp"
+    android:id="@+id/radio_cl"
     android:paddingBottom="3dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
@@ -20,6 +21,7 @@
         <RadioButton
             android:id="@+id/radio_zero_rb"
             android:layout_width="wrap_content"
+            android:text="无需退库"
             android:layout_height="wrap_content"
             android:checked="true"></RadioButton>
 
@@ -28,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:text="需要退库"
             android:baselineAligned="false"
             android:checked="false"></RadioButton>
 

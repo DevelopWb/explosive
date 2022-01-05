@@ -30,6 +30,7 @@ public class MultipleItem implements MultiItemEntity {
     public static final int ITEM_LOCATION = 17;//  定位
     public static final int ITEM_DIVIDER = 18;//  分割线
     public static final int ITEM_APPLY_DOSAGE = 19;//  申请用量
+    public static final int ITEM_RETURN_DOSAGE = 1901;//  申请用量
     public static final int ITEM_SELECT_TIME = 20;//  选择时间
     public static final int ITEM_ISSUE_NO = 21;//  发放编号
     public static final int ITEM_FACE_CHECK = 22;//  人脸验证

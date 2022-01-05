@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.mvp.IView;
+import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
 import com.juntai.wisdom.explorsive.base.BaseAppPresent;
 import com.juntai.wisdom.explorsive.base.BaseRecyclerviewActivity;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
@@ -33,6 +34,7 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ActivityManagerTool.getInstance().finishApp();
                 UserInfoManager.clearUserBaseInfo();
                 startActivity(new Intent(mContext, LoginActivity.class));
             }

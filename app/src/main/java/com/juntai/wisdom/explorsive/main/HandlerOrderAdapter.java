@@ -21,6 +21,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.disabled.basecomponent.base.BaseObserver;
+import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.PickerManager;
@@ -32,7 +33,6 @@ import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.BaseUsageBean;
-import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
@@ -45,17 +45,23 @@ import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.RecycleCheckBoxBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
+import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.mine.DosageAdapter;
 import com.juntai.wisdom.explorsive.main.mine.DosageNumberAdapter;
+import com.juntai.wisdom.explorsive.main.mine.DosageWithReturnAdapter;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.StringTools;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 
+import java.io.File;
 import java.util.List;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * @Author: tobato
@@ -66,7 +72,6 @@ import okhttp3.FormBody;
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
     private FragmentManager mFragmentManager;
-
 
 
     /**
@@ -87,10 +92,10 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         addItemType(MultipleItem.ITEM_SIGN, R.layout.item_layout_type_sign);
         addItemType(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, R.layout.item_layout_type_recyclerview);
         addItemType(MultipleItem.ITEM_APPLY_DOSAGE, R.layout.item_layout_apply_dosage);
+        addItemType(MultipleItem.ITEM_RETURN_DOSAGE, R.layout.item_layout_apply_dosage);
         addItemType(MultipleItem.ITEM_ISSUE_NO, R.layout.item_layout_issue_no);
         addItemType(MultipleItem.ITEM_FRAGMENT, R.layout.item_layout_fragment);
         addItemType(MultipleItem.ITEM_FACE_CHECK, R.layout.item_face_check);
-        addItemType(MultipleItem.ITEM_RADIO, R.layout.item_layout_type_radio);
 
         this.mFragmentManager = mFragmentManager;
     }
@@ -99,89 +104,29 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         switch (item.getItemType()) {
-            case MultipleItem.ITEM_RADIO:
-                RadioBean radioBean = (RadioBean) item.getObject();
-                RadioGroup radioGroup = helper.getView(R.id.item_radio_g);
-                if (radioBean.isDetail()) {
-                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                        radioGroup.getChildAt(i).setEnabled(false);
-                    }
-                } else {
-                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                        radioGroup.getChildAt(i).setEnabled(true);
-                    }
-                }
-                radioGroup.setTag(radioBean);
-                RadioButton radioButton0 = helper.getView(R.id.radio_zero_rb);
-                RadioButton radioButton1 = helper.getView(R.id.radio_first_rb);
-                String[] values = radioBean.getValues();
-                if (values != null) {
-                    if (values.length > 1) {
-                        radioButton0.setText(values[0]);
-                        radioButton1.setText(values[1]);
-                    }
-
-                } else {
-                    radioButton0.setText("是");
-                    radioButton1.setText("否");
-                }
-                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        RadioBean radioBean = (RadioBean) group.getTag();
-                        switch (checkedId) {
-                            case R.id.radio_zero_rb:
-                                radioBean.setDefaultSelectedIndex(0);
-                                break;
-                            case R.id.radio_first_rb:
-                                radioBean.setDefaultSelectedIndex(1);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-                int defaultIndex = radioBean.getDefaultSelectedIndex();
-
-                switch (defaultIndex) {
-                    case 0:
-                        radioButton0.setChecked(true);
-                        radioButton1.setChecked(false);
-                        break;
-                    case 1:
-                        radioButton0.setChecked(false);
-                        radioButton1.setChecked(true);
-                        break;
-                    default:
-                        radioButton0.setChecked(false);
-                        radioButton1.setChecked(false);
-                        break;
-                }
-
-                break;
             case MultipleItem.ITEM_FACE_CHECK:
-                FaceCheckBean  faceCheckBean = (FaceCheckBean) item.getObject();
-                helper.setText(R.id.face_title_tv,faceCheckBean.getPersonName());
+                FaceCheckBean faceCheckBean = (FaceCheckBean) item.getObject();
+                helper.setText(R.id.face_title_tv, faceCheckBean.getPersonName());
                 if (!faceCheckBean.isDetail()) {
                     helper.addOnClickListener(R.id.user_face_iv);
                 }
                 if (faceCheckBean.isCheckSuccess()) {
-                    helper.setVisible(R.id.face_status_tv,true);
-                    ImageLoadUtil.loadCirImgNoCrash(mContext,UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonHeadPic()),helper.getView(R.id.user_face_iv));
-                }else {
-                    helper.setVisible(R.id.face_status_tv,false);
-                    helper.setImageResource(R.id.user_face_iv,R.mipmap.face_check_icon);
+                    helper.setVisible(R.id.face_status_tv, true);
+                    ImageLoadUtil.loadCirImgNoCrash(mContext, UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonHeadPic()), helper.getView(R.id.user_face_iv));
+                } else {
+                    helper.setVisible(R.id.face_status_tv, false);
+                    helper.setImageResource(R.id.user_face_iv, R.mipmap.face_check_icon);
                 }
                 if (TextUtils.isEmpty(faceCheckBean.getPersonSignPic())) {
-                    helper.setVisible(R.id.user_sign_iv,false);
-                    helper.setGone(R.id.face_start_sign_tv,true);
+                    helper.setVisible(R.id.user_sign_iv, false);
+                    helper.setGone(R.id.face_start_sign_tv, true);
                     if (!faceCheckBean.isDetail()) {
                         helper.addOnClickListener(R.id.face_start_sign_tv);
                     }
-                }else {
-                    helper.setVisible(R.id.user_sign_iv,true);
-                    helper.setGone(R.id.face_start_sign_tv,false);
-                    ImageLoadUtil.loadImage(mContext,UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonSignPic()),helper.getView(R.id.user_sign_iv));
+                } else {
+                    helper.setVisible(R.id.user_sign_iv, true);
+                    helper.setGone(R.id.face_start_sign_tv, false);
+                    ImageLoadUtil.loadImage(mContext, UrlFormatUtil.getImageOriginalUrl(faceCheckBean.getPersonSignPic()), helper.getView(R.id.user_sign_iv));
 
                 }
                 break;
@@ -195,16 +140,49 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                     fragment.setPhotoDelateable(true).setMaxCount(1);
                 } else {
                     fragment.setPhotoDelateable(false).setMaxCount(picBean.getFragmentPics().size());
-                    if (!picBean.getFragmentPics().isEmpty()) {
-                        fragment.setIcons(picBean.getFragmentPics());
-                    }
                 }
-
+                if (!picBean.getFragmentPics().isEmpty()) {
+                    fragment.setIcons(picBean.getFragmentPics());
+                }
                 fragment.setSpanCount(1).setOnPicLoadSuccessCallBack(new SelectPhotosFragment.OnPicLoadSuccessCallBack() {
                     @Override
                     public void loadSuccess(List<String> icons) {
                         FragmentPicBean picBean = (FragmentPicBean) fragment.getObject();
-                        picBean.setFragmentPics(icons);
+                        switch (picBean.getPicName()) {
+                            case MainContactInterface.ARRIVERE_PHOTO:
+                                picBean.setFragmentPics(icons);
+                                break;
+                            default:
+                                if (icons == null || icons.isEmpty()) {
+                                    return;
+                                }
+                                //将图片上传
+                                MultipartBody.Builder builder = new MultipartBody.Builder()
+                                        .setType(MultipartBody.FORM);
+                                for (String filePath : icons) {
+                                    String fileName = null;
+                                    if (filePath.contains("/")) {
+                                        fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
+                                    }
+                                    builder.addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("file"), new File(filePath)));
+                                }
+                                AppNetModule
+                                        .createrRetrofit()
+                                        .uploadFiles(builder.build())
+                                        .compose(RxScheduler.ObsIoMain((BaseExplosiveActivity) mContext))
+                                        .subscribe(new BaseObserver<BaseResult>((BaseExplosiveActivity) mContext) {
+                                            @Override
+                                            public void onSuccess(BaseResult o) {
+                                                List<String> pics = o.getUrl();
+                                                picBean.setFragmentPics(pics);
+                                            }
+
+                                            @Override
+                                            public void onError(String msg) {
+                                            }
+                                        });
+                                break;
+                        }
                     }
                 });
 
@@ -245,9 +223,9 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 });
                 break;
             case MultipleItem.ITEM_APPLY_DOSAGE:
-
+                helper.setGone(R.id.radio_cl, false);
                 helper.addOnClickListener(R.id.add_dosage_iv);
-                BaseUsageBean  usageBean = (BaseUsageBean) item.getObject();
+                BaseUsageBean usageBean = (BaseUsageBean) item.getObject();
                 if (usageBean.isDetail()) {
                     helper.setGone(R.id.add_dosage_iv, false);
                 } else {
@@ -291,6 +269,92 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 });
                 break;
 
+            case MultipleItem.ITEM_RETURN_DOSAGE:
+                helper.setGone(R.id.radio_cl, true);
+                helper.addOnClickListener(R.id.add_dosage_iv);
+                RadioGroup radioGroup = helper.getView(R.id.item_radio_g);
+                RadioButton radioButton0 = helper.getView(R.id.radio_zero_rb);
+                RadioButton radioButton1 = helper.getView(R.id.radio_first_rb);
+                BaseUsageBean usageReturnBean = (BaseUsageBean) item.getObject();
+                radioGroup.setTag(usageReturnBean);
+//                if (radioButton0.isChecked()) {
+//                    helper.setGone(R.id.dosage_ll,false);
+//                }else {
+//                    helper.setGone(R.id.dosage_ll,true);
+//                }
+                if (usageReturnBean.isDetail()) {
+                    helper.setGone(R.id.add_dosage_iv, false);
+                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                        radioGroup.getChildAt(i).setEnabled(false);
+                    }
+                } else {
+                    for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                        radioGroup.getChildAt(i).setEnabled(true);
+                    }
+                    helper.setGone(R.id.add_dosage_iv, true);
+                }
+
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        BaseUsageBean radioBean = (BaseUsageBean) group.getTag();
+                        switch (checkedId) {
+                            case R.id.radio_zero_rb:
+                                radioBean.setIsReturn(1);
+                                helper.setGone(R.id.dosage_ll,false);
+
+                                break;
+                            case R.id.radio_first_rb:
+                                radioBean.setIsReturn(2);
+                                helper.setGone(R.id.dosage_ll,true);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+                BaseUsageBean radioBean = (BaseUsageBean) radioGroup.getTag();
+                int defaultIndex = radioBean.getIsReturn()>0? radioBean.getIsReturn()- 1:0;
+                switch (defaultIndex) {
+                    case 0:
+                        radioButton0.setChecked(true);
+                        radioButton1.setChecked(false);
+                        break;
+                    case 1:
+                        radioButton0.setChecked(false);
+                        radioButton1.setChecked(true);
+                        break;
+                    default:
+                        radioButton0.setChecked(false);
+                        radioButton1.setChecked(false);
+                        break;
+                }
+
+                List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> returnExplosiveUsageBeans = radioBean.getUsageReturnBeans();
+                DosageWithReturnAdapter returnAdapter = new DosageWithReturnAdapter(R.layout.dosage_return_item);
+                returnAdapter.setDetail(usageReturnBean.isDetail());
+                RecyclerView returnRv = helper.getView(R.id.apply_dosage_rv);
+                returnRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+                returnRv.setAdapter(returnAdapter);
+                returnAdapter.setNewData(returnExplosiveUsageBeans);
+                returnAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                    @Override
+                    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                        List<ExplosiveUsageBean> explosiveUsageBeans = Hawk.get(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES);
+                        PickerManager.getInstance().showOptionPicker(mContext, explosiveUsageBeans, new PickerManager.OnOptionPickerSelectedListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                                UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean returnBean = (UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean) adapter.getData().get(position);
+                                ExplosiveUsageBean dataBean = explosiveUsageBeans.get(options1);
+                                returnBean.setTypeName(dataBean.getTypeName());
+                                returnBean.setTypeUnit(dataBean.getTypeUnit());
+                                adapter.notifyItemChanged(position);
+                            }
+                        });
+                    }
+                });
+                break;
+
 
             case MultipleItem.ITEM_TITILE_BIG:
                 helper.setText(R.id.item_big_title_tv, (String) item.getObject());
@@ -302,8 +366,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_TEXT:
                 TextKeyValueBean textBean = (TextKeyValueBean) item.getObject();
-                helper.setText(R.id.item_text_key,textBean.getKey());
-                helper.setText(R.id.item_text_value,textBean.getValue());
+                helper.setText(R.id.item_text_key, textBean.getKey());
+                helper.setText(R.id.item_text_value, textBean.getValue());
                 break;
             case MultipleItem.ITEM_EDIT:
                 TextKeyValueBean textValueEditBean = (TextKeyValueBean) item.getObject();
@@ -499,7 +563,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 if (StringTools.isStringValueOk(signBean.getDepartmentSignPath())) {
                     ImageLoadUtil.loadImage(mContext, UrlFormatUtil.getImageOriginalUrl(signBean.getDepartmentSignPath()),
                             helper.getView(R.id.department_sign_iv));
-                }else {
+                } else {
                     ImageLoadUtil.loadImage(mContext, R.color.white,
                             helper.getView(R.id.department_sign_iv));
                 }

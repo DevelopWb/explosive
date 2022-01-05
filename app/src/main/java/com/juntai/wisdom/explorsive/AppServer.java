@@ -96,8 +96,12 @@ public interface AppServer {
 
     @POST(AppHttpPath.OUT_HOUSE)
     Observable<BaseResult> outHouse(@Body RequestBody requestBody);
+
     @POST(AppHttpPath.OUT_IN_MINE)
     Observable<BaseResult> outInMine(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.USE_IN_MINE)
+    Observable<BaseResult> useInMine(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.DELIVERY)
     Observable<BaseResult> delivery(@Body RequestBody requestBody);

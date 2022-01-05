@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.disabled.basecomponent.utils.DisplayUtil;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 
 /**
  * Author:wang_sir
@@ -39,7 +40,7 @@ public class ShowSelectedPicsAdapter extends BaseQuickAdapter<String, BaseViewHo
                     (ImageView) helper.getView(R.id.select_pic_icon_iv));
             helper.setGone(R.id.delete_pushed_news_iv, false);
         } else {
-            ImageLoadUtil.loadImageNoCache(mContext, item, (ImageView) helper.getView(R.id.select_pic_icon_iv));
+            ImageLoadUtil.loadImageNoCache(mContext, UrlFormatUtil.getImageOriginalUrl(item), (ImageView) helper.getView(R.id.select_pic_icon_iv));
             if (delateable) {
                 helper.setGone(R.id.delete_pushed_news_iv, true);
             }else{

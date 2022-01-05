@@ -92,6 +92,8 @@ public class UseOrderDetailBean extends BaseResult {
 
         private int id;
         private String applyNumber;
+        private String mobile;
+        private String token;
         private int applyUserId;
         private String applyIdNumber;
         private String applyUsername;
@@ -160,8 +162,6 @@ public class UseOrderDetailBean extends BaseResult {
         private String returnTime;
         private int stat;
         private int isVoid;
-        private String mobile;
-        private String token;
         private String refuseRemarks;
         private List<ExplosiveUsageBean> explosiveUsage;
         private List<ExplosiveUsageNumberBean> explosiveUsageNumber;
@@ -776,6 +776,15 @@ public class UseOrderDetailBean extends BaseResult {
             private String quantityWords;
             private String typeUnit;
             private List<UsageNumberReturnBean> usageNumberReturn;
+
+            public ExplosiveUsageReturnBean(int mineApplyId, String typeName, int applyQuantity, String quantityWords, String typeUnit, List<UsageNumberReturnBean> usageNumberReturn) {
+                this.mineApplyId = mineApplyId;
+                this.typeName = typeName;
+                this.applyQuantity = applyQuantity;
+                this.quantityWords = quantityWords;
+                this.typeUnit = typeUnit;
+                this.usageNumberReturn = usageNumberReturn;
+            }
 
             public int getMineApplyId() {
                 return mineApplyId;

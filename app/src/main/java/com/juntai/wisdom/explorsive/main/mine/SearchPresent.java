@@ -23,6 +23,7 @@ import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveO
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
+import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseDetailActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
 import okhttp3.RequestBody;
@@ -87,17 +88,22 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      */
     public void receiveApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
-
+        // 部门类型（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
+        int departmentId = UserInfoManager.getDepartmentType();
         switch (dataBean.getStat()) {
             case 1:
             case 2:
             case 3:
                 // : 2021-12-21 订单详情 派出所审核
-                context.startActivity(new Intent(context, ExplosiveReceiveApproveActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                if (2 ==departmentId||3==departmentId||4==departmentId) {
+                    context.startActivity(new Intent(context, ExplosiveReceiveApproveActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                }else {
+                    context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                }
                 break;
             case 4:
                 //  待出库状态
-                if (5 == UserInfoManager.getDepartmentType()) {
+                if (5 == departmentId) {
                     //可操作
                     context.startActivity(new Intent(context, ExplosiveReceiveOutActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 } else {
@@ -108,7 +114,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 break;
             case 5:
                 //待配送环节
-                if (5 == UserInfoManager.getDepartmentType()) {
+                if (5 == departmentId) {
                     //可操作
                     context.startActivity(new Intent(context, ExplosiveReceiveDeliveryActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 } else {
@@ -143,6 +149,8 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
 //        8 民爆仓库管理员
 //        9 民爆仓库配送员
         // : 202-12-21 订单详情 矿内使用派出所审核
+        int departmentId = UserInfoManager.getDepartmentType();
+
         switch (dataBean.getStat()) {
             case 1:
                 // : 2021-12-21 订单详情 矿内使用派出所审核
@@ -150,7 +158,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 break;
             case 2:
                 //仓库领用
-                if (1 == UserInfoManager.getDepartmentType()&&UserInfoManager.getWorkIds().contains(4)&& MainActivity.isManager) {
+                if (1 == departmentId && UserInfoManager.getWorkIds().contains(4) && MainActivity.isManager) {
                     context.startActivity(new Intent(context, ExplosiveOutInMineActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 } else {
@@ -160,13 +168,17 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 break;
             case 3:
                 //使用申请
-                if (1 == UserInfoManager.getDepartmentType()&&UserInfoManager.getWorkIds().contains(3)&& MainActivity.isUseInMine) {
+                if (1 == departmentId && UserInfoManager.getWorkIds().contains(3) && MainActivity.isUseInMine) {
                     context.startActivity(new Intent(context, ExplosiveUseActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 } else {
                     context.startActivity(new Intent(context, ExplosiveOutInMineDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 
                 }
+                break;
+            case 4:
+                context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+
                 break;
             default:
                 break;

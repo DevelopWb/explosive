@@ -30,4 +30,9 @@ public class HawkProperty {
      *矿内出库
      */
     public static String   SAVE_OUT_ORDER_IN_MINE = "out_orderinmine";
+
+    /**
+     * 矿内使用
+     */
+    public static String   SAVE_USE_ORDER_IN_MINE = "out_orderinmine";
 }

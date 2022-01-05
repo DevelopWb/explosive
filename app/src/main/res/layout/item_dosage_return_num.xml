@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp">
+
+    <EditText
+        android:id="@+id/dosage_return_start_num_et"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="6"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/apply_amount_cap_tv"
+        app:layout_constraintRight_toLeftOf="@+id/apply_amount_cap_tv"
+        app:layout_constraintTop_toTopOf="@+id/apply_amount_cap_tv"></EditText>
+
+    <TextView
+        android:id="@+id/divider_tv"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="----"
+        app:layout_constraintBottom_toBottomOf="@+id/dosage_return_start_num_et"
+        app:layout_constraintLeft_toRightOf="@+id/dosage_return_start_num_et"
+        app:layout_constraintTop_toTopOf="@+id/dosage_return_start_num_et"></TextView>
+
+    <EditText
+        android:id="@+id/dosage_return_end_num_et"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/sp_filled_gray_lighter"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="6"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        app:layout_constraintLeft_toRightOf="@+id/divider_tv"
+        app:layout_constraintTop_toTopOf="parent"></EditText>
+
+    <ImageView
+        android:id="@+id/add_dosage_num_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
+        android:src="@mipmap/add_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/dosage_return_start_num_et"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dosage_return_start_num_et"></ImageView>
+</android.support.constraint.ConstraintLayout>
