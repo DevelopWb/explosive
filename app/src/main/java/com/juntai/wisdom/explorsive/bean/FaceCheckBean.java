@@ -18,18 +18,27 @@ public class FaceCheckBean {
 
 
     private String personSignPic;
-
     /**
      * 是否验证成功
      */
     private boolean isCheckSuccess;
+    private boolean isDetail;
 
-    public FaceCheckBean(int personId, String personName, String personHeadPic, String personSignPic, boolean isCheckSuccess) {
+    public FaceCheckBean(int personId, String personName, String personHeadPic, String personSignPic, boolean isCheckSuccess, boolean isDetail) {
         this.personId = personId;
         this.personName = personName;
         this.personHeadPic = personHeadPic;
         this.personSignPic = personSignPic;
         this.isCheckSuccess = isCheckSuccess;
+        this.isDetail = isDetail;
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
     }
 
     public int getPersonId() {

@@ -20,7 +20,6 @@ public abstract class BaseExplosiveUseDetailActivity extends BaseExplosiveActivi
     public void initView() {
         super.initView();
         mPresenter.getExplosiveUseDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.USE_EXPLOSIVE_DETAIL);
-        adapter.setDetail(true);
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.juntai.wisdom.explorsive.base.CheckBoxAdapter;
 import com.juntai.wisdom.explorsive.base.TextKeyValueAdapter;
 import com.juntai.wisdom.explorsive.base.selectPics.SelectPhotosFragment;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
+import com.juntai.wisdom.explorsive.bean.BaseUsageBean;
 import com.juntai.wisdom.explorsive.bean.RadioBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveUsageBean;
@@ -64,20 +65,9 @@ import okhttp3.FormBody;
  * @UpdateDate: 2021-12-22 10:42
  */
 public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
-    private boolean isDetail = false;//是否是详情模式
-    private boolean canSelect = false;//是否可操作模式
-    private boolean canAddIssue = false;//是否可操作模式
-    private boolean canDeletePic = false;//是否可操作模式
     private FragmentManager mFragmentManager;
 
 
-    public void setCanDeletePic(boolean canDeletePic) {
-        this.canDeletePic = canDeletePic;
-    }
-
-    public void setCanAddIssue(boolean canAddIssue) {
-        this.canAddIssue = canAddIssue;
-    }
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -105,14 +95,6 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
         this.mFragmentManager = mFragmentManager;
     }
 
-    public void setDetail(boolean detail) {
-        isDetail = detail;
-    }
-
-
-    public void setCanSelect(boolean canSelect) {
-        this.canSelect = canSelect;
-    }
 
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
@@ -120,7 +102,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_RADIO:
                 RadioBean radioBean = (RadioBean) item.getObject();
                 RadioGroup radioGroup = helper.getView(R.id.item_radio_g);
-                if (isDetail) {
+                if (radioBean.isDetail()) {
                     for (int i = 0; i < radioGroup.getChildCount(); i++) {
                         radioGroup.getChildAt(i).setEnabled(false);
                     }
@@ -180,7 +162,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_FACE_CHECK:
                 FaceCheckBean  faceCheckBean = (FaceCheckBean) item.getObject();
                 helper.setText(R.id.face_title_tv,faceCheckBean.getPersonName());
-                if (!isDetail) {
+                if (!faceCheckBean.isDetail()) {
                     helper.addOnClickListener(R.id.user_face_iv);
                 }
                 if (faceCheckBean.isCheckSuccess()) {
@@ -193,7 +175,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 if (TextUtils.isEmpty(faceCheckBean.getPersonSignPic())) {
                     helper.setVisible(R.id.user_sign_iv,false);
                     helper.setGone(R.id.face_start_sign_tv,true);
-                    if (!isDetail) {
+                    if (!faceCheckBean.isDetail()) {
                         helper.addOnClickListener(R.id.face_start_sign_tv);
                     }
                 }else {
@@ -209,7 +191,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 SelectPhotosFragment fragment = (SelectPhotosFragment) mFragmentManager.findFragmentById(R.id.photo_fg);
                 fragment.setObject(picBean);
 
-                if (canDeletePic||!isDetail) {
+                if (!picBean.isDetail()) {
                     fragment.setPhotoDelateable(true).setMaxCount(1);
                 } else {
                     fragment.setPhotoDelateable(false).setMaxCount(picBean.getFragmentPics().size());
@@ -229,15 +211,17 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
 
                 break;
             case MultipleItem.ITEM_ISSUE_NO:
-                if (canAddIssue || !isDetail) {
+
+                helper.addOnClickListener(R.id.add_issue_iv);
+                BaseUsageBean baseUsageNumberBean = (BaseUsageBean) item.getObject();
+                if (!baseUsageNumberBean.isDetail()) {
                     helper.setGone(R.id.add_issue_iv, true);
                 } else {
                     helper.setGone(R.id.add_issue_iv, false);
                 }
-                helper.addOnClickListener(R.id.add_issue_iv);
-                List<ExplosiveUsageNumberBean> numberBeans = (List<ExplosiveUsageNumberBean>) item.getObject();
+                List<ExplosiveUsageNumberBean> numberBeans = baseUsageNumberBean.getUsageNumberBeanList();
                 DosageNumberAdapter numberAdapter = new DosageNumberAdapter(R.layout.dosage_number_item);
-                numberAdapter.setDetail(!canAddIssue);
+                numberAdapter.setDetail(baseUsageNumberBean.isDetail());
                 RecyclerView dosageNumRv = helper.getView(R.id.apply_issue_rv);
                 LinearLayoutManager dosageNumManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 dosageNumRv.setLayoutManager(dosageNumManager);
@@ -261,15 +245,17 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 });
                 break;
             case MultipleItem.ITEM_APPLY_DOSAGE:
-                if (isDetail) {
+
+                helper.addOnClickListener(R.id.add_dosage_iv);
+                BaseUsageBean  usageBean = (BaseUsageBean) item.getObject();
+                if (usageBean.isDetail()) {
                     helper.setGone(R.id.add_dosage_iv, false);
                 } else {
                     helper.setGone(R.id.add_dosage_iv, true);
                 }
-                helper.addOnClickListener(R.id.add_dosage_iv);
-                List<ExplosiveUsageBean> explosiveUsageBeans = (List<ExplosiveUsageBean>) item.getObject();
+                List<ExplosiveUsageBean> explosiveUsageBeans = usageBean.getUsageBeanList();
                 DosageAdapter dosageAdapter = new DosageAdapter(R.layout.dosage_item);
-                dosageAdapter.setDetail(isDetail);
+                dosageAdapter.setDetail(usageBean.isDetail());
                 RecyclerView dosageRv = helper.getView(R.id.apply_dosage_rv);
                 LinearLayoutManager dosageManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
                 dosageRv.setLayoutManager(dosageManager);
@@ -322,7 +308,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
             case MultipleItem.ITEM_EDIT:
                 TextKeyValueBean textValueEditBean = (TextKeyValueBean) item.getObject();
                 EditText editText = helper.getView(R.id.edit_value_et);
-                if (isDetail) {
+                if (textValueEditBean.isDetail()) {
                     if (TextUtils.isEmpty(textValueEditBean.getValue())) {
                         textValueEditBean.setValue("暂无");
                     }
@@ -332,6 +318,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 } else {
                     editText.setClickable(true);
                     editText.setFocusable(true);
+                    editText.setEnabled(true);
                     helper.setBackgroundRes(R.id.edit_value_et, R.drawable.stroke_gray_square_bg);
 
                 }
@@ -387,7 +374,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 helper.setText(R.id.item_small_title_tv, textValueSelectBean.getKey());
                 TextView textViewTv = helper.getView(R.id.select_value_tv);
                 String selectTextValue = textValueSelectBean.getValue();
-                if (!isDetail || canSelect) {
+                if (!textValueSelectBean.isDetail()) {
                     helper.addOnClickListener(R.id.select_value_tv);
                     helper.addOnClickListener(R.id.tool_pic_iv);
                     helper.setBackgroundRes(R.id.select_value_tv, R.drawable.stroke_gray_square_bg);
@@ -445,7 +432,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_SELECT_TIME:
                 TimeBean timeBean = (TimeBean) item.getObject();
-                if (isDetail) {
+                if (timeBean.isDetail()) {
                     helper.setGone(R.id.location_iv, false);
                 } else {
                     helper.addOnClickListener(R.id.location_ll);
@@ -459,7 +446,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
             case MultipleItem.ITEM_LOCATION:
                 LocationBean locationBean = (LocationBean) item.getObject();
-                if (isDetail) {
+                if (locationBean.isDetail()) {
                     helper.setGone(R.id.location_iv, false);
                 } else {
                     helper.addOnClickListener(R.id.location_ll);

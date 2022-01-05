@@ -12,11 +12,21 @@ public class RadioBean {
     private String key;
     private int  defaultSelectedIndex ;
     private String[] values;
+    private boolean isDetail;
 
-    public RadioBean(String key, int defaultSelectedIndex, String[] values) {
+    public RadioBean(String key, int defaultSelectedIndex, String[] values, boolean isDetail) {
         this.key = key;
         this.defaultSelectedIndex = defaultSelectedIndex;
         this.values = values;
+        this.isDetail = isDetail;
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
     }
 
     public String[] getValues() {

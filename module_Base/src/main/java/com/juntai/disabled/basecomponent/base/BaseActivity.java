@@ -345,20 +345,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
         this.autoHideKeyboard = autoHideKeyboard;
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                View view = getCurrentFocus();
-                if (autoHideKeyboard) {
-                    hideKeyboard(ev, view, BaseActivity.this);//调用方法判断是否需要隐藏键盘
-                }
-                break;
-            default:
-                break;
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                View view = getCurrentFocus();
+//                if (autoHideKeyboard) {
+//                    hideKeyboard(ev, view, BaseActivity.this);//调用方法判断是否需要隐藏键盘
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {

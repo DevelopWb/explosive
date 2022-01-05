@@ -15,17 +15,22 @@ public class FragmentPicBean {
     private int picNameIndex;//图片的索引  -1 代表没有序号
     private String picPath;
     private List<String> fragmentPics;//多选图片时 图片库
+    private boolean isDetail;
 
-    public FragmentPicBean(String picName, int picNameIndex, String picPath) {
-        this.picName = picName;
-        this.picNameIndex = picNameIndex;
-        this.picPath = picPath;
-    }
 
-    public FragmentPicBean(String picName, int picNameIndex, List<String> fragmentPics) {
+    public FragmentPicBean(String picName, int picNameIndex, List<String> fragmentPics, boolean isDetail) {
         this.picName = picName;
         this.picNameIndex = picNameIndex;
         this.fragmentPics = fragmentPics;
+        this.isDetail = isDetail;
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
     }
 
     public List<String> getFragmentPics() {

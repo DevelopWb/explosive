@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
  * @description 描述  出库
  * @date 2021-12-29 14:49
  */
-public class ExplosiveReceiveOutOperateActivity extends BaseReceiveDetailActivity {
+public class ExplosiveReceiveOutActivity extends BaseReceiveDetailActivity {
 
 
     @Override
@@ -37,7 +37,7 @@ public class ExplosiveReceiveOutOperateActivity extends BaseReceiveDetailActivit
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getRecieveApplyOutData(savedBean));
+                            adapter.setNewData(mPresenter.getRecieveApplyOutData(savedBean,false));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
@@ -56,9 +56,7 @@ public class ExplosiveReceiveOutOperateActivity extends BaseReceiveDetailActivit
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
         Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, dataBean.getExplosiveUsage());
-        adapter.setCanSelect(true);
-        adapter.setCanAddIssue(true);
-        adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean));
+        adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean,false));
         if (2 != dataBean.getIsVoid()) {
             //没有作废
             adapter.addFooterView(getFootView());

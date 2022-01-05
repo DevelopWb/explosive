@@ -168,4 +168,13 @@ public class UserInfoManager {
     }
 
 
+    public static  void  saveUserBaseInfo( UserBean loginBean){
+        Hawk.put(AppUtils.SP_KEY_USER, loginBean);
+        Hawk.put(AppUtils.SP_KEY_TOKEN, loginBean.getData().getToken());
+    }
+    public static  void  clearUserBaseInfo(){
+        Hawk.delete(AppUtils.SP_KEY_USER);
+        Hawk.delete(AppUtils.SP_KEY_TOKEN);
+    }
+
 }

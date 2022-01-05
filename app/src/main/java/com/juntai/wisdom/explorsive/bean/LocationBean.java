@@ -12,13 +12,22 @@ public class LocationBean {
     private String address;//地址
     private String latitude;
     private String longitude;
-    private String gmtCreate;
+    private  boolean isDetail;
 
-    public LocationBean(String key, String address, String latitude, String longitude) {
+    public LocationBean(String key, String address, String latitude, String longitude, boolean isDetail) {
         this.key = key;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isDetail = isDetail;
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
     }
 
     public String getKey() {
@@ -60,13 +69,5 @@ public class LocationBean {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude == null ? "" : longitude;
-    }
-
-    public String getGmtCreate() {
-        return gmtCreate == null ? "" : gmtCreate;
-    }
-
-    public void setGmtCreate(String gmtCreate) {
-        this.gmtCreate = gmtCreate == null ? "" : gmtCreate;
     }
 }

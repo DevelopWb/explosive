@@ -13,13 +13,14 @@ import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.main.MainActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveApproveActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ExplosiveReceiveApproveDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryDetailActivity;
-import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.delivery.ExplosiveReceiveDeliveryActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMineActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveOutInMineDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity;
-import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutOperateActivity;
+import com.juntai.wisdom.explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.ExplosiveUseApproveDetailActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -92,13 +93,13 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
             case 2:
             case 3:
                 // : 2021-12-21 订单详情 派出所审核
-                context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                context.startActivity(new Intent(context, ExplosiveReceiveApproveActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 break;
             case 4:
                 //  待出库状态
                 if (5 == UserInfoManager.getDepartmentType()) {
                     //可操作
-                    context.startActivity(new Intent(context, ExplosiveReceiveOutOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    context.startActivity(new Intent(context, ExplosiveReceiveOutActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 } else {
                     //只可查看   只能看到出库之前的状态
                     context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
@@ -109,7 +110,7 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 //待配送环节
                 if (5 == UserInfoManager.getDepartmentType()) {
                     //可操作
-                    context.startActivity(new Intent(context, ExplosiveReceiveDeliveryOperateActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    context.startActivity(new Intent(context, ExplosiveReceiveDeliveryActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 } else {
                     context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
 

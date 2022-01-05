@@ -21,7 +21,6 @@ public  abstract class BaseReceiveDetailActivity extends BaseExplosiveActivity {
     public void initView() {
         super.initView();
         mPresenter.getExplosiveReceiveDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL);
-        adapter.setDetail(true);
 
     }
 

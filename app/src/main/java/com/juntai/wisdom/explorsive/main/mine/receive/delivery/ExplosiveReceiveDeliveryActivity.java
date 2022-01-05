@@ -11,12 +11,11 @@ import com.juntai.wisdom.explorsive.utils.UserInfoManager;
  * @description 描述   配送操作
  * @date 2021-12-29 15:11
  */
-public class ExplosiveReceiveDeliveryOperateActivity extends BaseReceiveDetailActivity {
+public class ExplosiveReceiveDeliveryActivity extends BaseReceiveDetailActivity {
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
         // : 2021-12-29 配送相关的逻辑  这个地方需要改
-        adapter.setCanDeletePic(true);
         adapter.setNewData(mPresenter.getRecieveApplyDeliveryData(dataBean,false));
         adapter.addFooterView(getFootView());
     }

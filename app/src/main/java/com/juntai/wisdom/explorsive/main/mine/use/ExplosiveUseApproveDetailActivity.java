@@ -48,7 +48,6 @@ public class ExplosiveUseApproveDetailActivity extends BaseExplosiveUseDetailAct
         // 1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
         //             账户性质   1矿场；2派出所；3治安大队；4县公安局；5民爆仓库
         int orderStatus = dataBean.getStat() + 1;
-        adapter.setCanSelect(false);
         if (orderStatus == UserInfoManager.getDepartmentType()) {
             adapter.setNewData(mPresenter.getUseApplyData(dataBean,true,true));
             if (2!=dataBean.getIsVoid()) {

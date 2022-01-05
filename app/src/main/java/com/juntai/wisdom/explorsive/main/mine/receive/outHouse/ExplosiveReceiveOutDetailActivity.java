@@ -35,9 +35,7 @@ public class ExplosiveReceiveOutDetailActivity extends BaseReceiveDetailActivity
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
-        adapter.setCanSelect(false);
-        adapter.setCanAddIssue(false);
-        adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean));
+        adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean,true));
 
     }
 }

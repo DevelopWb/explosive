@@ -12,11 +12,22 @@ public class TimeBean {
     private String  timeKey;
     private String  timeValue;
     private String  hint;
+    private  boolean isDetail;
 
-    public TimeBean(String timeKey, String timeValue, String hint) {
+    public TimeBean(String timeKey, String timeValue, String hint,boolean isDetail) {
         this.timeKey = timeKey;
         this.timeValue = timeValue;
         this.hint = hint;
+        this.isDetail = isDetail;
+
+    }
+
+    public boolean isDetail() {
+        return isDetail;
+    }
+
+    public void setDetail(boolean detail) {
+        isDetail = detail;
     }
 
     public String getTimeKey() {

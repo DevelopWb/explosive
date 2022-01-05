@@ -30,7 +30,6 @@ public class ExplosiveUseActivity extends BaseExplosiveUseDetailActivity {
 
     @Override
     protected void initAdapterData(UseOrderDetailBean.DataBean dataBean) {
-        adapter.setCanSelect(true);
         adapter.setNewData(mPresenter.getApplyOfUseInMineData(dataBean,false));
         adapter.addFooterView(getFootView());
     }
