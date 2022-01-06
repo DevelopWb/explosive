@@ -2,11 +2,11 @@ package com.juntai.wisdom.explorsive;
 
 public class AppHttpPath {
 
-//        public static final String BASE_ROOT = "http://192.168.124.118:8080/explosive-manage/";
+    //        public static final String BASE_ROOT = "http://192.168.124.118:8080/explosive-manage/";
     public static final String BASE_ROOT = "http://www.juntaikeji.com:20708/explosive-manage/";
     public static final String BASE = BASE_ROOT + "app";
 
-//        public static final String BASE_IMAGE = "http://192.168.124.118:9600";
+    //        public static final String BASE_IMAGE = "http://192.168.124.118:9600";
     public static final String BASE_IMAGE = "http://www.juntaikeji.com:20710";
 
 
@@ -23,9 +23,7 @@ public class AppHttpPath {
     /**
      * 检查更新
      */
-    // TODO: 2021-12-21 这个最后再打开
-//    public static final String APP_UPDATE = BASE + "/detectionAppVersions";
-    public static final String APP_UPDATE = BASE + "";
+    public static final String APP_UPDATE = BASE + "/detectionAppVersions";
 
     /**
      * 获取短信验证码
@@ -117,6 +115,7 @@ public class AppHttpPath {
     public static final String GET_USER_INFO = BASE + "/getUserInfo";
     public static final String ABOUT_US = BASE + "/contactUs";
     public static final String MODIFY_PWD = BASE + "/updatePassword";
+    public static final String NEWS_LIST = BASE + "/getMessageList";
 
 
     /**

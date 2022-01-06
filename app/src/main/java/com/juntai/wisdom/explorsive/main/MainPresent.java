@@ -24,6 +24,7 @@ import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
+import com.juntai.wisdom.explorsive.bean.NewsBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
@@ -95,7 +96,6 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      */
     protected List<HomePageMenuBean> getHomePageMenu() {
         List<HomePageMenuBean> menus = new ArrayList<>();
-// TODO: 2021-12-20  这个地方的资源文件回头需要补充
         List<UserBean.DataBean.PostBean> postBeanList = UserInfoManager.getPostBeans();
         for (UserBean.DataBean.PostBean postBean : postBeanList) {
             if (8 == postBean.getId() || 9 == postBean.getId()) {
@@ -536,6 +536,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override
                     public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void getNewsList(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getNewsList(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<NewsBean>(getView()) {
+                    @Override
+                    public void onSuccess(NewsBean o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }

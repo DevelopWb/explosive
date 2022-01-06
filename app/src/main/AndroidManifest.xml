@@ -30,8 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.myCenter.AboutUsActivity"></activity>
-        <activity android:name=".explorsive.main.myCenter.ModifyPwdActivity"></activity>
+        <activity android:name=".explorsive.main.myCenter.NewsActivity"></activity>
+        <activity android:name=".explorsive.main.myCenter.AboutUsActivity" />
+        <activity android:name=".explorsive.main.myCenter.ModifyPwdActivity" />
         <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity" />
         <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveApproveActivity" />
         <activity android:name=".explorsive.main.mine.use.ExplosiveUseActivity" />

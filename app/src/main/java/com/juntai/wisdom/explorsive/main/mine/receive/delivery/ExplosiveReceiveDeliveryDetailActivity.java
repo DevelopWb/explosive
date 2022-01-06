@@ -13,7 +13,6 @@ public class ExplosiveReceiveDeliveryDetailActivity extends BaseReceiveDetailAct
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
-        // TODO: 2021-12-29 配送相关的逻辑  这个地方需要改
         adapter.setNewData(mPresenter.getRecieveApplyDeliveryData(dataBean,true));
     }
 

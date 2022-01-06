@@ -12,6 +12,8 @@ import com.juntai.wisdom.explorsive.main.MainPresent;
 
 import java.util.List;
 
+import okhttp3.FormBody;
+
 /**
  * @aouther tobato
  * @description 描述  关于我们
@@ -60,7 +62,7 @@ public class AboutUsActivity extends BaseAppActivity<MainPresent> implements Mai
 
     @Override
     public void initData() {
-        mPresenter.aboutUs(getBaseBuilder().build(), AppHttpPath.ABOUT_US);
+        mPresenter.aboutUs(new FormBody.Builder().build(), AppHttpPath.ABOUT_US);
     }
 
 

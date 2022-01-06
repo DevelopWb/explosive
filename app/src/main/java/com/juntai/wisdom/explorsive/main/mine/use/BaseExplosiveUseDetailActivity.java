@@ -9,6 +9,8 @@ import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 
+import okhttp3.FormBody;
+
 /**
  * @aouther tobato
  * @description 描述  民爆使用详情的基类
@@ -21,7 +23,12 @@ public abstract class BaseExplosiveUseDetailActivity extends BaseExplosiveActivi
     @Override
     public void initView() {
         super.initView();
-        mPresenter.getExplosiveUseDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.USE_EXPLOSIVE_DETAIL);
+        FormBody.Builder builder = getBaseBuilder();
+        builder .add("id", String.valueOf(baseId));
+        if (baseId2>0) {
+            builder .add("messageId", String.valueOf(baseId2));
+        }
+        mPresenter.getExplosiveUseDetail(builder.build(), AppHttpPath.USE_EXPLOSIVE_DETAIL);
     }
 
     @Override

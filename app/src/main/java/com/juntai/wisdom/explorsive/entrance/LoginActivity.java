@@ -64,7 +64,6 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
     private EditText mPassword;
     String account, password;
 
-    private ImageView mCloseIv;
 
 
     @Override
@@ -135,9 +134,6 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
                 mPresenter.login(account, MD5.md5(String.format("%s#%s", account, password)), RomUtil.getName(),MyApp.pushRegId,
                         EntranceContract.LOGIN_TAG);
                 break;
-            case R.id.close_iv:
-                finish();
-                break;
             case R.id.connect_us_tv:
                 startActivity(new Intent(mContext, AboutUsActivity.class).putExtra(AboutUsActivity.TITLE_NAME,"联系我们"));
                 break;
@@ -151,8 +147,6 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
     public void initView() {
         mLoginTv = (TextView) findViewById(R.id.login_tv);
         mLoginTv.setOnClickListener(this);
-        mCloseIv = (ImageView) findViewById(R.id.close_iv);
-        mCloseIv.setOnClickListener(this);
     }
 
 

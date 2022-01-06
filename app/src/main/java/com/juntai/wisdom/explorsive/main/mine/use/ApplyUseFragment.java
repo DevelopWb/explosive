@@ -41,7 +41,7 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 //  订单详情  1派出所；2仓库领取；3使用；4完成
                 OrderListBean.DataBean dataBean = (OrderListBean.DataBean) adapter.getData().get(position);
-                mPresenter.useApplyAdapterItemLogic(mContext, dataBean);
+                mPresenter.useApplyAdapterItemLogic(mContext, dataBean.getStat(),dataBean.getId(),0);
             }
         });
         requestData();
@@ -62,7 +62,7 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
     }
 
     /**
-     * 订单的状态  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
+     * 订单的状态  1派出所审核；2仓库领用；3使用；4完成 5作废
      *
      * @return
      */
@@ -70,8 +70,8 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
     protected List<String> getStatusList() {
         List<String> arrays = new ArrayList<>();
         arrays.add("派出所审核");
-        arrays.add("出库");
-        arrays.add("配送");
+        arrays.add("仓库领用");
+        arrays.add("使用");
         arrays.add("完成");
         arrays.add("作废");
         return arrays;

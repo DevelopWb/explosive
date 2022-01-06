@@ -88,6 +88,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
     protected int baseId;
+    protected int baseId2;
     private BaseMultiselectBottomDialog multiselectBottomDialog;
     private FaceCheckBean faceCheckBean;
 
@@ -119,6 +120,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     public void initView() {
         if (getIntent() != null) {
             baseId = getIntent().getIntExtra(BASE_ID, 0);
+            baseId2 = getIntent().getIntExtra(BASE_ID2, 0);
         }
         setTitleName(getTitleName());
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);

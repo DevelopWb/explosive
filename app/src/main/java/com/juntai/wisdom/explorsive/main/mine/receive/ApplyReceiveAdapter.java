@@ -58,7 +58,7 @@ public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean
                 //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
                 BaseOrderBean baseOrderBean = (BaseOrderBean) multipleItem.getObject();
                 OrderListBean.DataBean dataBean = baseOrderBean.getOrderBean();
-                new SearchPresent().receiveApplyAdapterItemLogic(mContext, dataBean);
+                new SearchPresent().receiveApplyAdapterItemLogic(mContext, dataBean.getStat(),dataBean.getId(),0);
             }
         });
     }

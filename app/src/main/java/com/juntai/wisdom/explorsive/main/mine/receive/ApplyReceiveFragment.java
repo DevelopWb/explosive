@@ -44,7 +44,7 @@ public class ApplyReceiveFragment extends BaseSearchFragment implements View.OnC
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 OrderListBean.DataBean dataBean = (OrderListBean.DataBean) adapter.getData().get(position);
-                mPresenter.receiveApplyAdapterItemLogic(mContext,dataBean);
+                mPresenter.receiveApplyAdapterItemLogic(mContext,dataBean.getStat(),dataBean.getId(),0);
             }
         });
     }

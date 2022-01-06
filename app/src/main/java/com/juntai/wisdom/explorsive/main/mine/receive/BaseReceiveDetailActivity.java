@@ -10,6 +10,9 @@ import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+
 /**
  * @aouther tobato
  * @description 描述  民爆领取详情的基类
@@ -22,7 +25,12 @@ public  abstract class BaseReceiveDetailActivity extends BaseExplosiveActivity {
     @Override
     public void initView() {
         super.initView();
-        mPresenter.getExplosiveReceiveDetail(getBaseBuilder().add("id", String.valueOf(baseId)).build(), AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL);
+        FormBody.Builder builder = getBaseBuilder();
+        builder .add("id", String.valueOf(baseId));
+        if (baseId2>0) {
+            builder .add("messageId", String.valueOf(baseId2));
+        }
+        mPresenter.getExplosiveReceiveDetail(builder.build(), AppHttpPath.RECEIVE_EXPLOSIVE_DETAIL);
 
     }
 

@@ -84,32 +84,36 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      * 民爆申领订单列表的点击事件
      *
      * @param context
-     * @param dataBean
      */
-    public void receiveApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
+    public void receiveApplyAdapterItemLogic(Context context, int stat,int applyId,int messageId) {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
         // 部门类型（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
         int departmentId = UserInfoManager.getDepartmentType();
-        int stat = dataBean.getStat();
+        Intent intent = new Intent().putExtra(BaseExplosiveActivity.BASE_ID2, messageId)
+                .putExtra(BaseExplosiveActivity.BASE_ID, applyId);
         switch (stat) {
             case 1:
             case 2:
             case 3:
                 // : 2021-12-21 订单详情 派出所审核
                 if (stat==departmentId-1) {
-                    context.startActivity(new Intent(context, ExplosiveReceiveApproveActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveApproveActivity.class);
+                    context.startActivity(intent);
                 }else {
-                    context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveApproveDetailActivity.class);
+                    context.startActivity(intent);
                 }
                 break;
             case 4:
                 //  待出库状态
                 if (5 == departmentId) {
                     //可操作
-                    context.startActivity(new Intent(context, ExplosiveReceiveOutActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveOutActivity.class);
+                    context.startActivity(intent);
                 } else {
                     //只可查看   只能看到出库之前的状态
-                    context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveApproveDetailActivity.class);
+                    context.startActivity(intent);
 
                 }
                 break;
@@ -117,14 +121,17 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
                 //待配送环节
                 if (5 == departmentId) {
                     //可操作
-                    context.startActivity(new Intent(context, ExplosiveReceiveDeliveryActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveDeliveryActivity.class);
+                    context.startActivity(intent);
                 } else {
-                    context.startActivity(new Intent(context, ExplosiveReceiveOutDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveReceiveOutDetailActivity.class);
+                    context.startActivity(intent);
 
                 }
                 break;
             case 6:
-                context.startActivity(new Intent(context, ExplosiveReceiveDeliveryDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                intent.setClass(context,ExplosiveReceiveDeliveryDetailActivity.class);
+                context.startActivity(intent);
                 break;
             default:
                 break;
@@ -135,9 +142,8 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
      * 民爆使用订单列表的点击事件
      *
      * @param context
-     * @param dataBean
      */
-    public void useApplyAdapterItemLogic(Context context, OrderListBean.DataBean dataBean) {
+    public void useApplyAdapterItemLogic(Context context, int stat,int applyId,int messageId) {
         //  订单详情  （1派出所审核；2仓库领用；3使用；4完成）
         // 部门类型（1矿场；2派出所；5民爆仓库）
         //权限
@@ -151,34 +157,41 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
 //        9 民爆仓库配送员
         // : 202-12-21 订单详情 矿内使用派出所审核
         int departmentId = UserInfoManager.getDepartmentType();
-
-        switch (dataBean.getStat()) {
+        Intent intent = new Intent().putExtra(BaseExplosiveActivity.BASE_ID2, messageId)
+                .putExtra(BaseExplosiveActivity.BASE_ID, applyId);
+        switch (stat) {
             case 1:
                 // : 2021-12-21 订单详情 矿内使用派出所审核
-                context.startActivity(new Intent(context, ExplosiveUseApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                intent.setClass(context,ExplosiveUseApproveDetailActivity.class);
+                context.startActivity(intent);
                 break;
             case 2:
                 //仓库领用
                 if (1 == departmentId && UserInfoManager.getWorkIds().contains(4) && MainActivity.isManager) {
-                    context.startActivity(new Intent(context, ExplosiveOutInMineActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveOutInMineActivity.class);
+                    context.startActivity(intent);
 
                 } else {
-                    context.startActivity(new Intent(context, ExplosiveUseApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveUseApproveDetailActivity.class);
+                    context.startActivity(intent);
 
                 }
                 break;
             case 3:
                 //使用申请
                 if (1 == departmentId && UserInfoManager.getWorkIds().contains(3) && MainActivity.isUseInMine) {
-                    context.startActivity(new Intent(context, ExplosiveUseActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveUseActivity.class);
+                    context.startActivity(intent);
 
                 } else {
-                    context.startActivity(new Intent(context, ExplosiveOutInMineDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                    intent.setClass(context,ExplosiveOutInMineDetailActivity.class);
+                    context.startActivity(intent);
 
                 }
                 break;
             case 4:
-                context.startActivity(new Intent(context, ExplosiveUseDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
+                intent.setClass(context,ExplosiveUseDetailActivity.class);
+                context.startActivity(intent);
 
                 break;
             default:

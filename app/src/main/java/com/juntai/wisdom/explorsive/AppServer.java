@@ -8,6 +8,7 @@ import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
+import com.juntai.wisdom.explorsive.bean.NewsBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
@@ -64,6 +65,9 @@ public interface AppServer {
     Observable<AboutUsBean> aboutUs(@Body RequestBody requestBody);
     @POST(AppHttpPath.MODIFY_PWD)
     Observable<BaseResult> modifyPwd(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.NEWS_LIST)
+    Observable<NewsBean> getNewsList(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.FACE_CHECK)
     Observable<FaceCheckResponseBean> startFaceCheck(@Body RequestBody requestBody);

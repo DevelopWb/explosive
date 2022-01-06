@@ -33,6 +33,7 @@ import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.UseApproveActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterMenuAdapter;
+import com.juntai.wisdom.explorsive.main.myCenter.NewsActivity;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -139,8 +140,8 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
      */
     private void initUserBaseInfo() {
         mUnitNameTv.setText(UserInfoManager.getDepartmentName());
-        mUserNameTv.setText( UserInfoManager.getUserName());
-        mUserMobileTv.setText( UserInfoManager.getMobile());
+        mUserNameTv.setText(UserInfoManager.getUserName());
+        mUserMobileTv.setText(UserInfoManager.getMobile());
         mUserWorkTv.setText(UserInfoManager.geWorkName());
         ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
     }
@@ -174,8 +175,8 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 break;
 
             case R.id.news_iv:
-                // TODO: 2022-01-06 消息
-
+                // : 2022-01-06 消息
+                startActivity(new Intent(mContext, NewsActivity.class));
                 break;
             default:
                 break;
