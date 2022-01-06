@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive;
 
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
+import com.juntai.wisdom.explorsive.bean.AboutUsBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
@@ -59,6 +60,10 @@ public interface AppServer {
      */
     @POST(AppHttpPath.GET_USER_INFO)
     Observable<UserBean> getUserInfo(@Body RequestBody requestBody);
+    @POST(AppHttpPath.ABOUT_US)
+    Observable<AboutUsBean> aboutUs(@Body RequestBody requestBody);
+    @POST(AppHttpPath.MODIFY_PWD)
+    Observable<BaseResult> modifyPwd(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.FACE_CHECK)
     Observable<FaceCheckResponseBean> startFaceCheck(@Body RequestBody requestBody);

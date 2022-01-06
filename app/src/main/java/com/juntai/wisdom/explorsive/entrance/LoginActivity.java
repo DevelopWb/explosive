@@ -27,6 +27,7 @@ import com.juntai.wisdom.explorsive.base.sendcode.SendCodeModel;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.disabled.basecomponent.utils.AppUtils;
 import com.juntai.wisdom.explorsive.main.MainActivity;
+import com.juntai.wisdom.explorsive.main.myCenter.AboutUsActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 import com.siyee.oscvpush.util.RomUtil;
@@ -138,7 +139,7 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
                 finish();
                 break;
             case R.id.connect_us_tv:
-                startActivity(new Intent(this, ConnectUsActivity.class));
+                startActivity(new Intent(mContext, AboutUsActivity.class).putExtra(AboutUsActivity.TITLE_NAME,"联系我们"));
                 break;
 
 

@@ -115,6 +115,8 @@ public class AppHttpPath {
      * 个人详情
      */
     public static final String GET_USER_INFO = BASE + "/getUserInfo";
+    public static final String ABOUT_US = BASE + "/contactUs";
+    public static final String MODIFY_PWD = BASE + "/updatePassword";
 
 
     /**

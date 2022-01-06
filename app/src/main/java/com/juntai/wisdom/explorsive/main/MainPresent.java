@@ -18,6 +18,7 @@ import com.juntai.wisdom.explorsive.bean.ExplosiveUsageNumberBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
+import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
 import com.juntai.wisdom.explorsive.bean.LocationBean;
@@ -63,6 +64,22 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     protected IModel createModel() {
         return null;
     }
+
+
+
+   public    List<HomePageMenuBean> getMyCenterMenus(){
+       List<HomePageMenuBean>  menuBeanList = new ArrayList<>();
+
+       menuBeanList.add(new HomePageMenuBean(HomePageMenuBean.MODIFY_MOBILE,"DIANHUAXIUGAI",R.mipmap.mycenter_blue_bg,R.mipmap.mycenter_mobile_bg));
+       menuBeanList.add(new HomePageMenuBean(HomePageMenuBean.MODIFY_PWD,"MIMAXIUGAI",R.mipmap.mycenter_yellow_bg,R.mipmap.mycenter_pwd_bg));
+       menuBeanList.add(new HomePageMenuBean(HomePageMenuBean.UPDATE,"JIANCHAGENGXIN",R.mipmap.mycenter_green_bg,R.mipmap.mycenter_update_bg));
+       menuBeanList.add(new HomePageMenuBean(HomePageMenuBean.ABOUT_US,"GUANYUWOMEN",R.mipmap.mycenter_red_bg,R.mipmap.mycenter_us_bg));
+       return menuBeanList;
+   }
+
+
+
+
 
     /**
      * 获取首页菜单
@@ -496,6 +513,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public void addExplosiveApply(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .addExplosiveReceiveApply(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void modifyPwd(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .modifyPwd(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override

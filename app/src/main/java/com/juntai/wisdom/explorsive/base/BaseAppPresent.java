@@ -7,6 +7,7 @@ import com.juntai.disabled.basecomponent.mvp.IModel;
 import com.juntai.disabled.basecomponent.mvp.IView;
 import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.explorsive.AppNetModule;
+import com.juntai.wisdom.explorsive.bean.AboutUsBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -135,5 +136,34 @@ public abstract class BaseAppPresent<M extends IModel, V extends IView> extends 
                     }
                 });
     }
+    /**
+     *
+     * @param tag
+     * @param body
+     */
+    public void aboutUs(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .aboutUs(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<AboutUsBean>(getView()) {
+                    @Override
+                    public void onSuccess(AboutUsBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+
+
+
 
 }

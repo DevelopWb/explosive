@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:paddingTop="15dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/user_head_iv"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/my_hint_head"
+        />
+
+    <TextView
+        android:id="@+id/user_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="unitName"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+       />
+    <TextView
+        android:id="@+id/unit_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:text="unitName"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+       />
+
+    <include
+        layout="@layout/recycleview_layout"></include>
+</LinearLayout>

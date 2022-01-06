@@ -30,7 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity"></activity>
+        <activity android:name=".explorsive.main.myCenter.AboutUsActivity"></activity>
+        <activity android:name=".explorsive.main.myCenter.ModifyPwdActivity"></activity>
+        <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity" />
         <activity android:name=".explorsive.main.mine.receive.ExplosiveReceiveApproveActivity" />
         <activity android:name=".explorsive.main.mine.use.ExplosiveUseActivity" />
         <activity android:name=".explorsive.main.mine.receive.manager.ExplosiveOutInMineDetailActivity" />
@@ -51,7 +53,6 @@
         <activity android:name=".explorsive.main.mine.use.ApplyUseActivity" />
         <activity android:name=".explorsive.main.mine.receive.ApplyReceiveActivirty" />
         <activity android:name=".explorsive.main.myCenter.MyCenterActivity" />
-        <activity android:name=".explorsive.entrance.ConnectUsActivity" />
 
         <provider
             android:name=".explorsive.utils.MyFileProvider"
