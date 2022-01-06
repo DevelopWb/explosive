@@ -174,6 +174,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                                             @Override
                                             public void onSuccess(BaseResult o) {
                                                 List<String> pics = o.getUrl();
+                                                fragment.setIcons(pics);
                                                 picBean.setFragmentPics(pics);
                                             }
 
@@ -277,11 +278,11 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 RadioButton radioButton1 = helper.getView(R.id.radio_first_rb);
                 BaseUsageBean usageReturnBean = (BaseUsageBean) item.getObject();
                 radioGroup.setTag(usageReturnBean);
-//                if (radioButton0.isChecked()) {
-//                    helper.setGone(R.id.dosage_ll,false);
-//                }else {
-//                    helper.setGone(R.id.dosage_ll,true);
-//                }
+                if (radioButton0.isChecked()) {
+                    helper.setGone(R.id.dosage_ll,false);
+                }else {
+                    helper.setGone(R.id.dosage_ll,true);
+                }
                 if (usageReturnBean.isDetail()) {
                     helper.setGone(R.id.add_dosage_iv, false);
                     for (int i = 0; i < radioGroup.getChildCount(); i++) {

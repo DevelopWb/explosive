@@ -25,7 +25,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     @Override
     public void initData() {
         adapter.setNewData(mPresenter.getUseApplyData(null,false,true));
-        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_USE_APPLY);
+        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -72,7 +72,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
     protected void saveDraft() {
         BaseAdapterDataBean dataBean = getBaseAdapterData(true);
         if (dataBean!= null) {
-            Hawk.put(HawkProperty.EXPLOSIVE_USE_APPLY, dataBean.getUseOrderBean());
+            Hawk.put(HawkProperty.SAVE_EXPLOSIVE_USE_APPLY, dataBean.getUseOrderBean());
             ToastUtils.toast(mContext, "草稿保存成功");
             finish();
         }

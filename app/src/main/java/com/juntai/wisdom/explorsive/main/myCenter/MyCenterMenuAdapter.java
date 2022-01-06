@@ -1,5 +1,7 @@
 package com.juntai.wisdom.explorsive.main.myCenter;
 
+import android.support.v4.content.ContextCompat;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
@@ -25,5 +27,8 @@ public class MyCenterMenuAdapter extends BaseQuickAdapter<HomePageMenuBean, Base
         helper.setText(R.id.homepage_menu_title_en_tv, item.getMenuEnName());
         helper.setImageResource(R.id.menu_icon_iv,item.getMenuIconId());
         helper.setBackgroundRes(R.id.homepage_menu_ll, item.getMenuBgId());
+        helper.setTextColor(R.id.homepage_menu_title_tv, ContextCompat.getColor(mContext,item.getTextColor()));
+        helper.setTextColor(R.id.homepage_menu_title_en_tv,ContextCompat.getColor(mContext,item.getTextColor()));
+
     }
 }

@@ -58,6 +58,7 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
         ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
         mUnitNameTv.setText(UserInfoManager.getDepartmentName());
         mUserNameTv.setText(UserInfoManager.getUserName());
+        getTitleRightTv().setText("\u3000");
         initViewRightDrawable(getTitleRightTv(), R.mipmap.quit_current_account, 20, 20);
         getTitleRightTv().setOnClickListener(new View.OnClickListener() {
                                                  @Override

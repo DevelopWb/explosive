@@ -113,9 +113,9 @@ public class UserInfoManager {
                         sb.append(postBean.getName() + "\n");
                     }else {
                         if (i==postBeanList.size()-1) {
-                            sb.append("\u3000\u3000\u3000"+postBean.getName());
+                            sb.append(postBean.getName());
                         }else {
-                            sb.append("\u3000\u3000\u3000"+postBean.getName()+"\n");
+                            sb.append(postBean.getName()+"\n");
                         }
                     }
                 }

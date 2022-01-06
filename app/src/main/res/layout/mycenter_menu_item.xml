@@ -8,26 +8,24 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:paddingBottom="20dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/menu_icon_iv"
-        android:layout_width="55dp"
-        android:layout_height="55dp"></ImageView>
+        android:layout_width="45dp"
+        android:layout_height="45dp"></ImageView>
 
     <TextView
         android:id="@+id/homepage_menu_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="消防巡检"
-        android:textColor="@color/colorAccent"
-        android:textSize="18dp"></TextView>
+        android:textSize="16dp"></TextView>
 
     <TextView
         android:id="@+id/homepage_menu_title_en_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="12dp"></TextView>
+        android:textSize="10dp"></TextView>
 </LinearLayout>

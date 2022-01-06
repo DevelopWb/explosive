@@ -5,7 +5,9 @@ import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 /**
  * @aouther tobato
@@ -36,8 +38,16 @@ public abstract class BaseExplosiveUseDetailActivity extends BaseExplosiveActivi
                 }
                 break;
             case AppHttpPath.POLICE_APPROVE:
+                ToastUtils.toast(mContext, "提交成功");
+                finish();
+                break;
             case AppHttpPath.USE_IN_MINE:
+                Hawk.delete(HawkProperty.SAVE_USE_ORDER_IN_MINE+baseId);
+                ToastUtils.toast(mContext, "提交成功");
+                finish();
+                break;
             case AppHttpPath.OUT_IN_MINE:
+                Hawk.delete(HawkProperty.SAVE_OUT_ORDER_IN_MINE+baseId);
                 ToastUtils.toast(mContext, "提交成功");
                 finish();
                 break;

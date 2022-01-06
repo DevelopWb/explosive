@@ -36,7 +36,7 @@ public class ExplosiveOutInMineActivity extends BaseExplosiveUseDetailActivity {
     @Override
     public void initData() {
         super.initData();
-        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_OUT_ORDER_IN_MINE);
+        UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_OUT_ORDER_IN_MINE+baseId);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -103,7 +103,7 @@ public class ExplosiveOutInMineActivity extends BaseExplosiveUseDetailActivity {
             case R.id.save_draft_tv:
                 // : 2021-12-29 保存草稿
                 BaseAdapterDataBean baseAdapterData = getBaseAdapterData(true);
-                Hawk.put(HawkProperty.SAVE_OUT_ORDER_IN_MINE, baseAdapterData.getUseOrderBean());
+                Hawk.put(HawkProperty.SAVE_OUT_ORDER_IN_MINE+baseId, baseAdapterData.getUseOrderBean());
                 ToastUtils.toast(mContext, "草稿保存成功");
                 finish();
 

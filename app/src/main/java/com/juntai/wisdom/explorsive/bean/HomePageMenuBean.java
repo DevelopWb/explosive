@@ -20,12 +20,23 @@ public class HomePageMenuBean {
     private  String menuEnName;
     private int menuBgId;
     private int menuIconId;
+    private int textColor;
 
-    public HomePageMenuBean(String menuName, String menuEnName, int menuBgId, int menuIconId) {
+
+    public HomePageMenuBean(String menuName, String menuEnName, int menuBgId, int menuIconId, int textColor) {
         this.menuName = menuName;
         this.menuEnName = menuEnName;
         this.menuBgId = menuBgId;
         this.menuIconId = menuIconId;
+        this.textColor = textColor;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
     }
 
     public int getMenuIconId() {

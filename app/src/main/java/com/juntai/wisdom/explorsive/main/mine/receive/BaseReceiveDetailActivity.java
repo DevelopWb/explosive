@@ -6,7 +6,9 @@ import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseCommitFootViewActivity;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 /**
  * @aouther tobato
@@ -41,7 +43,11 @@ public  abstract class BaseReceiveDetailActivity extends BaseExplosiveActivity {
                 break;
             case AppHttpPath.POLICE_APPROVE:
             case AppHttpPath.DELIVERY:
+                ToastUtils.toast(mContext, "提交成功");
+                finish();
+                break;
             case AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY:
+                Hawk.delete(HawkProperty.SAVE_OUT_ORDER+baseId);
                 ToastUtils.toast(mContext, "提交成功");
                 finish();
                 break;

@@ -10,6 +10,7 @@
     <color name="color_bt_pressed">#AAFB7D06</color>
     <color name="gray_deeper">#8B8B8B</color>
     <color name="green_lighter">#AA00b61e</color>
+    <color name="menu_green">#2EB644</color>
     <color name="color_bg_dark_blue">#2851CF</color>
     <color name="pop_light_blue">#DDE4F2</color>
     <color name="text_default_color">#AA333333</color>

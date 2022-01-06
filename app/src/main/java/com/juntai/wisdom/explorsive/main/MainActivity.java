@@ -16,16 +16,15 @@ import android.widget.TextView;
 import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
+import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.service.LocateAndUpload;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.MyApp;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
-import com.juntai.wisdom.explorsive.bean.MyMenuBean;
+import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
-import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
-import com.juntai.wisdom.explorsive.main.explosiveManage.AllMinesActivity;
 import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
@@ -33,6 +32,7 @@ import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveManageOfM
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.UseApproveActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
+import com.juntai.wisdom.explorsive.main.myCenter.MyCenterMenuAdapter;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -43,9 +43,9 @@ import com.juntai.wisdom.explorsive.utils.UserInfoManager;
  */
 public class MainActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener {
     //矿内管理
-    public static boolean  isManager = false;
+    public static boolean isManager = false;
     //矿内使用
-    public static boolean  isUseInMine = false;
+    public static boolean isUseInMine = false;
     CGBroadcastReceiver broadcastReceiver = new CGBroadcastReceiver();
     private ImageView mUserHeadIv;
     /**
@@ -61,7 +61,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
      */
     private TextView mUserMobileTv;
     private RecyclerView mHomePageRv;
-    private MainMenuAdapter menuAdapter;
+    private MyCenterMenuAdapter menuAdapter;
     private TextView mUserWorkTv;
 
 
@@ -72,22 +72,24 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
 
     @Override
     public void initView() {
-        getToolbar().setVisibility(View.GONE);
-        mBaseRootCol.setFitsSystemWindows(false);
+        initToolbarAndStatusBar(false);
+        mImmersionBar.reset().statusBarDarkFont(true).init();
         //注册广播
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConfig.BROAD_LOGIN);
         intentFilter.addAction(ActionConfig.BROAD_CASE_DETAILS);
         registerReceiver(broadcastReceiver, intentFilter);
         mUserHeadIv = (ImageView) findViewById(R.id.user_head_iv);
+        ImageView mNewsIv = (ImageView) findViewById(R.id.news_iv);
         mUserHeadIv.setOnClickListener(this);
+        mNewsIv.setOnClickListener(this);
         mUnitNameTv = (TextView) findViewById(R.id.unit_name_tv);
         mUserNameTv = (TextView) findViewById(R.id.user_name_tv);
         mUserMobileTv = (TextView) findViewById(R.id.user_mobile_tv);
         mUserWorkTv = (TextView) findViewById(R.id.user_work_tv);
         initUserBaseInfo();
         mHomePageRv = (RecyclerView) findViewById(R.id.home_page_rv);
-        menuAdapter = new MainMenuAdapter(R.layout.my_menu_item);
+        menuAdapter = new MyCenterMenuAdapter(R.layout.mycenter_menu_item);
         GridLayoutManager manager = new GridLayoutManager(mContext, 2);
         mHomePageRv.setAdapter(menuAdapter);
         mHomePageRv.setLayoutManager(manager);
@@ -95,13 +97,13 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         menuAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MyMenuBean menuBean = (MyMenuBean) adapter.getData().get(position);
-                switch (menuBean.getName()) {
-                    case MainPresent.MINE_REQUEST:
+                HomePageMenuBean menuBean = (HomePageMenuBean) adapter.getData().get(position);
+                switch (menuBean.getMenuName()) {
+                    case MainPresent.RECEIVE_APPLY_REQUEST:
                         // : 2021-12-20  民爆领取申请
                         startActivity(new Intent(mContext, ApplyReceiveActivirty.class));
                         break;
-                    case MainPresent.MINE_REQUEST_INSIDE:
+                    case MainPresent.USE_APPLY_INSIDE:
                         // : 2021-12-20  矿内使用申请
                         startActivity(new Intent(mContext, ApplyUseActivity.class));
 
@@ -137,9 +139,9 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
      */
     private void initUserBaseInfo() {
         mUnitNameTv.setText(UserInfoManager.getDepartmentName());
-        mUserNameTv.setText("姓名：" + UserInfoManager.getUserName());
-        mUserMobileTv.setText("电话：" + UserInfoManager.getMobile());
-        mUserWorkTv.setText("职务：" + UserInfoManager.geWorkName());
+        mUserNameTv.setText( UserInfoManager.getUserName());
+        mUserMobileTv.setText( UserInfoManager.getMobile());
+        mUserWorkTv.setText(UserInfoManager.geWorkName());
         ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
     }
 
@@ -170,6 +172,11 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 startActivityForResult(new Intent(mContext, MyCenterActivity.class), BASE_REQUEST_RESULT);
 
                 break;
+
+            case R.id.news_iv:
+                // TODO: 2022-01-06 消息
+
+                break;
             default:
                 break;
         }
@@ -194,10 +201,9 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 //登录信息设置为空
                 String error = intent.getStringExtra("error");
                 ToastUtils.info(MyApp.app, error);
-                //                SPTools.saveString(mContext, "login", "");
+                UserInfoManager.clearUserBaseInfo();
+                ActivityManagerTool.getInstance().finishApp();
                 startActivity(new Intent(mContext, LoginActivity.class));
-                //重置界面
-                //                EventManager.sendStringMsg(ActionConfig.UN_READ_MESSAG_TAG);
             }
         }
     }

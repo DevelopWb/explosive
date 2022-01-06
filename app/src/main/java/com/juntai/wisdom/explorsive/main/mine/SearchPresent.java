@@ -90,12 +90,13 @@ public class SearchPresent extends BasePresenter<IModel, IView> {
         //  订单详情  1派出所审核；2治安大队审核；3局领导审核；4出库；5配送；6完成；7作废
         // 部门类型（1矿场；2派出所；3治安大队；4县公安局；5民爆仓库）
         int departmentId = UserInfoManager.getDepartmentType();
-        switch (dataBean.getStat()) {
+        int stat = dataBean.getStat();
+        switch (stat) {
             case 1:
             case 2:
             case 3:
                 // : 2021-12-21 订单详情 派出所审核
-                if (2 ==departmentId||3==departmentId||4==departmentId) {
+                if (stat==departmentId-1) {
                     context.startActivity(new Intent(context, ExplosiveReceiveApproveActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
                 }else {
                     context.startActivity(new Intent(context, ExplosiveReceiveApproveDetailActivity.class).putExtra(BaseExplosiveActivity.BASE_ID, dataBean.getId()));
