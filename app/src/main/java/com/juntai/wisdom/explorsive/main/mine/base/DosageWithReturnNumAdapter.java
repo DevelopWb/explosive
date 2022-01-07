@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine;
+package com.juntai.wisdom.explorsive.main.mine.base;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;

@@ -11,7 +11,7 @@ import com.juntai.wisdom.explorsive.bean.BaseOrderBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.MultipleItem;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
-import com.juntai.wisdom.explorsive.main.mine.OrderProgressAdapter;
+import com.juntai.wisdom.explorsive.main.mine.base.OrderProgressAdapter;
 import com.juntai.wisdom.explorsive.main.mine.SearchPresent;
 
 import java.util.ArrayList;

@@ -26,6 +26,7 @@ import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
+import com.juntai.wisdom.explorsive.main.mine.dosage.AllMinesActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveManageOfMineActivity;
@@ -127,6 +128,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         break;
                     case MainPresent.DOSAGE:
                         // TODO: 2021-12-20  用量
+                        startActivity(new Intent(mContext, AllMinesActivity.class));
                         break;
                     default:
                         break;

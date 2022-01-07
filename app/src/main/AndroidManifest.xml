@@ -30,7 +30,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".explorsive.main.myCenter.NewsActivity"></activity>
+        <activity android:name=".explorsive.main.mine.dosage.AllDosageActivity"></activity>
+        <activity android:name=".explorsive.main.myCenter.NewsActivity" />
         <activity android:name=".explorsive.main.myCenter.AboutUsActivity" />
         <activity android:name=".explorsive.main.myCenter.ModifyPwdActivity" />
         <activity android:name=".explorsive.main.mine.use.ExplosiveUseDetailActivity" />
@@ -44,7 +45,7 @@
         <activity android:name=".explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutDetailActivity" />
         <activity android:name=".explorsive.main.mine.receive.outHouse.ExplosiveReceiveOutActivity" />
         <activity android:name=".explorsive.main.explosiveManage.ExplosiveManageActivity" />
-        <activity android:name=".explorsive.main.explosiveManage.AllMinesActivity" />
+        <activity android:name=".explorsive.main.mine.dosage.AllMinesActivity" />
         <activity android:name=".explorsive.main.mine.use.UseApproveActivity" />
         <activity android:name=".explorsive.main.mine.receive.ReceiveApproveActivity" />
         <activity android:name=".explorsive.main.mine.use.ExplosiveUseApproveDetailActivity" />

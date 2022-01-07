@@ -90,6 +90,12 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
     public FrameLayout frameLayout;
     public static int ActivityResult = 1001;//activity返回值
     public static int BASE_REQUEST_RESULT = 10086;//请求的回执
+
+    public static String PARCELABLE_KEY = "parcelable";
+    public static String BASE_ID = "baseid";
+    public static String BASE_ID2 = "baseid2";
+    public int baseId;
+    public int baseId2;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +123,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
         initToolbarAndStatusBar(true);
         initLeftBackTv(true);
         initView();
+        if (getIntent() != null) {
+            baseId = getIntent().getIntExtra(BASE_ID, 0);
+            baseId2 = getIntent().getIntExtra(BASE_ID2, 0);
+        }
         initData();
         ActivityManagerTool.getInstance().addActivity(this);
     }

@@ -7,6 +7,7 @@ import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.IdNameBean;
+import com.juntai.wisdom.explorsive.bean.IdNameListBean;
 import com.juntai.wisdom.explorsive.bean.MineReceiverBean;
 import com.juntai.wisdom.explorsive.bean.NewsBean;
 import com.juntai.wisdom.explorsive.bean.OrderListBean;
@@ -111,6 +112,8 @@ public interface AppServer {
 
     @POST(AppHttpPath.USE_IN_MINE)
     Observable<BaseResult> useInMine(@Body RequestBody requestBody);
+    @POST(AppHttpPath.GET_ALL_MINE)
+    Observable<IdNameListBean> getAllMine(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.DELIVERY)
     Observable<BaseResult> delivery(@Body RequestBody requestBody);

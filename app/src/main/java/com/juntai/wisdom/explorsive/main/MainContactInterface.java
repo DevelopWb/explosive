@@ -17,8 +17,8 @@ public interface MainContactInterface extends IView {
     String APPLICATION = "用途";
     String USE_LOCATION = "使用地点";
     String UPLOAD_SIGN = "上传签名";
-    String SIGN_TITLE_UNIT= "申请单位盖章签字";
-    String SIGN_TITLE_POLICE= "派出所盖章签字";
+    String SIGN_TITLE_UNIT = "申请单位盖章签字";
+    String SIGN_TITLE_POLICE = "派出所盖章签字";
     String SIGN_TITLE_BRIGADE = "治安大队盖章签字";
     String SIGN_TITLE_LEADER = "局领导盖章签字";
 
@@ -26,7 +26,7 @@ public interface MainContactInterface extends IView {
     String APPLY_USER = "申请人:";
     String APPLY_USER_MOBILE = "联系电话:";
     String APPLY_USER_UNIT = "申请单位:";
-    String APPLY_USER_UNIT_ADDR= "单位地址:";
+    String APPLY_USER_UNIT_ADDR = "单位地址:";
     String APPLY_TIME = "申请时间:";
     String PLAN_USE_START_TIME = "预计使用开始时间:";
     String PLAN_USE_END_TIME = "预计使用结束时间:";
@@ -44,8 +44,8 @@ public interface MainContactInterface extends IView {
 
     String ARRIVERE_SIGN = "接收矿场签字确认";
 
-
-
-
+    String  TAB_TITLES = "tabtitles";
+    String USE_DOSAGE = "矿场内爆炸物使用统计";
+    String RECEIVE_DOSAGE = "民爆爆炸物领取统计";
 
 }

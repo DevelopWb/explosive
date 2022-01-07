@@ -72,9 +72,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     protected HandlerOrderAdapter adapter;
     private RecyclerView mRecyclerview;
     private SmartRefreshLayout mSmartrefreshlayout;
-    public static String PARCELABLE_KEY = "parcelable";
-    public static String BASE_ID = "baseid";
-    public static String BASE_ID2 = "baseid2";
+
     public static String BASE_STRING = "basestring";
     public static String SDCARD_TAG = "/storage/emulated";
     public static String BASE_STRING2 = "basestring2";
@@ -87,8 +85,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ImageView mSignIv;
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
-    protected int baseId;
-    protected int baseId2;
+
     private BaseMultiselectBottomDialog multiselectBottomDialog;
     private FaceCheckBean faceCheckBean;
 
@@ -118,10 +115,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
     @Override
     public void initView() {
-        if (getIntent() != null) {
-            baseId = getIntent().getIntExtra(BASE_ID, 0);
-            baseId2 = getIntent().getIntExtra(BASE_ID2, 0);
-        }
+
         setTitleName(getTitleName());
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         mSmartrefreshlayout = (SmartRefreshLayout) findViewById(R.id.smartrefreshlayout);

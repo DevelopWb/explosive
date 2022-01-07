@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine;
+package com.juntai.wisdom.explorsive.main.mine.base;
 
 import android.text.Editable;
 import android.text.TextUtils;

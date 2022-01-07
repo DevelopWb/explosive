@@ -1,4 +1,4 @@
-package com.juntai.wisdom.explorsive.main.mine;
+package com.juntai.wisdom.explorsive.main.mine.base;
 
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
