@@ -1,8 +1,5 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
@@ -66,7 +63,7 @@ public class ExplosiveReceiveApproveActivity extends BaseReceiveDetailActivity {
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
 
         //             账户性质   1矿场；2派出所；3治安大队；4县公安局；5民爆仓库
-        adapter.setNewData(mPresenter.getRecieveApplyCheckData(dataBean,false));
+        adapter.setNewData(mPresenter.getRecieveApplyApproveData(dataBean,false));
         if (2 != dataBean.getIsVoid()) {
             //没有作废
             adapter.addFooterView(getFootView());

@@ -24,14 +24,14 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getUseApplyData(null,false,true));
+        adapter.setNewData(mPresenter.getUseApplyAddData(null,false,true));
         UseOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.SAVE_EXPLOSIVE_USE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getUseApplyData(savedBean,false,true));
+                            adapter.setNewData(mPresenter.getUseApplyAddData(savedBean,false,true));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
@@ -87,6 +87,7 @@ public class AddUseApplyActivity extends BaseCommitFootViewActivity {
         super.onSuccess(tag, o);
         switch (tag) {
             case AppHttpPath.ADD_USE_EXPLOSIVE_APPLY:
+                Hawk.delete(HawkProperty.SAVE_EXPLOSIVE_USE_APPLY);
                 ToastUtils.toast(mContext,"申请成功");
                 setResult(BASE_REQUEST_RESULT);
                 finish();

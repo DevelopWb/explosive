@@ -176,8 +176,10 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                     if (countInt>0) {
                         mUnreadTv.setVisibility(View.VISIBLE);
                         mUnreadTv.setText(count);
-                    }
-                }
+                    }else {
+                        mUnreadTv.setVisibility(View.GONE);
+
+                    }                }
                 break;
 
 

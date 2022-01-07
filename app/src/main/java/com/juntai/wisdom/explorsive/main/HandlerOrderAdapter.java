@@ -496,6 +496,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 recyclerView.setLayoutManager(manager);
                 break;
             case MultipleItem.ITEM_SELECT_TIME:
+                helper.setImageResource(R.id.location_iv,R.mipmap.time_tag_2);
                 TimeBean timeBean = (TimeBean) item.getObject();
                 if (timeBean.isDetail()) {
                     helper.setGone(R.id.location_iv, false);

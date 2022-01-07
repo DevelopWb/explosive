@@ -67,18 +67,10 @@ import okhttp3.RequestBody;
  * @UpdateDate: 2021/4/22 11:08
  */
 public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent> implements MainContactInterface, View.OnClickListener, SelectPhotosFragment.OnPhotoItemClick {
-    public static int SELECT_ADDR = 998;
     public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     protected HandlerOrderAdapter adapter;
     private RecyclerView mRecyclerview;
     private SmartRefreshLayout mSmartrefreshlayout;
-
-    public static String BASE_STRING = "basestring";
-    public static String SDCARD_TAG = "/storage/emulated";
-    public static String BASE_STRING2 = "basestring2";
-    public final static String ADD_UNIT = "添加单位";
-    public final static String ADD_INSPECTION_SITE = "添加治安巡检点";
-    public final static String ADD_IMPORTANTOR = "添加重点人员";
     private int currentPosition;
     private BottomSheetDialog bottomSheetDialog;
     private GestureSignatureView gsv_signature;
@@ -93,11 +85,8 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
 
     private TextKeyValueBean selectBean;
-    private TextView mSelectTv;
 
-    public boolean idDetail = false;
     private OnSignedCallBack onSignedCallBack;
-
 
     public void setOnSignedCallBack(OnSignedCallBack onSignedCallBack) {
         this.onSignedCallBack = onSignedCallBack;
@@ -177,7 +166,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     case MultipleItem.ITEM_LOCATION:
                         // : 2021-12-22  跳转到选择位置类
                         startActivityForResult(new Intent(mContext, LocateSelectionActivity.class),
-                                SELECT_ADDR);
+                                LocateSelectionActivity.SELECT_ADDR);
                         break;
                     case MultipleItem.ITEM_SELECT:
                         selectBean = (TextKeyValueBean) multipleItem.getObject();
@@ -274,8 +263,8 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             case R.id.add_dosage_iv:
                                 //添加用量
                                 BaseUsageBean returnUsaeBean = (BaseUsageBean) multipleItem.getObject();
-                                List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> explosiveUsageRetrunBeans =returnUsaeBean.getUsageReturnBeans();
-                                explosiveUsageRetrunBeans.add(new UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean(0,"请选择爆炸物种类", 0, "零", "个",null));
+                                List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> explosiveUsageRetrunBeans = returnUsaeBean.getUsageReturnBeans();
+                                explosiveUsageRetrunBeans.add(new UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean(0, "请选择爆炸物种类", 0, "零", "个", null));
                                 adapter.notifyItemChanged(position);
                                 break;
                             default:
@@ -384,11 +373,11 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 }
             }
         }
-        if (requestCode == SELECT_ADDR && resultCode == RESULT_OK) {
+        if (resultCode == LocateSelectionActivity.SELECT_ADDR) {
             //地址选择
-            lat = data.getDoubleExtra("lat", 0.0);
-            lng = data.getDoubleExtra("lng", 0.0);
-            address = data.getStringExtra("address");
+            lat = data.getDoubleExtra(LocateSelectionActivity.LAT, 0.0);
+            lng = data.getDoubleExtra(LocateSelectionActivity.LNG, 0.0);
+            address = data.getStringExtra(LocateSelectionActivity.ADDRNAME);
             notifyLocationItem();
         }
     }
@@ -606,6 +595,13 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 case MultipleItem.ITEM_SELECT_TIME:
                     TimeBean timeBean = (TimeBean) item.getObject();
                     String timeValue = timeBean.getTimeValue();
+                    if (!skipFilter) {
+                        if (TextUtils.isEmpty(timeValue)) {
+                            ToastUtils.toast(mContext,"请选择"+timeBean.getTimeKey());
+                            return null;
+                        }
+                    }
+
                     switch (timeBean.getTimeKey()) {
                         case MainContactInterface.PLAN_USE_START_TIME:
                             useOrderBean.setEstimateStartUseTime(timeValue);
@@ -745,6 +741,13 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     TextKeyValueBean selectBean = (TextKeyValueBean) item.getObject();
                     String selectValue = selectBean.getValue();
                     String selectKey = selectBean.getKey();
+                    if (!skipFilter) {
+                        if (TextUtils.isEmpty(selectValue)) {
+                            ToastUtils.toast(mContext,"请选择"+selectKey);
+                            return null;
+                        }
+                    }
+
                     int id = selectBean.getId();
                     switch (selectKey) {
                         case MainContactInterface.SAFER:
@@ -788,18 +791,6 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
                     String formKey = null;
                     switch (textValueEditBean.getKey()) {
-//                        case BaseInspectContract.INSPECTION_TEL:
-//                            //联系电话
-//                            if (!skipFilter) {
-//                                if (textValueEditBean.isImportant() && !RuleTools.isMobileNO(value)) {
-//                                    ToastUtils.toast(mContext, "联系电话格式不正确");
-//                                    return null;
-//                                }
-//                            }
-//                            formKey = "phone";
-//                            importantorBean.setPhone(value);
-//                            workerBean.setPhone(value);
-//                            break;
                         case MainContactInterface.APPLICATION:
                             //用途
                             receiveOrderBean.setRemarks(value);
@@ -846,7 +837,25 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
 
                 case MultipleItem.ITEM_APPLY_DOSAGE:
                     BaseUsageBean usageBean = (BaseUsageBean) item.getObject();
+
                     List<ExplosiveUsageBean> explosiveUsageBeans = usageBean.getUsageBeanList();
+                    if (!skipFilter) {
+                        for (ExplosiveUsageBean explosiveUsageBean : explosiveUsageBeans) {
+
+                            String typeName = explosiveUsageBean.getTypeName();
+                            int amount = explosiveUsageBean.getApplyQuantity();
+                            if ("请选择爆炸物种类".equals(typeName)) {
+                                ToastUtils.toast(mContext,"请选择爆炸物种类");
+                                return null;
+                            }
+                            if (amount<1) {
+                                ToastUtils.toast(mContext,"请输入"+typeName+"的申请数量");
+                                return null;
+                            }
+
+                        }
+                    }
+
                     receiveOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     useOrderBean.setExplosiveUsage(explosiveUsageBeans);
                     break;

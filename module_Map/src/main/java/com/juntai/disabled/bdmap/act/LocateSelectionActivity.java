@@ -47,11 +47,13 @@ import java.util.List;
  */
 public class LocateSelectionActivity extends BaseRequestLocationActivity implements BaiduMap.OnMapClickListener, BaiduMap.SnapshotReadyCallback,
         OnGetGeoCoderResultListener {
-    public static String RIGHT_CONTENT = "right_content";
+    public static int SELECT_ADDR = 998;
     public static String LAT = "lat";
     public static String LNG = "lng";
     public static String ADDRNAME = "addrName";
     public static String ADDRDES = "addrDes";
+    public static String RIGHT_CONTENT = "right_content";
+
     private String addrName = "";
     private String addrDes = "";
     private RecyclerView mAddressListRv;
@@ -93,7 +95,7 @@ public class LocateSelectionActivity extends BaseRequestLocationActivity impleme
                         intent.putExtra(LNG, lng);
                         intent.putExtra(ADDRNAME, addrName);
                         intent.putExtra(ADDRDES, addrDes);
-                        setResult(BASE_REQUEST_RESULT, intent);
+                        setResult(SELECT_ADDR, intent);
                         finish();
                     }
 

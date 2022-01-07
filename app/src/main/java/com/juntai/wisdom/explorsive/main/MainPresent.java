@@ -20,7 +20,6 @@ import com.juntai.wisdom.explorsive.bean.FaceCheckBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.bean.FragmentPicBean;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
-import com.juntai.wisdom.explorsive.bean.IdNameBean;
 import com.juntai.wisdom.explorsive.bean.IdNameListBean;
 import com.juntai.wisdom.explorsive.bean.ImportantTagBean;
 import com.juntai.wisdom.explorsive.bean.ItemSignBean;
@@ -33,7 +32,6 @@ import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
-import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
 import java.text.SimpleDateFormat;
@@ -135,7 +133,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getUseApplyData(UseOrderDetailBean.DataBean bean, boolean isDetail, boolean showReceiver) {
+    public List<MultipleItem> getUseApplyAddData(UseOrderDetailBean.DataBean bean, boolean isDetail, boolean showReceiver) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -150,7 +148,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 , bean == null ? null : bean.getEstimateUseLatitude(), bean == null ? null : bean.getEstimateUseLongitude(), isDetail)));
         if (!isDetail) {
             initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
-                    bean.getRemarks(), false, 1, isDetail);
+                    bean.getRemarks(), true, 1, isDetail);
         }
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
@@ -173,15 +171,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
+        } else {
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
+
+        }
+        return arrays;
+    }
+    /**
+     * 民爆使用申请
+     * showReceiver  是否展示领取人
+     *
+     * @return
+     */
+    public List<MultipleItem> getUseApplyApproveData(UseOrderDetailBean.DataBean bean, boolean isDetail, boolean showReceiver) {
+        List<MultipleItem> arrays = getUseApplyAddData(bean,true,showReceiver);
+        if (isDetail) {
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
             } else {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
             }
-
-        } else {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
-
         }
         return arrays;
     }
@@ -192,7 +201,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @return
      */
     public List<MultipleItem> getUseApplyOutInMineData(UseOrderDetailBean.DataBean bean, boolean isDetail) {
-        List<MultipleItem> arrays = getUseApplyData(bean, true, false);
+        List<MultipleItem> arrays = getUseApplyApproveData(bean, true, false);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
                 new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail ? bean.getGrantTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, !isDetail ? null :
@@ -254,11 +263,11 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
 
 
     /**
-     * 民爆领取申请
+     * 民爆领取申请  新增
      *
      * @return
      */
-    public List<MultipleItem> getRecieveApplyData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
+    public List<MultipleItem> getRecieveApplyAddData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = new ArrayList<>();
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
@@ -269,30 +278,13 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude(), isDetail)));
         if (!isDetail) {
             initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
-                    bean.getRemarks(), false, 1, isDetail);
+                    bean.getRemarks(), true, 1, isDetail);
         }
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
-            if (TextUtils.isEmpty(bean.getPoliceSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
-            } else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
-            }
-            if (TextUtils.isEmpty(bean.getBrigadeSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
-            } else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 2, bean.getBrigadeSign(), bean.getBrigadeDepartmentSeal(), bean.getBrigadeRemarks())));
-            }
-            if (TextUtils.isEmpty(bean.getLeaderSign())) {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
-            } else {
-                arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 2, bean.getLeaderSign(), bean.getLeaderDepartmentSeal(), bean.getLeaderRemarks())));
-            }
-
         } else {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, bean == null ? 0 : bean.getSignStatus(), bean == null ? null : bean.getApplySign(), bean == null ? UserInfoManager.getDepartmentSign() : bean.getApplyDepartmentSeal())));
-
         }
 
 
@@ -304,22 +296,8 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      *
      * @return
      */
-    public List<MultipleItem> getRecieveApplyCheckData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
-        List<MultipleItem> arrays = new ArrayList<>();
-
-        arrays.add(new MultipleItem(MultipleItem.ITEM_NORMAL_RECYCLEVIEW, new BaseNormalRecyclerviewBean(
-                MultipleItem.BASE_RECYCLERVIEW_TYPE_TEXT_VALUE, 1,
-                getApplyerData(bean, true))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
-                bean.getUseAddress()
-                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude(), isDetail)));
-        if (!isDetail) {
-            initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
-                    bean.getRemarks(), false, 1, isDetail);
-        }
-
-        arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
+    public List<MultipleItem> getRecieveApplyApproveData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
+        List<MultipleItem> arrays = getRecieveApplyAddData(bean,true);
         if (TextUtils.isEmpty(bean.getPoliceSign())) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
         } else {
@@ -345,7 +323,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @return
      */
     public List<MultipleItem> getRecieveApplyOutData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
-        List<MultipleItem> arrays = getRecieveApplyCheckData(bean, true);
+        List<MultipleItem> arrays = getRecieveApplyApproveData(bean, true);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "出库单详情"));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
                 new TextKeyValueBean(MainContactInterface.DELIVERY, bean == null ? "" :

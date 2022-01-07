@@ -34,7 +34,6 @@ public class ApplyReceiveFragment extends BaseSearchFragment implements View.OnC
 //        mSearchedAdapter.setEmptyView(getBaseActivity().getAdapterEmptyView(getString(R.string.none_record),
 //                R.mipmap.none_record));
         mSmartrefreshlayout.setEnableLoadMore(false);
-        mSmartrefreshlayout.setEnableRefresh(false);
         mSmartrefreshlayout.setOnRefreshListener(refreshLayout -> {
             requestData();
         });

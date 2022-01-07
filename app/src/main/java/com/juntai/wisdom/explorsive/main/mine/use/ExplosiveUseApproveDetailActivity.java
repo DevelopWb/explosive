@@ -1,10 +1,8 @@
 package com.juntai.wisdom.explorsive.main.mine.use;
 
-import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
-import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
 /**
@@ -49,13 +47,13 @@ public class ExplosiveUseApproveDetailActivity extends BaseExplosiveUseDetailAct
         //             账户性质   1矿场；2派出所；3治安大队；4县公安局；5民爆仓库
         int orderStatus = dataBean.getStat() + 1;
         if (orderStatus == UserInfoManager.getDepartmentType()) {
-            adapter.setNewData(mPresenter.getUseApplyData(dataBean,true,true));
+            adapter.setNewData(mPresenter.getUseApplyApproveData(dataBean,true,true));
             if (2!=dataBean.getIsVoid()) {
                 //没有作废
                 adapter.addFooterView(getFootView());
             }
         } else {
-            adapter.setNewData(mPresenter.getUseApplyData(dataBean, true,true));
+            adapter.setNewData(mPresenter.getUseApplyApproveData(dataBean, true,true));
 
         }
     }

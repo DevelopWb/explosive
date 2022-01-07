@@ -24,14 +24,14 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public void initData() {
-        adapter.setNewData(mPresenter.getRecieveApplyData(null, false));
+        adapter.setNewData(mPresenter.getRecieveApplyAddData(null, false));
         ReceiveOrderDetailBean.DataBean savedBean = Hawk.get(HawkProperty.EXPLOSIVE_RECEIVE_APPLY);
         if (savedBean != null) {
             setAlertDialogHeightWidth(DialogUtil.getDialog(mContext).setMessage("您上次还有未提交的草稿,是否进入草稿？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            adapter.setNewData(mPresenter.getRecieveApplyData(savedBean, false));
+                            adapter.setNewData(mPresenter.getRecieveApplyAddData(savedBean, false));
                         }
                     }).setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
@@ -88,6 +88,7 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
         switch (tag) {
             case AppHttpPath.ADD_RECEIVE_EXPLOSIVE_APPLY:
                 ToastUtils.toast(mContext,"申请成功");
+                Hawk.delete(HawkProperty.EXPLOSIVE_RECEIVE_APPLY);
                 setResult(BASE_REQUEST_RESULT);
                 finish();
                 break;

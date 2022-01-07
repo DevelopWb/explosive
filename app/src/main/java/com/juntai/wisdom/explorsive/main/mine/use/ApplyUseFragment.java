@@ -31,7 +31,6 @@ public class ApplyUseFragment extends BaseSearchFragment implements View.OnClick
 //        mSearchedAdapter.setEmptyView(getBaseActivity().getAdapterEmptyView(getString(R.string.none_record),
 //                R.mipmap.none_record));
         mSmartrefreshlayout.setEnableLoadMore(false);
-        mSmartrefreshlayout.setEnableRefresh(false);
         mSmartrefreshlayout.setOnRefreshListener(refreshLayout -> {
             requestData();
         });
