@@ -15,12 +15,14 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
 import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.service.LocateAndUpload;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.MyApp;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
@@ -66,6 +68,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     private RecyclerView mHomePageRv;
     private MyCenterMenuAdapter menuAdapter;
     private TextView mUserWorkTv;
+    private TextView mUnreadTv;
 
 
     @Override
@@ -89,6 +92,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         mUnitNameTv = (TextView) findViewById(R.id.unit_name_tv);
         mUserNameTv = (TextView) findViewById(R.id.user_name_tv);
         mUserMobileTv = (TextView) findViewById(R.id.user_mobile_tv);
+        mUnreadTv = (TextView) findViewById(R.id.unread_tag_tv);
         mUserWorkTv = (TextView) findViewById(R.id.user_work_tv);
         initUserBaseInfo();
         mHomePageRv = (RecyclerView) findViewById(R.id.home_page_rv);
@@ -163,9 +167,18 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     @Override
     public void onSuccess(String tag, Object o) {
         switch (tag) {
-//            case AppHttpPath.GET_USER_INFO:
-//
-//                break;
+            case AppHttpPath.GET_UNREAD_COUNT:
+                BaseResult result = (BaseResult) o;
+                if (result != null) {
+                    String  count = result.getMessage();
+                    // : 2022-01-07 小红点
+                    int countInt = Integer.parseInt(count);
+                    if (countInt>0) {
+                        mUnreadTv.setVisibility(View.VISIBLE);
+                        mUnreadTv.setText(count);
+                    }
+                }
+                break;
 
 
             default:
@@ -231,6 +244,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     @Override
     protected void onResume() {
         super.onResume();
+        mPresenter.getUnreadCount(getBaseBuilder().build(), AppHttpPath.GET_UNREAD_COUNT);
     }
 
 
