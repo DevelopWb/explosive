@@ -26,6 +26,7 @@ import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
+import com.juntai.wisdom.explorsive.main.mine.dosage.AllDosageActivity;
 import com.juntai.wisdom.explorsive.main.mine.dosage.AllMinesActivity;
 import com.juntai.wisdom.explorsive.main.mine.receive.ApplyReceiveActivirty;
 import com.juntai.wisdom.explorsive.main.mine.receive.ReceiveApproveActivity;
@@ -127,8 +128,13 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         startActivity(new Intent(mContext, ExplosiveManageActivity.class));
                         break;
                     case MainPresent.DOSAGE:
-                        // TODO: 2021-12-20  用量
-                        startActivity(new Intent(mContext, AllMinesActivity.class));
+                        // : 2021-12-20  用量
+                        if (1== UserInfoManager.getDepartmentType()) {
+                            startActivity(new Intent(mContext, AllDosageActivity.class).putExtra(BASE_ID,UserInfoManager.getDepartmentId()));
+                        }else {
+                            startActivity(new Intent(mContext, AllMinesActivity.class));
+
+                        }
                         break;
                     default:
                         break;

@@ -2,6 +2,7 @@ package com.juntai.wisdom.explorsive.main.mine.dosage;
 
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,12 +12,18 @@ import com.juntai.disabled.basecomponent.utils.CalendarUtil;
 import com.juntai.disabled.basecomponent.utils.PickerManager;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseAppFragment;
+import com.juntai.wisdom.explorsive.bean.AllDosageBean;
 import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
+import com.juntai.wisdom.explorsive.utils.StringTools;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import okhttp3.FormBody;
 
 /**
  * @aouther tobato
@@ -27,6 +34,7 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private String fragmentTag;
+    private int mineId;
     /**
      * 请选择开始时间
      */
@@ -40,15 +48,30 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
      */
     private TextView mDosageTitleTv;
     private RecyclerView mDosageContentRv;
+    private AllDosageAdapter dosageAdapter;
 
 
     @Override
     protected void lazyLoad() {
         fragmentTag = getArguments().getString(MainContactInterface.TAB_TITLES);
+        mineId = getArguments().getInt(MainContactInterface.TAB_ID);
+
+        FormBody.Builder builder = getBaseBuilder().add("mineId",String.valueOf(mineId));
+        if (StringTools.isStringValueOk(mDosageStartTimeTv.getText().toString().trim())) {
+            builder.add("startTime", mDosageStartTimeTv.getText().toString().trim());
+        }
+        if (StringTools.isStringValueOk(mDosageEndTimeTv.getText().toString().trim())) {
+            builder.add("endTime", mDosageEndTimeTv.getText().toString().trim());
+        }
+
         switch (fragmentTag) {
             case MainContactInterface.USE_DOSAGE:
-                // TODO: 2022-01-07 使用量统计
-
+                // : 2022-01-07 使用量统计
+                mPresenter.getUseStatistics(builder.build(), AppHttpPath.USE_STATISTICS);
+                break;
+            case MainContactInterface.RECEIVE_DOSAGE:
+                // : 2022-01-07 使用量统计
+                mPresenter.getReceiveStatistics(builder.build(), AppHttpPath.RECEIVE_STATISTICS);
                 break;
             default:
                 break;
@@ -60,9 +83,10 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
         return new MainPresent();
     }
 
-    public static DosageFragment newInstance(String type) {
+    public static DosageFragment newInstance(String type, int mineId) {
         Bundle args = new Bundle();
         args.putString(MainContactInterface.TAB_TITLES, type);
+        args.putInt(MainContactInterface.TAB_ID, mineId);
         DosageFragment fragment = new DosageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -84,6 +108,9 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
         mDosageTitleTv = (TextView) getView(R.id.dosage_title_tv);
         mDosageTitleTv.setText("用量");
         mDosageContentRv = (RecyclerView) getView(R.id.dosage_content_rv);
+        dosageAdapter = new AllDosageAdapter(R.layout.dosage_number_item);
+        dosageAdapter.setEmptyView(getBaseActivity().getAdapterEmptyView("暂无统计量",-1));
+        getBaseActivity().initRecyclerview(mDosageContentRv, dosageAdapter, LinearLayoutManager.VERTICAL);
     }
 
     @Override
@@ -94,6 +121,13 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
 
     @Override
     public void onSuccess(String tag, Object o) {
+
+        AllDosageBean dosageBean = (AllDosageBean) o;
+        if (dosageBean != null) {
+            List<AllDosageBean.DataBean> dataBeans = dosageBean.getData();
+            dosageAdapter.setNewData(dataBeans);
+
+        }
 
     }
 
@@ -123,11 +157,12 @@ public class DosageFragment extends BaseAppFragment<MainPresent> implements Main
                     public void onTimeSelect(Date date, View v) {
                         String endTime = sdf.format(date);
                         // : 2021-12-20 和开始时间比较
-                        if (!CalendarUtil.compareTimes(mDosageStartTimeTv.getText().toString().trim(), endTime, "yyyy-MM-dd HH:mm:ss")) {
+                        if (!CalendarUtil.compareTimes(mDosageStartTimeTv.getText().toString().trim(), endTime, "yyyy-MM-dd HH:mm")) {
                             ToastUtils.toast(mContext, "结束时间不能早于开始时间");
                             return;
                         }
                         mDosageEndTimeTv.setText(endTime);
+                        lazyLoad();
                     }
                 });
                 break;

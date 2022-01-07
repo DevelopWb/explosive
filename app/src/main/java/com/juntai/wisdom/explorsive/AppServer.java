@@ -3,6 +3,7 @@ package com.juntai.wisdom.explorsive;
 
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.wisdom.explorsive.bean.AboutUsBean;
+import com.juntai.wisdom.explorsive.bean.AllDosageBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
 import com.juntai.wisdom.explorsive.bean.ExplosiveTypeBean;
 import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
@@ -127,6 +128,17 @@ public interface AppServer {
 
     @POST(AppHttpPath.GET_RECEIVER_OF_MINE)
     Observable<MineReceiverBean> getReceiverOfMine(@Body RequestBody requestBody);
+
+
+
+    @POST(AppHttpPath.STOCK_OF_MINE)
+    Observable<AllDosageBean> getStockOfMine(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.USE_STATISTICS)
+    Observable<AllDosageBean> getUseStatistics(@Body RequestBody requestBody);
+
+    @POST(AppHttpPath.RECEIVE_STATISTICS)
+    Observable<AllDosageBean> getReceiveStatistics(@Body RequestBody requestBody);
 
 
 }

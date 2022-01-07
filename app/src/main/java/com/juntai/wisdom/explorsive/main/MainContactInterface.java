@@ -45,6 +45,7 @@ public interface MainContactInterface extends IView {
     String ARRIVERE_SIGN = "接收矿场签字确认";
 
     String  TAB_TITLES = "tabtitles";
+    String TAB_ID = "tabIs";
     String USE_DOSAGE = "矿场内爆炸物使用统计";
     String RECEIVE_DOSAGE = "民爆爆炸物领取统计";
 

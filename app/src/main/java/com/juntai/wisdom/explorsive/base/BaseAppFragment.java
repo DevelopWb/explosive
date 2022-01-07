@@ -3,6 +3,9 @@ package com.juntai.wisdom.explorsive.base;
 
 import com.juntai.disabled.basecomponent.base.BaseMvpFragment;
 import com.juntai.disabled.basecomponent.mvp.IPresenter;
+import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+
+import okhttp3.FormBody;
 
 /**
  * @aouther tobato
@@ -20,4 +23,19 @@ public abstract class BaseAppFragment<P extends IPresenter> extends BaseMvpFragm
     public BaseAppActivity getBaseAppActivity() {
         return (BaseAppActivity) getActivity();
     }
+
+    /**
+     * 获取builder
+     *
+     * @return
+     */
+    public FormBody.Builder getBaseBuilder() {
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add("token", UserInfoManager.getUserToken());
+        builder.add("mobile", UserInfoManager.getMobile());
+        builder.add("departmentId", String.valueOf(UserInfoManager.getDepartmentId()));
+        builder.add("userId", String.valueOf(UserInfoManager.getUserId()));
+        return builder;
+    }
+
 }

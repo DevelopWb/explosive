@@ -50,10 +50,12 @@ public class DosageNumberAdapter extends BaseQuickAdapter<ExplosiveUsageNumberBe
             numEt.setClickable(false);
             numEt.setFocusable(false);
             helper.setBackgroundRes(R.id.explosive_num_start_et, R.drawable.sp_filled_gray_lighter);
+            helper.setBackgroundRes(R.id.explosive_num_end_et, R.drawable.sp_filled_gray_lighter);
         } else {
             numEt.setClickable(true);
             numEt.setFocusable(true);
             helper.setBackgroundRes(R.id.explosive_num_start_et, R.drawable.stroke_gray_square_bg);
+            helper.setBackgroundRes(R.id.explosive_num_end_et, R.drawable.stroke_gray_square_bg);
         }
 
         numEt.setTag(item);

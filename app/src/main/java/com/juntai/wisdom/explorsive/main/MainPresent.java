@@ -10,6 +10,7 @@ import com.juntai.disabled.basecomponent.utils.RxScheduler;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppNetModule;
 import com.juntai.wisdom.explorsive.base.BaseAppPresent;
+import com.juntai.wisdom.explorsive.bean.AllDosageBean;
 import com.juntai.wisdom.explorsive.bean.BaseNormalRecyclerviewBean;
 import com.juntai.wisdom.explorsive.bean.BaseUsageBean;
 import com.juntai.wisdom.explorsive.bean.DeliveryListBean;
@@ -851,6 +852,69 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 .subscribe(new BaseObserver<MineReceiverBean>(getView()) {
                     @Override
                     public void onSuccess(MineReceiverBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void getStockOfMine(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getStockOfMine(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<AllDosageBean>(getView()) {
+                    @Override
+                    public void onSuccess(AllDosageBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void getUseStatistics(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getUseStatistics(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<AllDosageBean>(getView()) {
+                    @Override
+                    public void onSuccess(AllDosageBean o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+
+    public void getReceiveStatistics(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .getReceiveStatistics(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<AllDosageBean>(getView()) {
+                    @Override
+                    public void onSuccess(AllDosageBean o) {
                         if (getView() != null) {
                             getView().onSuccess(tag, o);
                         }

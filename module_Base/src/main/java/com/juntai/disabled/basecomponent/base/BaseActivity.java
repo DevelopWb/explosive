@@ -99,6 +99,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent() != null) {
+            baseId = getIntent().getIntExtra(BASE_ID, 0);
+            baseId2 = getIntent().getIntExtra(BASE_ID2, 0);
+        }
         EventManager.getEventBus().register(this);//注册
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 锁定竖屏
         mContext = this;
@@ -123,10 +127,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements Toolba
         initToolbarAndStatusBar(true);
         initLeftBackTv(true);
         initView();
-        if (getIntent() != null) {
-            baseId = getIntent().getIntExtra(BASE_ID, 0);
-            baseId2 = getIntent().getIntExtra(BASE_ID2, 0);
-        }
+
         initData();
         ActivityManagerTool.getInstance().addActivity(this);
     }

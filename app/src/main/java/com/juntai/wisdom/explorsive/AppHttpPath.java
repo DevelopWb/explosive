@@ -109,7 +109,19 @@ public class AppHttpPath {
 
 
 
-        /*====================================================    用量   ==============================================================*/
+    /*====================================================    用量   ==============================================================*/
+
+    /**
+     * 矿场库存量
+     */
+    public static final String STOCK_OF_MINE = BASE + "/mineInventory";
+
+    /**
+     * 使用统计
+     */
+    public static final String USE_STATISTICS = BASE + "/mineUseStatistics";
+    public static final String RECEIVE_STATISTICS = BASE + "/explosiveReceiveStatistics";
+
 
     /**
      * 获取所有的矿场
