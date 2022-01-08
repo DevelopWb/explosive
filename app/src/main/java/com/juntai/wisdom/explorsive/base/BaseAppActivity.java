@@ -127,6 +127,7 @@ public abstract class BaseAppActivity<P extends BasePresenter> extends BaseSelec
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("token", UserInfoManager.getUserToken())
+                .addFormDataPart("mobile", UserInfoManager.getMobile())
                 .addFormDataPart("userId", String.valueOf(UserInfoManager.getUserId()));
     }
 

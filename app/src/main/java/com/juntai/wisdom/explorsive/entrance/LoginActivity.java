@@ -28,6 +28,7 @@ import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.disabled.basecomponent.utils.AppUtils;
 import com.juntai.wisdom.explorsive.main.MainActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.AboutUsActivity;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
 import com.siyee.oscvpush.util.RomUtil;
@@ -131,7 +132,7 @@ public class LoginActivity extends BaseAppActivity<EntrancePresent> implements E
                     ToastUtils.error(mContext, "登录密码不能为空");
                     return;
                 }
-                mPresenter.login(account, MD5.md5(String.format("%s#%s", account, password)), RomUtil.getName(),MyApp.pushRegId,
+                mPresenter.login(account, MD5.md5(String.format("%s#%s", account, password)), RomUtil.getName(),Hawk.get(HawkProperty.DEV_REGID),
                         EntranceContract.LOGIN_TAG);
                 break;
             case R.id.connect_us_tv:

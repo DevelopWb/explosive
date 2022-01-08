@@ -35,4 +35,5 @@ public class HawkProperty {
      * 矿内使用
      */
     public static String   SAVE_USE_ORDER_IN_MINE = "out_orderinmine";
+    public static String   DEV_REGID = "dev_regid";
 }

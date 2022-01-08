@@ -13,7 +13,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
 import com.juntai.disabled.basecomponent.utils.DialogUtil;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
+import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.wisdom.R;
+import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.base.BaseRecyclerviewActivity;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
@@ -21,6 +23,12 @@ import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+
+import java.io.File;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * @aouther tobato
@@ -53,6 +61,12 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
     public void initView() {
         super.initView();
         mUserHeadIv = (ImageView) findViewById(R.id.user_head_iv);
+        mUserHeadIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choseImage(0, MyCenterActivity.this, 1);
+            }
+        });
         mUserNameTv = (TextView) findViewById(R.id.user_name_tv);
         mUnitNameTv = (TextView) findViewById(R.id.unit_name_tv);
         ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
@@ -130,6 +144,35 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
         });
     }
 
+    @Override
+    protected void selectedPicsAndEmpressed(List<String> icons) {
+        super.selectedPicsAndEmpressed(icons);
+        if (icons.size() > 0) {
+            String picPath = icons.get(0);
+            //跳转到裁剪头像的界面
+            startActivityForResult(new Intent(this, HeadCropActivity.class).putExtra(HeadCropActivity.HEAD_PIC,
+                    picPath), BASE_REQUEST_RESULT);
+
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == BASE_REQUEST_RESULT) {
+            if (data != null) {
+                String path = data.getStringExtra(HeadCropActivity.CROPED_HEAD_PIC);
+                ImageLoadUtil.loadCirImgNoCrash(getApplicationContext(), path,
+                        mUserHeadIv,
+                        R.mipmap.default_user_head_icon, R.mipmap.default_user_head_icon);
+                //调用修改头像的接口
+                mPresenter.modifyHead(getPublishMultipartBody().addFormDataPart("file", "file",
+                        RequestBody.create(MediaType.parse("file"),
+                                new File(path))).build(), AppHttpPath.MODIFY_HEAD);
+            }
+        }
+    }
+
 
     @Override
     protected void freshlayoutOnLoadMore() {
@@ -146,4 +189,9 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
         return new MyCenterMenuAdapter(R.layout.mycenter_menu_item);
     }
 
+
+    @Override
+    public void onSuccess(String tag, Object o) {
+        ToastUtils.toast(mContext,"修改成功");
+    }
 }

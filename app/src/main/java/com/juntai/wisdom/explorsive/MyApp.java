@@ -11,6 +11,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.juntai.disabled.basecomponent.app.BaseApplication;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
 import com.juntai.disabled.video.ModuleVideo_Init;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.mob.MobSDK;
 import com.orhanobut.hawk.Hawk;
@@ -39,7 +40,6 @@ public class MyApp extends BaseApplication {
     public BDLocation bdLocation;
     public static long lastClickTime;//上次点击按钮时间
     public static int timeLimit = 1000;
-    public static String pushRegId = "";
 
 
     /**
@@ -50,7 +50,8 @@ public class MyApp extends BaseApplication {
         @Override
         public void onRegister(int resCode, Token regId) {
             if (resCode == PushConstants.SUCCESS_CODE && regId != null) {
-                pushRegId = regId.getRegId();
+               String pushRegId = regId.getRegId();
+                Hawk.put(HawkProperty.DEV_REGID,pushRegId);
             }
         }
 

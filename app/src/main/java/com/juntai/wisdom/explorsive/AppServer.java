@@ -72,6 +72,8 @@ public interface AppServer {
     Observable<NewsBean> getNewsList(@Body RequestBody requestBody);
     @POST(AppHttpPath.GET_UNREAD_COUNT)
     Observable<BaseResult> getUnreadCount(@Body RequestBody requestBody);
+    @POST(AppHttpPath.MODIFY_HEAD)
+    Observable<BaseResult> modifyHead(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.FACE_CHECK)
     Observable<FaceCheckResponseBean> startFaceCheck(@Body RequestBody requestBody);

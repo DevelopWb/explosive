@@ -3,24 +3,19 @@ package com.juntai.wisdom.explorsive.faceCheck;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.juntai.disabled.basecomponent.mvp.BasePresenter;
 import com.juntai.disabled.basecomponent.utils.FileCacheUtils;
-import com.juntai.disabled.basecomponent.utils.GsonTools;
-import com.juntai.disabled.basecomponent.utils.LogUtil;
 import com.juntai.disabled.basecomponent.utils.ScreenUtils;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppHttpPath;
@@ -29,16 +24,9 @@ import com.juntai.wisdom.explorsive.bean.FaceCheckResponseBean;
 import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.MainPresent;
 import com.juntai.wisdom.explorsive.utils.NV21ToBitmap;
-import com.juntai.wisdom.explorsive.utils.cropbitmap.CropViewUtils;
 import com.tu.tcircleprogresslibrary.TCircleProgressView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 模仿支付宝人脸识别
@@ -121,6 +109,7 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
 
     @Override
     public void initView() {
+        setTitleName("人脸验证");
         if (getIntent() != null) {
             persionId = getIntent().getIntExtra(PERSION_ID, 0);
         }
@@ -303,7 +292,7 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
                     public void onPreviewFrame(byte[] bytes, Camera camera) {
                         NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(mContext);
                         String path = getHeadPicPath();
-                        FileCacheUtils.saveBitmap(nv21ToBitmap.nv21ToBitmap(bytes, mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height),path);
+                        FileCacheUtils.saveBitmapInFaceCheck(nv21ToBitmap.nv21ToBitmap(bytes, mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height),path);
                         //上传头像
                         mPresenter.uploadFile(AppHttpPath.UPLOAD_FILES, path);
                     }

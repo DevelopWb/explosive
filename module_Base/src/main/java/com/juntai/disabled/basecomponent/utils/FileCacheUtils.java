@@ -117,7 +117,7 @@ public class FileCacheUtils {
      * @param bmp
      * @return
      */
-    public static String saveBitmap(Bitmap bmp, String picName) {
+    public static String saveBitmapInFaceCheck(Bitmap bmp, String picName) {
         bmp =  FileCacheUtils.rotaingImageView(270,bmp);
 
         FileOutputStream out;
@@ -135,13 +135,44 @@ public class FileCacheUtils {
         }
         return picName;
     }
+
+    /**
+     * 缓存bmp
+     * @param bmp
+     * @return
+     */
+    public static String saveBitmap(Bitmap bmp,String picName) {
+        FileOutputStream out;
+        File file;
+        String path = null;
+        try {
+            // 获取SDCard指定目录下
+            String sdCardDir = getAppImagePath();
+            File dirFile = new File(sdCardDir);  //目录转化成文件夹
+            if (!dirFile.exists()) {              //如果不存在，那就建立这个文件夹
+                dirFile.mkdirs();
+            }
+            file = new File(sdCardDir, picName);
+            out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            path = sdCardDir + picName;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
     /**
      * 缓存bmp
      *
      * @param bmp
      * @return
      */
-    public static String saveBitmap(Bitmap bmp) {
+    public static String saveBitmapInFaceCheck(Bitmap bmp) {
         FileOutputStream out;
         Calendar calendar = Calendar.getInstance();
         String bitmapName = String.valueOf(calendar.get(Calendar.YEAR)) + String.valueOf(calendar.get(Calendar.MONTH)) + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 1)

@@ -18,6 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.juntai.disabled.basecomponent.base.BaseResult;
 import com.juntai.disabled.basecomponent.utils.ActionConfig;
 import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
+import com.juntai.disabled.basecomponent.utils.AppUtils;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
 import com.juntai.disabled.bdmap.service.LocateAndUpload;
@@ -26,6 +27,7 @@ import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.MyApp;
 import com.juntai.wisdom.explorsive.base.BaseAppActivity;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
+import com.juntai.wisdom.explorsive.bean.UserBean;
 import com.juntai.wisdom.explorsive.entrance.LoginActivity;
 import com.juntai.wisdom.explorsive.main.explosiveManage.ExplosiveManageActivity;
 import com.juntai.wisdom.explorsive.main.mine.dosage.AllDosageActivity;
@@ -40,6 +42,7 @@ import com.juntai.wisdom.explorsive.main.myCenter.MyCenterMenuAdapter;
 import com.juntai.wisdom.explorsive.main.myCenter.NewsActivity;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 /**
  * @aouther tobato
@@ -133,9 +136,9 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                         break;
                     case MainPresent.DOSAGE:
                         // : 2021-12-20  用量
-                        if (1== UserInfoManager.getDepartmentType()) {
-                            startActivity(new Intent(mContext, AllDosageActivity.class).putExtra(BASE_ID,UserInfoManager.getDepartmentId()));
-                        }else {
+                        if (1 == UserInfoManager.getDepartmentType()) {
+                            startActivity(new Intent(mContext, AllDosageActivity.class).putExtra(BASE_ID, UserInfoManager.getDepartmentId()));
+                        } else {
                             startActivity(new Intent(mContext, AllMinesActivity.class));
 
                         }
@@ -170,16 +173,23 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
             case AppHttpPath.GET_UNREAD_COUNT:
                 BaseResult result = (BaseResult) o;
                 if (result != null) {
-                    String  count = result.getMessage();
+                    String count = result.getMessage();
                     // : 2022-01-07 小红点
                     int countInt = Integer.parseInt(count);
-                    if (countInt>0) {
+                    if (countInt > 0) {
                         mUnreadTv.setVisibility(View.VISIBLE);
                         mUnreadTv.setText(count);
-                    }else {
+                    } else {
                         mUnreadTv.setVisibility(View.GONE);
 
-                    }                }
+                    }
+                }
+                break;
+
+            case AppHttpPath.GET_USER_INFO:
+                UserBean loginBean = (UserBean) o;
+                Hawk.put(AppUtils.SP_KEY_USER, loginBean);
+                menuAdapter.setNewData(mPresenter.getHomePageMenu());
                 break;
 
 
@@ -242,6 +252,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     protected void onResume() {
         super.onResume();
         mPresenter.getUnreadCount(getBaseBuilder().build(), AppHttpPath.GET_UNREAD_COUNT);
+        mPresenter.getUserInfo(getBaseBuilder().build(), AppHttpPath.GET_USER_INFO);
     }
 
 
