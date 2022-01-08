@@ -45,6 +45,7 @@ import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.faceCheck.FaceCheckActivity;
 import com.juntai.wisdom.explorsive.utils.StringTools;
+import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -77,7 +78,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
     private ImageView mSignIv;
     private ItemSignBean itemSignBean;
     public TextView mCommitTv;
-
+    public static String SDCARD_TAG = "/storage/emulated";
     private BaseMultiselectBottomDialog multiselectBottomDialog;
     private FaceCheckBean faceCheckBean;
 
@@ -351,11 +352,13 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
             if (MultipleItem.ITEM_LOCATION == array.getItemType()) {
                 //定位
                 LocationBean locationBean = (LocationBean) array.getObject();
-                locationBean.setAddress(address);
-                locationBean.setLatitude(String.valueOf(lat));
-                locationBean.setLongitude(String.valueOf(lng));
-                adapter.notifyItemChanged(i);
-                break;
+                if (LOCATE_KEY.equals(locationBean.getKey())) {
+                    locationBean.setAddress(address);
+                    locationBean.setLatitude(String.valueOf(lat));
+                    locationBean.setLongitude(String.valueOf(lng));
+                    adapter.notifyItemChanged(i);
+                    break;
+                }
             }
         }
     }
@@ -392,9 +395,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
         ArrayList<String> photos = new ArrayList<>();
         List<String> arrays = adapter.getData();
         for (String array : arrays) {
-//            if (array.contains(AppHttpPath.BASE_IMAGE_THUM)) {
-//                array = array.replace(AppHttpPath.BASE_IMAGE_THUM, AppHttpPath.BASE_IMAGE);
-//            }
+            if (!array.contains(BaseExplosiveActivity.SDCARD_TAG)) {
+                array = UrlFormatUtil.getImageOriginalUrl(array);
+            }
             photos.add(array);
         }
         //查看图片
@@ -524,10 +527,15 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                         default:
                             break;
                     }
-                    if (photos.isEmpty()) {
-                        ToastUtils.toast(mContext, msg);
-                        return null;
+                    if (!skipFilter) {
+                        for (String photo : photos) {
+                            if ("-1".equals(photo)) {
+                                ToastUtils.toast(mContext, msg);
+                                return null;
+                            }
+                        }
                     }
+
                     for (int i = 0; i < photos.size(); i++) {
                         String picPah = photos.get(i);
                         if (0 == i) {
@@ -582,6 +590,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                                     case MainContactInterface.APPLY_USER_UNIT_ADDR:
                                         receiveOrderBean.setApplyDepartmentAddress(applyValue);
                                         useOrderBean.setApplyDepartmentAddress(applyValue);
+                                        break;
+                                    case MainContactInterface.APPLICATION:
+                                        useOrderBean.setRemarks(applyValue);
                                         break;
                                     default:
                                         break;
@@ -703,6 +714,17 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 case MultipleItem.ITEM_FACE_CHECK:
                     FaceCheckBean faceCheckBean = (FaceCheckBean) item.getObject();
                     String personName = faceCheckBean.getPersonName();
+                    if (!skipFilter) {
+                        if (!faceCheckBean.isCheckSuccess()) {
+                            ToastUtils.toast(mContext,"请识别"+personName+"的人脸");
+                            return null;
+                        }
+                        if (TextUtils.isEmpty(faceCheckBean.getPersonSignPic())) {
+                            ToastUtils.toast(mContext,personName+"未签字");
+                            return null;
+                        }
+                    }
+
                     if (personName.contains(MainContactInterface.RECEIVER)) {
                         //领取人
                         outInMineRequest.setReceivePhoto(faceCheckBean.getPersonHeadPic());
@@ -776,7 +798,20 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                     }
 
                     break;
+                case MultipleItem.ITEM_TEXT:
+                    TextKeyValueBean textValueBean = (TextKeyValueBean) item
+                            .getObject();
+                    switch (textValueBean.getKey()) {
+                        case MainContactInterface.OUT_IN_MINE_TIME:
+                            //发放时间
+                            useOrderBean.setGrantTime(textValueBean.getValue());
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
                 case MultipleItem.ITEM_EDIT:
+
                     TextKeyValueBean textValueEditBean = (TextKeyValueBean) item
                             .getObject();
                     String value = textValueEditBean.getValue();
@@ -796,15 +831,16 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             receiveOrderBean.setRemarks(value);
                             useOrderBean.setRemarks(value);
                             break;
+                        case MainContactInterface.OUT_IN_MINE_TIME:
+                            //发放时间
+                            useOrderBean.setGrantTime(value);
+                            break;
                         case MainContactInterface.REMARK:
                             //备注
                             useOrderBean.setUseRemarks(value);
                             break;
                         default:
                             break;
-                    }
-                    if (StringTools.isStringValueOk(value) && formKey != null) {
-                        builder.addFormDataPart(formKey, value);
                     }
 
                     break;
@@ -821,6 +857,9 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                             outInMineRequest.setGrantUseAddress(locationBean.getAddress());
                             outInMineRequest.setGrantUseLatitude(locationBean.getLatitude());
                             outInMineRequest.setGrantUseLongitude(locationBean.getLongitude());
+                            useOrderBean.setGrantUseAddress(locationBean.getAddress());
+                            useOrderBean.setGrantUseLatitude(locationBean.getLatitude());
+                            useOrderBean.setGrantUseLongitude(locationBean.getLongitude());
                             break;
                         default:
                             receiveOrderBean.setUseAddress(locationBean.getAddress());
@@ -862,12 +901,64 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 case MultipleItem.ITEM_RETURN_DOSAGE:
                     BaseUsageBean returnDosage = (BaseUsageBean) item.getObject();
                     List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> returnBeans = returnDosage.getUsageReturnBeans();
+                    if (!skipFilter) {
+                        for (UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean returnBean : returnBeans) {
+                            String typeName = returnBean.getTypeName();
+                            int amount = returnBean.getApplyQuantity();
+                            List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean.UsageNumberReturnBean> returnNums = returnBean.getUsageNumberReturn();
+                            if ("请选择爆炸物种类".equals(typeName)) {
+                                ToastUtils.toast(mContext,"请选择爆炸物种类");
+                                return null;
+                            }
+                            if (amount<1) {
+                                ToastUtils.toast(mContext,"请输入退库数量");
+                                return null;
+                            }
+                            for (UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean.UsageNumberReturnBean returnNum : returnNums) {
+                                String  startNum = returnNum.getStartNumber();
+                                String  endNum = returnNum.getEndNumber();
+                                if (TextUtils.isEmpty(startNum)) {
+                                    ToastUtils.toast(mContext,"请输入开始编号");
+                                    return null;
+                                }
+                                if (TextUtils.isEmpty(endNum)) {
+                                    ToastUtils.toast(mContext,"请输入结束编号");
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+
+
                     useOrderBean.setExplosiveUsageReturn(returnBeans);
                     useOrderBean.setIsReturn(returnDosage.getIsReturn());
                     break;
                 case MultipleItem.ITEM_ISSUE_NO:
+
+
                     BaseUsageBean usageNumBean = (BaseUsageBean) item.getObject();
                     List<ExplosiveUsageNumberBean> explosiveUsageNumberBeans = usageNumBean.getUsageNumberBeanList();
+                    if (!skipFilter) {
+                        for (ExplosiveUsageNumberBean numberBean : explosiveUsageNumberBeans) {
+
+                            String typeName = numberBean.getTypeName();
+                            String startNumber = numberBean.getStartNumber();
+                            String endNum = numberBean.getEndNumber();
+                            if ("请选择爆炸物种类".equals(typeName)) {
+                                ToastUtils.toast(mContext,"请选择爆炸物种类");
+                                return null;
+                            }
+                            if (TextUtils.isEmpty(startNumber)) {
+                                ToastUtils.toast(mContext,"请输入开始编号");
+                                return null;
+                            }
+                            if (TextUtils.isEmpty(endNum)) {
+                                ToastUtils.toast(mContext,"请输入结束编号");
+                                return null;
+                            }
+
+                        }
+                    }
                     receiveOrderBean.setExplosiveUsageNumber(explosiveUsageNumberBeans);
                     useOrderBean.setExplosiveUsageNumber(explosiveUsageNumberBeans);
                     outInMineRequest.setNumber(explosiveUsageNumberBeans);

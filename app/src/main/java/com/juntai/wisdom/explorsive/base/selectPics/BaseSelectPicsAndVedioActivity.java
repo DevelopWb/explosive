@@ -48,10 +48,6 @@ public abstract class BaseSelectPicsAndVedioActivity<P extends BasePresenter> ex
     }
 
     @Override
-    public boolean requestLocation() {
-        return false;
-    }
-    @Override
     protected void selectedPicsAndEmpressed(List<String> icons) {
 
     }

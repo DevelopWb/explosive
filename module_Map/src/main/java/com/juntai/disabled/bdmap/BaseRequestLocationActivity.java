@@ -23,6 +23,8 @@ public abstract class BaseRequestLocationActivity<P extends BasePresenter> exten
     public Double lng = 0.0;
     public String  address = null;
     private LocationClient mLocationClient;
+    //定位的key
+    public String LOCATE_KEY = null;
 
     public abstract void onLocationReceived(BDLocation bdLocation);
     public abstract boolean requestLocation();

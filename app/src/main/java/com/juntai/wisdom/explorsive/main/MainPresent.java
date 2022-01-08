@@ -156,15 +156,15 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
             arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
 
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
+                    new TextKeyValueBean(bean==null?0:bean.getSafetyId(),MainContactInterface.SAFER, bean == null ? "" :
                             String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
                             MainContactInterface.SAFER), 0, true, isDetail)));
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
+                    new TextKeyValueBean(bean==null?0:bean.getBlasterId(),MainContactInterface.BLASTER, bean == null ? "" :
                             String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
                             MainContactInterface.BLASTER), 0, true, isDetail)));
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
+                    new TextKeyValueBean(bean==null?0:bean.getSafekeepingId(),MainContactInterface.MANAGER, bean == null ? "" :
                             String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
                             MainContactInterface.MANAGER), 0, true, isDetail)));
         }
@@ -204,9 +204,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = getUseApplyApproveData(bean, true, false);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
                 new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail ? bean.getGrantTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), isDetail)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, !isDetail ? null :
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, bean==null ? null :
                 bean.getGrantUseAddress()
-                , !isDetail ? null : bean.getGrantUseLatitude(), !isDetail ? null : bean.getGrantUseLongitude(), isDetail)));
+                , bean==null ? null : bean.getGrantUseLatitude(), bean==null ? null : bean.getGrantUseLongitude(), isDetail)));
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getReceiveId(), MainContactInterface.RECEIVER + bean.getApplyUsername()
                 , bean.getReceivePhoto(), bean.getReceiveSign(), !TextUtils.isEmpty(bean.getReceivePhoto()), isDetail
@@ -238,15 +238,15 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "使用人"));
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.SAFER, bean == null ? "" :
+                new TextKeyValueBean(bean==null?0:bean.getUseSafetyId(),MainContactInterface.SAFER, bean == null ? "" :
                         String.valueOf(bean.getUseSafetyName()), String.format("%s%s", "请选择",
                         MainContactInterface.SAFER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.BLASTER, bean == null ? "" :
+                new TextKeyValueBean(bean==null?0:bean.getUseBlasterId(),MainContactInterface.BLASTER, bean == null ? "" :
                         String.valueOf(bean.getUseBlasterName()), String.format("%s%s", "请选择",
                         MainContactInterface.BLASTER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(MainContactInterface.MANAGER, bean == null ? "" :
+                new TextKeyValueBean(bean==null?0:bean.getUseSafekeepingId(),MainContactInterface.MANAGER, bean == null ? "" :
                         String.valueOf(bean.getUseSafekeepingName()), String.format("%s%s", "请选择",
                         MainContactInterface.MANAGER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, MainContactInterface.USE_RECORD_PHOTO));
@@ -400,7 +400,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      */
     private BaseUsageBean getExplosiveDosageNumbers(boolean isDetail) {
         List<ExplosiveUsageNumberBean> arrays = new ArrayList<>();
-        arrays.add(new ExplosiveUsageNumberBean(0, "请选择爆炸物种类", "0", "0"));
+        arrays.add(new ExplosiveUsageNumberBean(0, "请选择爆炸物种类", "", ""));
         return new BaseUsageBean(arrays, isDetail, false);
     }
 

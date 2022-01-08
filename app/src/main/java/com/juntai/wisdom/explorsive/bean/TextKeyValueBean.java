@@ -27,7 +27,7 @@ public class TextKeyValueBean {
 
     private boolean isDetail;
 
-    public TextKeyValueBean(String key, String value,boolean isDetail) {
+    public TextKeyValueBean(String key, String value, boolean isDetail) {
         this.key = key;
         this.value = value;
         this.isDetail = isDetail;
@@ -45,7 +45,8 @@ public class TextKeyValueBean {
         this.deliveryBean = deliveryBean;
     }
 
-    public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant,boolean isDetail) {
+    //文本控件用这个
+    public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant, boolean isDetail) {
         this.key = key;
         this.value = value;
         this.hint = hint;
@@ -54,7 +55,20 @@ public class TextKeyValueBean {
         this.isDetail = isDetail;
 
     }
-    public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant,List<DeliveryListBean.DataBean> deliveryBean,boolean isDetail) {
+
+    //选择控件需要用这个
+    public TextKeyValueBean(int id, String key, String value, String hint, int type, boolean isImportant, boolean isDetail) {
+        this.key = key;
+        this.id = id;
+        this.value = value;
+        this.hint = hint;
+        this.type = type;
+        this.isImportant = isImportant;
+        this.isDetail = isDetail;
+
+    }
+
+    public TextKeyValueBean(String key, String value, String hint, int type, boolean isImportant, List<DeliveryListBean.DataBean> deliveryBean, boolean isDetail) {
         this.key = key;
         this.value = value;
         this.hint = hint;

@@ -19,6 +19,7 @@ import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseCommitFootViewActivity;
 import com.juntai.wisdom.explorsive.main.BaseExplosiveActivity;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.mine.receive.BaseReceiveDetailActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.BaseExplosiveUseDetailActivity;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
@@ -55,6 +56,7 @@ public class ExplosiveOutInMineActivity extends BaseExplosiveUseDetailActivity {
 
     @Override
     public boolean requestLocation() {
+       LOCATE_KEY =  MainContactInterface.OUT_IN_MINE_ADDR;
         return true;
     }
 

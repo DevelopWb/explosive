@@ -359,5 +359,9 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
 
     }
 
-
+    @Override
+    public void onError(String tag, Object o) {
+        super.onError(tag, o);
+        mHandler.sendEmptyMessage(5);
+    }
 }

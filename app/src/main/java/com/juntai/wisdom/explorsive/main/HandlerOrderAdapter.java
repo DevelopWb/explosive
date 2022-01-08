@@ -151,6 +151,7 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                         switch (picBean.getPicName()) {
                             case MainContactInterface.ARRIVERE_PHOTO:
                                 picBean.setFragmentPics(icons);
+                                fragment.setIcons(icons);
                                 break;
                             default:
                                 if (icons == null || icons.isEmpty()) {
@@ -271,6 +272,8 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 break;
 
             case MultipleItem.ITEM_RETURN_DOSAGE:
+                helper.setText(R.id.apply_amount_tv,"退库数量");
+                helper.setText(R.id.dosage_title_tv,"退库明细");
                 helper.setGone(R.id.radio_cl, true);
                 helper.addOnClickListener(R.id.add_dosage_iv);
                 RadioGroup radioGroup = helper.getView(R.id.item_radio_g);

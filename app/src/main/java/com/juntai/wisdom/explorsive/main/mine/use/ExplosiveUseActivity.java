@@ -60,10 +60,6 @@ public class ExplosiveUseActivity extends BaseExplosiveUseDetailActivity {
 
     }
 
-    @Override
-    public boolean requestLocation() {
-        return true;
-    }
 
 
 

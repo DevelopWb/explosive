@@ -9,6 +9,7 @@ import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
 import com.juntai.wisdom.explorsive.main.BaseCommitFootViewActivity;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 import com.orhanobut.hawk.Hawk;
@@ -45,6 +46,7 @@ public class AddReceiveApplyActivity extends BaseCommitFootViewActivity {
 
     @Override
     public boolean requestLocation() {
+        LOCATE_KEY = MainContactInterface.USE_LOCATION;
         return true;
     }
 

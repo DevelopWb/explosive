@@ -3,6 +3,7 @@ package com.juntai.wisdom.explorsive.main.mine.receive.delivery;
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.bean.BaseAdapterDataBean;
 import com.juntai.wisdom.explorsive.bean.ReceiveOrderDetailBean;
+import com.juntai.wisdom.explorsive.main.MainContactInterface;
 import com.juntai.wisdom.explorsive.main.mine.receive.BaseReceiveDetailActivity;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
 
@@ -20,6 +21,11 @@ public class ExplosiveReceiveDeliveryActivity extends BaseReceiveDetailActivity 
         adapter.addFooterView(getFootView());
     }
 
+    @Override
+    public boolean requestLocation() {
+        LOCATE_KEY = MainContactInterface.DELIVERY_ADDR;
+        return true;
+    }
 
     @Override
     protected void commitLogic(BaseAdapterDataBean baseAdapterDataBean) {

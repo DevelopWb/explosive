@@ -223,8 +223,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         public void onReceive(Context context, Intent intent) {
             if (ActionConfig.BROAD_LOGIN.equals(intent.getAction())) {
                 //登录信息设置为空
-                String error = intent.getStringExtra("error");
-                ToastUtils.info(MyApp.app, error);
+                ToastUtils.info(MyApp.app, "账号在另一设备登录");
                 UserInfoManager.clearUserBaseInfo();
                 ActivityManagerTool.getInstance().finishApp();
                 startActivity(new Intent(mContext, LoginActivity.class));
@@ -238,10 +237,6 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
 
     }
 
-    @Override
-    public boolean requestLocation() {
-        return false;
-    }
 
     @Override
     protected void onResume() {
