@@ -29,6 +29,7 @@ public class NewsActivity extends BaseRecyclerviewActivity<MainPresent> implemen
 
     @Override
     public void initData() {
+        mSmartrefreshlayout.setEnableLoadMore(false);
         setTitleName("消息通知");
 
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -47,13 +48,9 @@ public class NewsActivity extends BaseRecyclerviewActivity<MainPresent> implemen
 
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         mPresenter.getNewsList(getBaseBuilder().build(), AppHttpPath.NEWS_LIST);
     }
+
 
     @Override
     protected void freshlayoutOnLoadMore() {
@@ -62,7 +59,7 @@ public class NewsActivity extends BaseRecyclerviewActivity<MainPresent> implemen
 
     @Override
     protected void freshlayoutOnRefresh() {
-
+        mPresenter.getNewsList(getBaseBuilder().build(), AppHttpPath.NEWS_LIST);
     }
 
     @Override

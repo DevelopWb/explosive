@@ -1,5 +1,4 @@
 package com.juntai.wisdom.explorsive.main;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -158,7 +157,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         mUserNameTv.setText(UserInfoManager.getUserName());
         mUserMobileTv.setText(UserInfoManager.getMobile());
         mUserWorkTv.setText(UserInfoManager.geWorkName());
-        ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
+        ImageLoadUtil.loadSquareImage(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv);
     }
 
 
@@ -190,6 +189,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 UserBean loginBean = (UserBean) o;
                 Hawk.put(AppUtils.SP_KEY_USER, loginBean);
                 menuAdapter.setNewData(mPresenter.getHomePageMenu());
+                initUserBaseInfo();
                 break;
 
 

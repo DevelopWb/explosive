@@ -1,5 +1,6 @@
 package com.juntai.wisdom.explorsive.main.mine.receive;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -44,7 +45,7 @@ public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean
         helper.addOnClickListener(R.id.order_title_ll);
         RecyclerView mRecyclerView = helper.getView(R.id.order_progress_rv);
         OrderProgressAdapter orderProgressAdapter = new OrderProgressAdapter(null);
-        LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        GridLayoutManager manager = new GridLayoutManager(mContext, 10);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(orderProgressAdapter);
         orderProgressAdapter.setNewData(getAdapterData(item));

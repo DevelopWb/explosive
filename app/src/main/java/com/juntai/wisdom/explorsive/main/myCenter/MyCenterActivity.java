@@ -166,7 +166,7 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
                         mUserHeadIv,
                         R.mipmap.default_user_head_icon, R.mipmap.default_user_head_icon);
                 //调用修改头像的接口
-                mPresenter.modifyHead(getPublishMultipartBody().addFormDataPart("file", "file",
+                mPresenter.modifyHead(getPublishMultipartBody().addFormDataPart("headFile", "headFile.jpeg",
                         RequestBody.create(MediaType.parse("file"),
                                 new File(path))).build(), AppHttpPath.MODIFY_HEAD);
             }
