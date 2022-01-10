@@ -31,7 +31,7 @@ public class NewsActivity extends BaseRecyclerviewActivity<MainPresent> implemen
     public void initData() {
         mSmartrefreshlayout.setEnableLoadMore(false);
         setTitleName("消息通知");
-
+        adapter.setEmptyView(getAdapterEmptyView("一条消息也没有~_~",-1));
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -48,9 +48,14 @@ public class NewsActivity extends BaseRecyclerviewActivity<MainPresent> implemen
 
             }
         });
-        mPresenter.getNewsList(getBaseBuilder().build(), AppHttpPath.NEWS_LIST);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getNewsList(getBaseBuilder().build(), AppHttpPath.NEWS_LIST);
+    }
 
     @Override
     protected void freshlayoutOnLoadMore() {

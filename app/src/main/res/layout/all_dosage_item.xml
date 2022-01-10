@@ -92,5 +92,4 @@
         android:layout_marginRight="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dosage_form_ll"></android.support.v7.widget.RecyclerView>
-
 </android.support.constraint.ConstraintLayout>

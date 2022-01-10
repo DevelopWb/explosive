@@ -22,13 +22,23 @@ public class HomePageMenuBean {
     private int menuIconId;
     private int textColor;
 
+    private int unreadCount;
 
-    public HomePageMenuBean(String menuName, String menuEnName, int menuBgId, int menuIconId, int textColor) {
+
+   public HomePageMenuBean(String menuName, String menuEnName, int menuBgId, int menuIconId, int textColor) {
         this.menuName = menuName;
         this.menuEnName = menuEnName;
         this.menuBgId = menuBgId;
         this.menuIconId = menuIconId;
         this.textColor = textColor;
+    }
+
+    public int getUnreadCount() {
+        return unreadCount;
+    }
+
+    public void setUnreadCount(int unreadCount) {
+        this.unreadCount = unreadCount;
     }
 
     public int getTextColor() {

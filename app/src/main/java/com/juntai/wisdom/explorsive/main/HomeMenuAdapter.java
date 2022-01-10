@@ -1,10 +1,9 @@
-package com.juntai.wisdom.explorsive.main.myCenter;
+package com.juntai.wisdom.explorsive.main;
 
 import android.support.v4.content.ContextCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
 
@@ -15,8 +14,8 @@ import com.juntai.wisdom.explorsive.bean.HomePageMenuBean;
  * @UpdateUser: 更新者
  * @UpdateDate: 2021/4/18 15:39
  */
-public class MyCenterMenuAdapter extends BaseQuickAdapter<HomePageMenuBean, BaseViewHolder> {
-    public MyCenterMenuAdapter(int layoutResId) {
+public class HomeMenuAdapter extends BaseQuickAdapter<HomePageMenuBean, BaseViewHolder> {
+    public HomeMenuAdapter(int layoutResId) {
         super(layoutResId);
     }
 
@@ -29,5 +28,11 @@ public class MyCenterMenuAdapter extends BaseQuickAdapter<HomePageMenuBean, Base
         helper.setBackgroundRes(R.id.homepage_menu_ll, item.getMenuBgId());
         helper.setTextColor(R.id.homepage_menu_title_tv, ContextCompat.getColor(mContext,item.getTextColor()));
         helper.setTextColor(R.id.homepage_menu_title_en_tv,ContextCompat.getColor(mContext,item.getTextColor()));
+        if (item.getUnreadCount()>0) {
+            helper.setGone(R.id.unread_tag_tv,true);
+            helper.setText(R.id.unread_tag_tv,String.valueOf(item.getUnreadCount()));
+        }else {
+            helper.setGone(R.id.unread_tag_tv,false);
+        }
     }
 }

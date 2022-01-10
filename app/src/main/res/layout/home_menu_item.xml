@@ -39,7 +39,6 @@
         android:background="@drawable/sp_filled_red_circle"
         android:gravity="center"
         android:text="33"
-        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="12dp"
         android:layout_marginLeft="5dp"

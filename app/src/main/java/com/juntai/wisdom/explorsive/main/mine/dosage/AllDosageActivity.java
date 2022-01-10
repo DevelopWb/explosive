@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppHttpPath;
@@ -93,7 +94,7 @@ public class AllDosageActivity extends BaseTabViewPageActivity<MainPresent> impl
         super.initView();
         mDosageContentRv = (RecyclerView) findViewById(R.id.dosage_content_rv);
         dosageAdapter = new AllDosageAdapter(R.layout.dosage_number_item);
-        dosageAdapter.setEmptyView(getAdapterEmptyView("暂无库存量",-1));
+        dosageAdapter.setEmptyView(getAdapterEmptyView("暂无库存量~_~",-1));
         initRecyclerview(mDosageContentRv, dosageAdapter, LinearLayoutManager.VERTICAL);
     }
 }

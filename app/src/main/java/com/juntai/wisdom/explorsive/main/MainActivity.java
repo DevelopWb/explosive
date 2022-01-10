@@ -38,7 +38,6 @@ import com.juntai.wisdom.explorsive.main.mine.receive.manager.ExplosiveManageOfM
 import com.juntai.wisdom.explorsive.main.mine.use.ApplyUseActivity;
 import com.juntai.wisdom.explorsive.main.mine.use.UseApproveActivity;
 import com.juntai.wisdom.explorsive.main.myCenter.MyCenterActivity;
-import com.juntai.wisdom.explorsive.main.myCenter.MyCenterMenuAdapter;
 import com.juntai.wisdom.explorsive.main.myCenter.NewsActivity;
 import com.juntai.wisdom.explorsive.utils.UrlFormatUtil;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
@@ -69,7 +68,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
      */
     private TextView mUserMobileTv;
     private RecyclerView mHomePageRv;
-    private MyCenterMenuAdapter menuAdapter;
+    private HomeMenuAdapter menuAdapter;
     private TextView mUserWorkTv;
 
 
@@ -95,7 +94,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         mUserWorkTv = (TextView) findViewById(R.id.user_work_tv);
         initUserBaseInfo();
         mHomePageRv = (RecyclerView) findViewById(R.id.home_page_rv);
-        menuAdapter = new MyCenterMenuAdapter(R.layout.home_menu_item);
+        menuAdapter = new HomeMenuAdapter(R.layout.home_menu_item);
         LinearLayoutManager manager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
         mHomePageRv.setAdapter(menuAdapter);
         mHomePageRv.setLayoutManager(manager);
@@ -105,6 +104,10 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomePageMenuBean menuBean = (HomePageMenuBean) adapter.getData().get(position);
                 switch (menuBean.getMenuName()) {
+                    case MainPresent.MENU_NEWS:
+                        // : 2021-12-20  我的消息
+                        startActivity(new Intent(mContext, NewsActivity.class));
+                        break;
                     case MainPresent.RECEIVE_APPLY_REQUEST:
                         // : 2021-12-20  民爆领取申请
                         startActivity(new Intent(mContext, ApplyReceiveActivirty.class));
@@ -154,7 +157,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
         mUserNameTv.setText(UserInfoManager.getUserName());
         mUserMobileTv.setText(UserInfoManager.getMobile());
         mUserWorkTv.setText(UserInfoManager.geWorkName());
-        ImageLoadUtil.loadSquareImage(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv);
+        ImageLoadUtil.loadCirImgWithCrash(mContext, UrlFormatUtil.getImageOriginalUrl(UserInfoManager.getHeadImage()), mUserHeadIv, R.mipmap.default_user_head_icon);
     }
 
 
@@ -167,20 +170,16 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     public void onSuccess(String tag, Object o) {
         switch (tag) {
             case AppHttpPath.GET_UNREAD_COUNT:
-                // TODO: 2022-01-10 未读消息逻辑
-//                BaseResult result = (BaseResult) o;
-//                if (result != null) {
-//                    String count = result.getMessage();
-//                    // : 2022-01-07 小红点
-//                    int countInt = Integer.parseInt(count);
-//                    if (countInt > 0) {
-//                        mUnreadTv.setVisibility(View.VISIBLE);
-//                        mUnreadTv.setText(count);
-//                    } else {
-//                        mUnreadTv.setVisibility(View.GONE);
-//
-//                    }
-//                }
+                // : 2022-01-10 未读消息逻辑
+                BaseResult result = (BaseResult) o;
+                if (result != null) {
+                    String count = result.getMessage();
+                    // : 2022-01-07 小红点
+                    int countInt = Integer.parseInt(count);
+                    HomePageMenuBean menuBean = (HomePageMenuBean) menuAdapter.getData().get(0);
+                    menuBean.setUnreadCount(countInt);
+                    menuAdapter.notifyItemChanged(0);
+                }
                 break;
 
             case AppHttpPath.GET_USER_INFO:
@@ -188,6 +187,7 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 Hawk.put(AppUtils.SP_KEY_USER, loginBean);
                 menuAdapter.setNewData(mPresenter.getHomePageMenu());
                 initUserBaseInfo();
+                mPresenter.getUnreadCount(getBaseBuilder().build(), AppHttpPath.GET_UNREAD_COUNT);
                 break;
 
 
@@ -204,11 +204,6 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
                 startActivityForResult(new Intent(mContext, MyCenterActivity.class), BASE_REQUEST_RESULT);
 
                 break;
-
-//            case R.id.news_iv:
-//                // todo: 2022-01-06 消息
-//                startActivity(new Intent(mContext, NewsActivity.class));
-//                break;
             default:
                 break;
         }
@@ -249,7 +244,6 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.getUnreadCount(getBaseBuilder().build(), AppHttpPath.GET_UNREAD_COUNT);
         mPresenter.getUserInfo(getBaseBuilder().build(), AppHttpPath.GET_USER_INFO);
     }
 

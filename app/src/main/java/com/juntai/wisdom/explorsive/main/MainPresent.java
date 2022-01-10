@@ -97,36 +97,36 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     protected List<HomePageMenuBean> getHomePageMenu() {
         List<HomePageMenuBean> menus = new ArrayList<>();
         List<UserBean.DataBean.PostBean> postBeanList = UserInfoManager.getPostBeans();
-        menus.add(new HomePageMenuBean(MENU_NEWS, "THE MESSAGE", R.drawable.sp_filled_white, R.mipmap.menu_message, R.color.black));
+        menus.add(new HomePageMenuBean(MENU_NEWS, "The Message", R.drawable.sp_filled_white, R.mipmap.menu_message, R.color.black));
 
         for (UserBean.DataBean.PostBean postBean : postBeanList) {
             if (8 == postBean.getId() || 9 == postBean.getId()) {
-                menus.add(new HomePageMenuBean(EXPLOSIVE_MANAGE_OFFICE, "LINGQUSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                menus.add(new HomePageMenuBean(EXPLOSIVE_MANAGE_OFFICE, "Management Issue", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                 break;
             }
             switch (postBean.getId()) {
                 case 2:
-                    menus.add(new HomePageMenuBean(RECEIVE_APPLY_REQUEST, "LINGQUSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                    menus.add(new HomePageMenuBean(RECEIVE_APPLY_REQUEST, "Receive Apply", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 case 3:
-                    menus.add(new HomePageMenuBean(USE_APPLY_INSIDE, "SHIYONGSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                    menus.add(new HomePageMenuBean(USE_APPLY_INSIDE, "Use Apply", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 case 4:
-                    menus.add(new HomePageMenuBean(MINE_MANAGER, "GUANLIFAFANG", R.drawable.sp_filled_white, R.mipmap.menu_manage, R.color.black));
+                    menus.add(new HomePageMenuBean(MINE_MANAGER, "Management Issue", R.drawable.sp_filled_white, R.mipmap.menu_manage, R.color.black));
                     break;
                 case 5:
-                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
-                    menus.add(new HomePageMenuBean(APPROVE_USE, "SHIYONGSHENPI", R.drawable.sp_filled_white, R.mipmap.menu_use_apply, R.color.black));
+                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "Receive Approve", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                    menus.add(new HomePageMenuBean(APPROVE_USE, "Use Approve", R.drawable.sp_filled_white, R.mipmap.menu_use_apply, R.color.black));
                     break;
                 case 6:
                 case 7:
-                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "Receive Approve", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 default:
                     break;
             }
         }
-        menus.add(new HomePageMenuBean(DOSAGE, "YONGLIANG", R.drawable.sp_filled_white, R.mipmap.menu_dosage_icon, R.color.black));
+        menus.add(new HomePageMenuBean(DOSAGE, "Dosage", R.drawable.sp_filled_white, R.mipmap.menu_dosage_icon, R.color.black));
 
         return menus;
     }
@@ -157,7 +157,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         }
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
-        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
+        if (bean != null&&!bean.getExplosiveUsage().isEmpty()) {
+            Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
+        }
         if (showReceiver) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
 
@@ -288,7 +290,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     bean.getRemarks(), true, 1, isDetail);
         }
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
-        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
+        if (bean != null&&!bean.getExplosiveUsage().isEmpty()) {
+            Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
+        }
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
         } else {
