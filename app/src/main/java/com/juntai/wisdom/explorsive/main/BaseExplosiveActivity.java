@@ -901,7 +901,7 @@ public abstract class BaseExplosiveActivity extends BaseAppActivity<MainPresent>
                 case MultipleItem.ITEM_RETURN_DOSAGE:
                     BaseUsageBean returnDosage = (BaseUsageBean) item.getObject();
                     List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> returnBeans = returnDosage.getUsageReturnBeans();
-                    if (!skipFilter) {
+                    if (2==returnDosage.getIsReturn()&&!skipFilter) {
                         for (UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean returnBean : returnBeans) {
                             String typeName = returnBean.getTypeName();
                             int amount = returnBean.getApplyQuantity();

@@ -55,7 +55,6 @@ public class ExplosiveReceiveOutActivity extends BaseReceiveDetailActivity {
 
     @Override
     protected void initAdapterData(ReceiveOrderDetailBean.DataBean dataBean) {
-        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, dataBean.getExplosiveUsage());
         adapter.setNewData(mPresenter.getRecieveApplyOutData(dataBean,false));
         if (2 != dataBean.getIsVoid()) {
             //没有作废

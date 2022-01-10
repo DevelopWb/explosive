@@ -110,12 +110,12 @@ public class UserInfoManager {
                 for (int i = 0; i < postBeanList.size(); i++) {
                     UserBean.DataBean.PostBean postBean = postBeanList.get(i);
                     if (i==0) {
-                        sb.append(postBean.getName() + "\n");
+                        sb.append("["+postBean.getName()+"]" + "\n");
                     }else {
                         if (i==postBeanList.size()-1) {
-                            sb.append(postBean.getName());
+                            sb.append("["+postBean.getName()+"]");
                         }else {
-                            sb.append(postBean.getName()+"\n");
+                            sb.append("["+postBean.getName()+"]"+"\n");
                         }
                     }
                 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +71,6 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     private RecyclerView mHomePageRv;
     private MyCenterMenuAdapter menuAdapter;
     private TextView mUserWorkTv;
-    private TextView mUnreadTv;
 
 
     @Override
@@ -81,25 +81,22 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     @Override
     public void initView() {
         initToolbarAndStatusBar(false);
-        mImmersionBar.reset().statusBarDarkFont(true).init();
+        mImmersionBar.reset().statusBarDarkFont(false).init();
         //注册广播
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionConfig.BROAD_LOGIN);
         intentFilter.addAction(ActionConfig.BROAD_CASE_DETAILS);
         registerReceiver(broadcastReceiver, intentFilter);
         mUserHeadIv = (ImageView) findViewById(R.id.user_head_iv);
-        ImageView mNewsIv = (ImageView) findViewById(R.id.news_iv);
         mUserHeadIv.setOnClickListener(this);
-        mNewsIv.setOnClickListener(this);
         mUnitNameTv = (TextView) findViewById(R.id.unit_name_tv);
         mUserNameTv = (TextView) findViewById(R.id.user_name_tv);
         mUserMobileTv = (TextView) findViewById(R.id.user_mobile_tv);
-        mUnreadTv = (TextView) findViewById(R.id.unread_tag_tv);
         mUserWorkTv = (TextView) findViewById(R.id.user_work_tv);
         initUserBaseInfo();
         mHomePageRv = (RecyclerView) findViewById(R.id.home_page_rv);
-        menuAdapter = new MyCenterMenuAdapter(R.layout.mycenter_menu_item);
-        GridLayoutManager manager = new GridLayoutManager(mContext, 2);
+        menuAdapter = new MyCenterMenuAdapter(R.layout.home_menu_item);
+        LinearLayoutManager manager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
         mHomePageRv.setAdapter(menuAdapter);
         mHomePageRv.setLayoutManager(manager);
         menuAdapter.setNewData(mPresenter.getHomePageMenu());
@@ -170,19 +167,20 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     public void onSuccess(String tag, Object o) {
         switch (tag) {
             case AppHttpPath.GET_UNREAD_COUNT:
-                BaseResult result = (BaseResult) o;
-                if (result != null) {
-                    String count = result.getMessage();
-                    // : 2022-01-07 小红点
-                    int countInt = Integer.parseInt(count);
-                    if (countInt > 0) {
-                        mUnreadTv.setVisibility(View.VISIBLE);
-                        mUnreadTv.setText(count);
-                    } else {
-                        mUnreadTv.setVisibility(View.GONE);
-
-                    }
-                }
+                // TODO: 2022-01-10 未读消息逻辑
+//                BaseResult result = (BaseResult) o;
+//                if (result != null) {
+//                    String count = result.getMessage();
+//                    // : 2022-01-07 小红点
+//                    int countInt = Integer.parseInt(count);
+//                    if (countInt > 0) {
+//                        mUnreadTv.setVisibility(View.VISIBLE);
+//                        mUnreadTv.setText(count);
+//                    } else {
+//                        mUnreadTv.setVisibility(View.GONE);
+//
+//                    }
+//                }
                 break;
 
             case AppHttpPath.GET_USER_INFO:
@@ -207,10 +205,10 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
 
                 break;
 
-            case R.id.news_iv:
-                // : 2022-01-06 消息
-                startActivity(new Intent(mContext, NewsActivity.class));
-                break;
+//            case R.id.news_iv:
+//                // todo: 2022-01-06 消息
+//                startActivity(new Intent(mContext, NewsActivity.class));
+//                break;
             default:
                 break;
         }

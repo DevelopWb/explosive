@@ -52,6 +52,7 @@ public class ApplyUseAdapter extends BaseQuickAdapter<OrderListBean.DataBean, Ba
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(orderProgressAdapter);
         orderProgressAdapter.setNewData(getAdapterData(item));
+        mRecyclerView.scrollToPosition(8);
         orderProgressAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -68,13 +69,13 @@ public class ApplyUseAdapter extends BaseQuickAdapter<OrderListBean.DataBean, Ba
         int status = item.getStat();
         List<MultipleItem> arrays = new ArrayList<>();
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new BaseOrderBean(item, new IdNameBean(0, status, "申请"))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "-----")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "----")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new BaseOrderBean(item, new IdNameBean(1, status, "派出所"))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "-----")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "----")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new BaseOrderBean(item, new IdNameBean(2, status, "仓库领用"))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "-----")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "----")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new BaseOrderBean(item, new IdNameBean(3, status, "使用"))));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "-----")));
+        arrays.add(new MultipleItem(MultipleItem.ITEM_DIVIDER, new BaseOrderBean(item, "----")));
         arrays.add(new MultipleItem(MultipleItem.ITEM_CONTENT, new BaseOrderBean(item, new IdNameBean(4, status, "完成"))));
         return arrays;
     }

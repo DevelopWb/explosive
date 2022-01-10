@@ -32,7 +32,9 @@ import com.juntai.wisdom.explorsive.bean.TextKeyValueBean;
 import com.juntai.wisdom.explorsive.bean.TimeBean;
 import com.juntai.wisdom.explorsive.bean.UseOrderDetailBean;
 import com.juntai.wisdom.explorsive.bean.UserBean;
+import com.juntai.wisdom.explorsive.utils.HawkProperty;
 import com.juntai.wisdom.explorsive.utils.UserInfoManager;
+import com.orhanobut.hawk.Hawk;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public static final String APPROVE_USE = "矿场使用审批";
     //民爆局  物品管理单位
     public static final String EXPLOSIVE_MANAGE_OFFICE = "民爆管理发放";
+    public static final String MENU_NEWS = "我的消息";
 
 
     public static final String DOSAGE = "用量";
@@ -94,34 +97,36 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     protected List<HomePageMenuBean> getHomePageMenu() {
         List<HomePageMenuBean> menus = new ArrayList<>();
         List<UserBean.DataBean.PostBean> postBeanList = UserInfoManager.getPostBeans();
+        menus.add(new HomePageMenuBean(MENU_NEWS, "THE MESSAGE", R.drawable.sp_filled_white, R.mipmap.menu_message, R.color.black));
+
         for (UserBean.DataBean.PostBean postBean : postBeanList) {
             if (8 == postBean.getId() || 9 == postBean.getId()) {
-                menus.add(new HomePageMenuBean(EXPLOSIVE_MANAGE_OFFICE, "LINGQUSHENQING", R.mipmap.mycenter_blue_bg, R.mipmap.receive_apply_icon, R.color.white));
+                menus.add(new HomePageMenuBean(EXPLOSIVE_MANAGE_OFFICE, "LINGQUSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                 break;
             }
             switch (postBean.getId()) {
                 case 2:
-                    menus.add(new HomePageMenuBean(RECEIVE_APPLY_REQUEST, "LINGQUSHENQING", R.mipmap.mycenter_blue_bg, R.mipmap.receive_apply_icon, R.color.white));
+                    menus.add(new HomePageMenuBean(RECEIVE_APPLY_REQUEST, "LINGQUSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 case 3:
-                    menus.add(new HomePageMenuBean(USE_APPLY_INSIDE, "SHIYONGSHENQING", R.mipmap.mycenter_blue_bg, R.mipmap.receive_apply_icon, R.color.white));
+                    menus.add(new HomePageMenuBean(USE_APPLY_INSIDE, "SHIYONGSHENQING", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 case 4:
-                    menus.add(new HomePageMenuBean(MINE_MANAGER, "GUANLIFAFANG", R.mipmap.mycenter_blue_bg, R.mipmap.menu_manage, R.color.white));
+                    menus.add(new HomePageMenuBean(MINE_MANAGER, "GUANLIFAFANG", R.drawable.sp_filled_white, R.mipmap.menu_manage, R.color.black));
                     break;
                 case 5:
-                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.mipmap.mycenter_blue_bg, R.mipmap.receive_apply_icon, R.color.white));
-                    menus.add(new HomePageMenuBean(APPROVE_USE, "SHIYONGSHENPI", R.mipmap.mycenter_green_bg, R.mipmap.menu_use_apply, R.color.white));
+                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
+                    menus.add(new HomePageMenuBean(APPROVE_USE, "SHIYONGSHENPI", R.drawable.sp_filled_white, R.mipmap.menu_use_apply, R.color.black));
                     break;
                 case 6:
                 case 7:
-                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.mipmap.mycenter_blue_bg, R.mipmap.receive_apply_icon, R.color.white));
+                    menus.add(new HomePageMenuBean(APPROVE_RECEIVE, "LINGQUSHENPI", R.drawable.sp_filled_white, R.mipmap.receive_apply_icon, R.color.black));
                     break;
                 default:
                     break;
             }
         }
-        menus.add(new HomePageMenuBean(DOSAGE, "YONGLIANG", R.mipmap.menu_bg_blue_litter, R.mipmap.menu_dosage_icon, R.color.white));
+        menus.add(new HomePageMenuBean(DOSAGE, "YONGLIANG", R.drawable.sp_filled_white, R.mipmap.menu_dosage_icon, R.color.black));
 
         return menus;
     }
@@ -152,19 +157,20 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         }
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
+        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
         if (showReceiver) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "领取人"));
 
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(bean==null?0:bean.getSafetyId(),MainContactInterface.SAFER, bean == null ? "" :
+                    new TextKeyValueBean(bean == null ? 0 : bean.getSafetyId(), MainContactInterface.SAFER, bean == null ? "" :
                             String.valueOf(bean.getSafetyName()), String.format("%s%s", "请选择",
                             MainContactInterface.SAFER), 0, true, isDetail)));
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(bean==null?0:bean.getBlasterId(),MainContactInterface.BLASTER, bean == null ? "" :
+                    new TextKeyValueBean(bean == null ? 0 : bean.getBlasterId(), MainContactInterface.BLASTER, bean == null ? "" :
                             String.valueOf(bean.getBlasterName()), String.format("%s%s", "请选择",
                             MainContactInterface.BLASTER), 0, true, isDetail)));
             arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                    new TextKeyValueBean(bean==null?0:bean.getSafekeepingId(),MainContactInterface.MANAGER, bean == null ? "" :
+                    new TextKeyValueBean(bean == null ? 0 : bean.getSafekeepingId(), MainContactInterface.MANAGER, bean == null ? "" :
                             String.valueOf(bean.getSafekeepingName()), String.format("%s%s", "请选择",
                             MainContactInterface.MANAGER), 0, true, isDetail)));
         }
@@ -177,6 +183,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         }
         return arrays;
     }
+
     /**
      * 民爆使用申请
      * showReceiver  是否展示领取人
@@ -184,7 +191,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @return
      */
     public List<MultipleItem> getUseApplyApproveData(UseOrderDetailBean.DataBean bean, boolean isDetail, boolean showReceiver) {
-        List<MultipleItem> arrays = getUseApplyAddData(bean,true,showReceiver);
+        List<MultipleItem> arrays = getUseApplyAddData(bean, true, showReceiver);
         if (isDetail) {
             if (TextUtils.isEmpty(bean.getPoliceSign())) {
                 arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
@@ -204,9 +211,9 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         List<MultipleItem> arrays = getUseApplyApproveData(bean, true, false);
         arrays.add(new MultipleItem(MultipleItem.ITEM_TEXT,
                 new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail ? bean.getGrantTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), isDetail)));
-        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, bean==null ? null :
+        arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, bean == null ? null :
                 bean.getGrantUseAddress()
-                , bean==null ? null : bean.getGrantUseLatitude(), bean==null ? null : bean.getGrantUseLongitude(), isDetail)));
+                , bean == null ? null : bean.getGrantUseLatitude(), bean == null ? null : bean.getGrantUseLongitude(), isDetail)));
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getReceiveId(), MainContactInterface.RECEIVER + bean.getApplyUsername()
                 , bean.getReceivePhoto(), bean.getReceiveSign(), !TextUtils.isEmpty(bean.getReceivePhoto()), isDetail
@@ -238,15 +245,15 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, "使用人"));
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(bean==null?0:bean.getUseSafetyId(),MainContactInterface.SAFER, bean == null ? "" :
+                new TextKeyValueBean(bean == null ? 0 : bean.getUseSafetyId(), MainContactInterface.SAFER, bean == null ? "" :
                         String.valueOf(bean.getUseSafetyName()), String.format("%s%s", "请选择",
                         MainContactInterface.SAFER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(bean==null?0:bean.getUseBlasterId(),MainContactInterface.BLASTER, bean == null ? "" :
+                new TextKeyValueBean(bean == null ? 0 : bean.getUseBlasterId(), MainContactInterface.BLASTER, bean == null ? "" :
                         String.valueOf(bean.getUseBlasterName()), String.format("%s%s", "请选择",
                         MainContactInterface.BLASTER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_SELECT,
-                new TextKeyValueBean(bean==null?0:bean.getUseSafekeepingId(),MainContactInterface.MANAGER, bean == null ? "" :
+                new TextKeyValueBean(bean == null ? 0 : bean.getUseSafekeepingId(), MainContactInterface.MANAGER, bean == null ? "" :
                         String.valueOf(bean.getUseSafekeepingName()), String.format("%s%s", "请选择",
                         MainContactInterface.MANAGER), 0, true, isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_BIG, MainContactInterface.USE_RECORD_PHOTO));
@@ -281,6 +288,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     bean.getRemarks(), true, 1, isDetail);
         }
         arrays.add(new MultipleItem(MultipleItem.ITEM_APPLY_DOSAGE, bean == null ? getExplosiveDosage(isDetail) : new BaseUsageBean(bean.getExplosiveUsage(), isDetail)));
+        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, bean.getExplosiveUsage());
         if (isDetail) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_UNIT, 2, bean.getApplySign(), bean.getApplyDepartmentSeal())));
         } else {
@@ -297,7 +305,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
      * @return
      */
     public List<MultipleItem> getRecieveApplyApproveData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
-        List<MultipleItem> arrays = getRecieveApplyAddData(bean,true);
+        List<MultipleItem> arrays = getRecieveApplyAddData(bean, true);
         if (TextUtils.isEmpty(bean.getPoliceSign())) {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
         } else {
@@ -549,6 +557,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                     }
                 });
     }
+
     public void modifyHead(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .modifyHead(body)

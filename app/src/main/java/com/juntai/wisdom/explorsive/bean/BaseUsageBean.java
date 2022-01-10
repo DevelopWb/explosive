@@ -16,6 +16,9 @@ public class BaseUsageBean {
     private List<ExplosiveUsageBean>  usageBeanList;
    private  List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean>  usageReturnBeans;
     private boolean isDetail;
+    /**
+     * 是否退回（1否；2是）
+     */
     private int  isReturn;
 
     public BaseUsageBean(List<UseOrderDetailBean.DataBean.ExplosiveUsageReturnBean> usageReturnBeans, boolean isDetail,int isReturn) {

@@ -45,10 +45,11 @@ public class ApplyReceiveAdapter extends BaseQuickAdapter<OrderListBean.DataBean
         helper.addOnClickListener(R.id.order_title_ll);
         RecyclerView mRecyclerView = helper.getView(R.id.order_progress_rv);
         OrderProgressAdapter orderProgressAdapter = new OrderProgressAdapter(null);
-        GridLayoutManager manager = new GridLayoutManager(mContext, 10);
+        LinearLayoutManager manager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(orderProgressAdapter);
         orderProgressAdapter.setNewData(getAdapterData(item));
+        mRecyclerView.scrollToPosition(12);
         orderProgressAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

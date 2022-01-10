@@ -68,7 +68,6 @@ public class ExplosiveOutInMineActivity extends BaseExplosiveUseDetailActivity {
 
     @Override
     protected void initAdapterData(UseOrderDetailBean.DataBean dataBean) {
-        Hawk.put(HawkProperty.CURRENT_SELECTED_EXPLOSIVE_TYPES, dataBean.getExplosiveUsage());
         adapter.setNewData(mPresenter.getUseApplyOutInMineData(dataBean,false));
         adapter.addFooterView(getFootView());
     }
