@@ -198,7 +198,7 @@ public class FaceCheckActivity extends BaseAppActivity<MainPresent> implements S
         for (int i = 0; i < cameraCount; i++) {
             Camera.CameraInfo info = new Camera.CameraInfo();
             Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//前置摄像头
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {//前置摄像头
                 mCameraIndex = i;
                 mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
                 mSurfaceHolder.addCallback(this);

@@ -518,8 +518,12 @@ public class HandlerOrderAdapter extends BaseMultiItemQuickAdapter<MultipleItem,
                 if (locationBean.isDetail()) {
                     helper.setGone(R.id.location_iv, false);
                 } else {
-                    helper.addOnClickListener(R.id.location_ll);
-                    helper.setGone(R.id.location_iv, true);
+                    if (locationBean.isCanSelectAddr()) {
+                        helper.addOnClickListener(R.id.location_ll);
+                        helper.setGone(R.id.location_iv, true);
+                    }else {
+                        helper.setGone(R.id.location_iv, false);
+                    }
                 }
                 if (!TextUtils.isEmpty(locationBean.getAddress())) {
                     helper.setText(R.id.location_tv, locationBean.getAddress());

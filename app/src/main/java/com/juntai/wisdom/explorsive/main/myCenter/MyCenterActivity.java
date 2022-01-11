@@ -83,9 +83,7 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
                                                                  @Override
                                                                  public void onClick(DialogInterface dialog, int which) {
                                                                      dialog.dismiss();
-                                                                     ActivityManagerTool.getInstance().finishApp();
-                                                                     UserInfoManager.clearUserBaseInfo();
-                                                                     startActivity(new Intent(mContext, LoginActivity.class));
+                                                                     mPresenter.logout(getBaseBuilder().build(),AppHttpPath.LOGOUT);
                                                                  }
                                                              })
                                                              .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -192,6 +190,16 @@ public class MyCenterActivity extends BaseRecyclerviewActivity<MainPresent> impl
 
     @Override
     public void onSuccess(String tag, Object o) {
-        ToastUtils.toast(mContext,"修改成功");
+        switch (tag) {
+            case AppHttpPath.LOGOUT:
+                ActivityManagerTool.getInstance().finishApp();
+                UserInfoManager.clearUserBaseInfo();
+                startActivity(new Intent(mContext, LoginActivity.class));
+                break;
+            default:
+                ToastUtils.toast(mContext,"修改成功");
+
+                break;
+        }
     }
 }

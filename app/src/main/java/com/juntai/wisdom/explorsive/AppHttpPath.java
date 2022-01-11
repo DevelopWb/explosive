@@ -141,6 +141,7 @@ public class AppHttpPath {
     public static final String NEWS_LIST = BASE + "/getMessageList";
     public static final String GET_UNREAD_COUNT = BASE + "/getUnreadMessageCount";
     public static final String MODIFY_HEAD = BASE + "/updateHeadPortrait";
+    public static final String LOGOUT = BASE + "/logout";
 
 
     /**

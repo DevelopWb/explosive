@@ -74,6 +74,8 @@ public interface AppServer {
     Observable<BaseResult> getUnreadCount(@Body RequestBody requestBody);
     @POST(AppHttpPath.MODIFY_HEAD)
     Observable<BaseResult> modifyHead(@Body RequestBody requestBody);
+    @POST(AppHttpPath.LOGOUT)
+    Observable<BaseResult> logout(@Body RequestBody requestBody);
 
     @POST(AppHttpPath.FACE_CHECK)
     Observable<FaceCheckResponseBean> startFaceCheck(@Body RequestBody requestBody);

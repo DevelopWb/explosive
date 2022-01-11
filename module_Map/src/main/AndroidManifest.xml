@@ -39,11 +39,11 @@
     <application android:networkSecurityConfig="@xml/network_security_config">
 
 
-        <service
-            android:name="com.juntai.disabled.bdmap.service.LocateAndUpload"
-            android:priority="1000"
-            android:enabled="true"
-            android:exported="true" />
+<!--        <service-->
+<!--            android:name="com.juntai.disabled.bdmap.service.LocateAndUpload"-->
+<!--            android:priority="1000"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true" />-->
 
         <activity android:name=".act.LocateShowActivity"
             android:launchMode="singleTop"

@@ -150,7 +150,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
         }
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getEstimateUseAddress()
-                , bean == null ? null : bean.getEstimateUseLatitude(), bean == null ? null : bean.getEstimateUseLongitude(), isDetail)));
+                , bean == null ? null : bean.getEstimateUseLatitude(), bean == null ? null : bean.getEstimateUseLongitude(), isDetail,true)));
         if (!isDetail) {
             initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                     bean.getRemarks(), true, 1, isDetail);
@@ -215,7 +215,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.OUT_IN_MINE_TIME, isDetail ? bean.getGrantTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.OUT_IN_MINE_ADDR, bean == null ? null :
                 bean.getGrantUseAddress()
-                , bean == null ? null : bean.getGrantUseLatitude(), bean == null ? null : bean.getGrantUseLongitude(), isDetail)));
+                , bean == null ? null : bean.getGrantUseLatitude(), bean == null ? null : bean.getGrantUseLongitude(), isDetail,false)));
 
         arrays.add(new MultipleItem(MultipleItem.ITEM_FACE_CHECK, new FaceCheckBean(bean.getReceiveId(), MainContactInterface.RECEIVER + bean.getApplyUsername()
                 , bean.getReceivePhoto(), bean.getReceiveSign(), !TextUtils.isEmpty(bean.getReceivePhoto()), isDetail
@@ -284,7 +284,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 getApplyerData(bean, isDetail))));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.USE_LOCATION, bean == null ? null :
                 bean.getUseAddress()
-                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude(), isDetail)));
+                , bean == null ? null : bean.getUseLatitude(), bean == null ? null : bean.getUseLongitude(), isDetail,true)));
         if (!isDetail) {
             initTextType(arrays, MultipleItem.ITEM_EDIT, MainContactInterface.APPLICATION, bean == null ? "" :
                     bean.getRemarks(), true, 1, isDetail);
@@ -311,17 +311,17 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public List<MultipleItem> getRecieveApplyApproveData(ReceiveOrderDetailBean.DataBean bean, boolean isDetail) {
         List<MultipleItem> arrays = getRecieveApplyAddData(bean, true);
         if (TextUtils.isEmpty(bean.getPoliceSign())) {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, isDetail?3:2 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getPoliceRemarks())));
         } else {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_POLICE, 2, bean.getPoliceSign(), bean.getPoliceDepartmentSeal(), bean.getPoliceRemarks())));
         }
         if (TextUtils.isEmpty(bean.getBrigadeSign())) {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 3 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, isDetail?3:3 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getBrigadeRemarks())));
         } else {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_BRIGADE, 2, bean.getBrigadeSign(), bean.getBrigadeDepartmentSeal(), bean.getBrigadeRemarks())));
         }
         if (TextUtils.isEmpty(bean.getLeaderSign())) {
-            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 4 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
+            arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, isDetail?3:4 == UserInfoManager.getDepartmentType() ? 1 : 3, null, UserInfoManager.getDepartmentSign(), bean.getLeaderRemarks())));
         } else {
             arrays.add(new MultipleItem(MultipleItem.ITEM_SIGN, new ItemSignBean(MainContactInterface.SIGN_TITLE_LEADER, 2, bean.getLeaderSign(), bean.getLeaderDepartmentSeal(), bean.getLeaderRemarks())));
         }
@@ -356,7 +356,7 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
                 new TextKeyValueBean(MainContactInterface.DELIVERY_TIME, isDetail ? bean.getArriveTime() : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), isDetail)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_LOCATION, new LocationBean(MainContactInterface.DELIVERY_ADDR, !isDetail ? null :
                 bean.getArriveAddress()
-                , !isDetail ? null : bean.getArriveLatitude(), !isDetail ? null : bean.getArriveLongitude(), isDetail)));
+                , !isDetail ? null : bean.getArriveLatitude(), !isDetail ? null : bean.getArriveLongitude(), isDetail,false)));
         arrays.add(new MultipleItem(MultipleItem.ITEM_TITILE_SMALL, new ImportantTagBean
                 (MainContactInterface.ARRIVERE_PHOTO, false)));
         List<String> pics = new ArrayList<>();
@@ -565,6 +565,26 @@ public class MainPresent extends BaseAppPresent<IModel, MainContactInterface> {
     public void modifyHead(RequestBody body, String tag) {
         AppNetModule.createrRetrofit()
                 .modifyHead(body)
+                .compose(RxScheduler.ObsIoMain(getView()))
+                .subscribe(new BaseObserver<BaseResult>(getView()) {
+                    @Override
+                    public void onSuccess(BaseResult o) {
+                        if (getView() != null) {
+                            getView().onSuccess(tag, o);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        if (getView() != null) {
+                            getView().onError(tag, msg);
+                        }
+                    }
+                });
+    }
+    public void logout(RequestBody body, String tag) {
+        AppNetModule.createrRetrofit()
+                .logout(body)
                 .compose(RxScheduler.ObsIoMain(getView()))
                 .subscribe(new BaseObserver<BaseResult>(getView()) {
                     @Override

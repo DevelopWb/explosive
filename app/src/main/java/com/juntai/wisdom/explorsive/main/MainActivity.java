@@ -21,7 +21,6 @@ import com.juntai.disabled.basecomponent.utils.ActivityManagerTool;
 import com.juntai.disabled.basecomponent.utils.AppUtils;
 import com.juntai.disabled.basecomponent.utils.ImageLoadUtil;
 import com.juntai.disabled.basecomponent.utils.ToastUtils;
-import com.juntai.disabled.bdmap.service.LocateAndUpload;
 import com.juntai.wisdom.R;
 import com.juntai.wisdom.explorsive.AppHttpPath;
 import com.juntai.wisdom.explorsive.MyApp;
@@ -256,7 +255,6 @@ public class MainActivity extends BaseAppActivity<MainPresent> implements MainCo
     @Override
     protected void onDestroy() {
         Log.e("EEEEEEEEEE", " = MainActivity  onDestroy");
-        stopService(new Intent(MainActivity.this, LocateAndUpload.class));
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }

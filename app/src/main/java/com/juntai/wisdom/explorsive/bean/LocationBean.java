@@ -13,13 +13,24 @@ public class LocationBean {
     private String latitude;
     private String longitude;
     private  boolean isDetail;
+    //是否可以选择地址
+    private boolean canSelectAddr;
 
-    public LocationBean(String key, String address, String latitude, String longitude, boolean isDetail) {
+    public LocationBean(String key, String address, String latitude, String longitude, boolean isDetail, boolean canSelectAddr) {
         this.key = key;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.isDetail = isDetail;
+        this.canSelectAddr = canSelectAddr;
+    }
+
+    public boolean isCanSelectAddr() {
+        return canSelectAddr;
+    }
+
+    public void setCanSelectAddr(boolean canSelectAddr) {
+        this.canSelectAddr = canSelectAddr;
     }
 
     public boolean isDetail() {
